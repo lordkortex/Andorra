@@ -1,0 +1,12 @@
+<aura:component >
+    <!--Atributo que abre el contenido en formato pdf y códificación BASE 64 -->
+    <aura:attribute name="pdfData" type="String"/>   
+    <aura:attribute name="strOrderNr" 		type="String"/>
+    <aura:attribute name="strBP"  			type="String"/>
+    <aura:attribute name="strReferenceLine" type="String"/>
+ 
+  <!--Use "slds-m-around- -xx-large" class to add standard Large padding to the component--> 
+  <div >
+    <button class="slds-button slds-button--neutral slds-truncate" onclick="{!c.openModel}">Fichero </button>  
+  </div>
+</aura:component>

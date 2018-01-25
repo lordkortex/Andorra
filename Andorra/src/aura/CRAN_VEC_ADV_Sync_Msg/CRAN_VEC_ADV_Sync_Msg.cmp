@@ -1,0 +1,42 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:lightningQuickActionWithoutHeader,force:hasRecordId" 
+                controller="CRAN_VEC_ADV_QuoteSync_AUC"
+                access="global" >
+
+    <aura:attribute name="recordId" type="String" default="" access="GLOBAL"/>
+	<aura:attribute name="quote" type="Quote"/>
+    <aura:attribute name="fStat" type="Boolean" default="False" />    
+	<aura:attribute name="fInvA" type="Boolean" default="False" />        
+	<aura:attribute name="fCurr" type="Boolean" default="False" />   
+    <aura:attribute name="fIpl"  type="Boolean" default="False" />
+    
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+        
+    <aura:if isTrue="{!v.fInvA || v.fCurr}">                        
+        <div class="slds-box slds-theme--shade slds-theme--alert-texture" style="color:#B0BA1F;background#F0F2CC;">
+            <p class="slds-text-heading--medium slds-text-align--center">
+                <aura:if isTrue="{!v.fInvA || v.fCurr}">
+                	<p style="text-decoration:underline;"><b>{!$Label.c.CRAN_VEC_ADV_IP_Versions}</b></p>
+                </aura:if>
+                <aura:if isTrue="{!v.fInvA}">                       
+                    <p style="text-decoration:oblique;"><b>{!$Label.c.CRAN_VEC_ADV_IP_MSG_QuoteInvAmChanged}!!!</b></p>
+                </aura:if>
+                <aura:if isTrue="{!v.fCurr}">
+                    <p style="text-decoration:oblique;"><b>{!$Label.c.CRAN_VEC_ADV_IP_MSG_QuoteCurrChanged}!!!</b></p>
+                </aura:if>
+                <aura:if isTrue="{!v.fIpl ? (v.fInvA || v.fCurr) : 'false'}">
+                    <p><b>{!$Label.c.CRAN_VEC_ADV_IP_MSG_QuoteChanged}</b></p>
+                </aura:if>
+            </p>                
+        </div>
+    </aura:if>
+    
+    <aura:if isTrue="{!v.fIpl}">
+        <div class="slds-box slds-theme--shade slds-theme--alert-texture" style="color:#B0BA1F;background#F0F2CC;">                
+            <p class="slds-text-heading--medium slds-text-align--center">
+                <p style="text-decoration:underline;"><b>{!$Label.c.CRAN_VEC_ADV_IP_Lines}</b></p>            
+                <b>{!$Label.c.CRAN_VEC_ADV_IP_MSG_IPLChanged}</b>
+            </p>
+        </div>                
+    </aura:if>
+        
+</aura:component>

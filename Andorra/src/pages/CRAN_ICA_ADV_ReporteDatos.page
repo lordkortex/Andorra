@@ -1,0 +1,126 @@
+<apex:page controller="CRAN_ICA_ADV_ReporteConsistencia_CTR">
+  <!-- Begin Default Content REMOVE THIS -->
+  <h1>Congratulations</h1>
+  <button onclick="getResumenContact()">Contact</button>
+    <button onclick="getResumenAccount()">Account</button>
+    <button onclick="getResumenBP()">BP</button>
+    <button onclick="getResumenFA()">Financial Account</button>
+    <button onclick="getResumenRolesPO()">Roles Primary Owner</button>
+    <button onclick="getResumenRolesBK()">Roles Banca</button>
+    <button onclick="getResumenRolesASS()">Roles Seguros</button>
+  <button onclick="getDetails()">Detalles</button>
+  <div id="reporteContact"></div> <br/><br/>
+    <div id="reporteAccount"></div> <br/><br/>
+    <div id="reporteBP"></div> <br/><br/>
+    <div id="reporteFA"></div> <br/><br/>
+    <div id="reporteRolesPO"></div> <br/><br/>
+    <div id="reporteRolesBK"></div> <br/><br/>
+    <div id="reporteRolesASS"></div> <br/><br/>
+  <div id="reporteTabla"></div> 
+    <script>
+    Visualforce.remoting.timeout = 120000;
+    function getResumenContact(){
+        Visualforce.remoting.Manager.invokeAction(
+        '{!$RemoteAction.CRAN_ICA_ADV_ReporteConsistencia_CTR.getReportTotalesContact}',
+            function(result){
+                var output = "";
+                for (var i in result){
+                    output += i + ": " + result[i] + "<br/>";
+                }
+                document.getElementById('reporteContact').innerHTML = output;             
+            }
+        );
+    }
+    function getResumenAccount(){
+        Visualforce.remoting.Manager.invokeAction(
+        '{!$RemoteAction.CRAN_ICA_ADV_ReporteConsistencia_CTR.getReportTotalesAccount}',
+            function(result){
+                var output = "";
+                for (var i in result){
+                    output += i + ": " + result[i] + "<br/>";
+                }
+                document.getElementById('reporteAccount').innerHTML = output;             
+            }
+        );
+    }
+    function getResumenBP(){
+        Visualforce.remoting.Manager.invokeAction(
+        '{!$RemoteAction.CRAN_ICA_ADV_ReporteConsistencia_CTR.getReportTotalesBP}',
+            function(result){
+                var output = "";
+                for (var i in result){
+                    output += i + ": " + result[i] + "<br/>";
+                }
+                document.getElementById('reporteBP').innerHTML = output;             
+            }
+        );
+    }
+    function getResumenFA(){
+        Visualforce.remoting.Manager.invokeAction(
+        '{!$RemoteAction.CRAN_ICA_ADV_ReporteConsistencia_CTR.getReportTotalesFA}',
+            function(result){
+                var output = "";
+                for (var i in result){
+                    output += i + ": " + result[i] + "<br/>";
+                }
+                document.getElementById('reporteFA').innerHTML = output;             
+            }
+        );
+    }
+    function getResumenRolesPO(){
+        Visualforce.remoting.Manager.invokeAction(
+        '{!$RemoteAction.CRAN_ICA_ADV_ReporteConsistencia_CTR.getReportTotalesRolesPO}',
+            function(result){
+                var output = "";
+                for (var i in result){
+                    output += i + ": " + result[i] + "<br/>";
+                }
+                document.getElementById('reporteRolesPO').innerHTML = output;             
+            }
+        );
+    }
+    function getResumenRolesBK(){
+        Visualforce.remoting.Manager.invokeAction(
+        '{!$RemoteAction.CRAN_ICA_ADV_ReporteConsistencia_CTR.getReportTotalesRolesBK}',
+            function(result){
+                var output = "";
+                for (var i in result){
+                    output += i + ": " + result[i] + "<br/>";
+                }
+                document.getElementById('reporteRolesBK').innerHTML = output;             
+            }
+        );
+    }
+    function getResumenRolesASS(){
+        Visualforce.remoting.Manager.invokeAction(
+        '{!$RemoteAction.CRAN_ICA_ADV_ReporteConsistencia_CTR.getReportTotalesRolesASS}',
+            function(result){
+                var output = "";
+                for (var i in result){
+                    output += i + ": " + result[i] + "<br/>";
+                }
+                document.getElementById('reporteRolesASS').innerHTML = output;             
+            }
+        );
+    }
+    function getDetails(){
+        Visualforce.remoting.Manager.invokeAction(
+        '{!$RemoteAction.CRAN_ICA_ADV_ReporteConsistencia_CTR.getReportDetail}',
+            function(result){
+                var indice = 0;
+                var output = "";
+                for (var i in result){
+                    output += "<tr><td>" + i + "</td>";
+                    for (var j = 0; j < result[i].length; j++){
+                         output += "<td>" + result[i][j]+ "</td>";
+                    }
+                    output += "</tr>";
+                    indice ++;
+                }
+                var title = "Total de Inconsistencias: " + indice + "<br/><br/>";
+                document.getElementById('reporteTabla').innerHTML = title  + "<table><tr><th>BP</th><th>Nro Containers</th><th>Nro Roles</th><th>Válido?</th></tr>" + output + "</table>";             
+            }
+        );
+    }
+    </script>
+</apex:page>

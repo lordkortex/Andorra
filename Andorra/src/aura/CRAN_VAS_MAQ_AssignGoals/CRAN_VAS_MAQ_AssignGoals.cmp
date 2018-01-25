@@ -1,0 +1,286 @@
+<aura:component controller="CRAN_VAS_MAQ_AssignGoals_AUC"
+	implements="flexipage:availableForAllPageTypes,force:hasRecordId,flexipage:availableForRecordHome"
+	access="global">
+	<ltng:require scripts="/resource/jQuery3, 
+                           /resource/jQueryMultiSelect"
+		afterScriptsLoaded="{!c.doInit}" />
+
+	<aura:attribute name="isDirectorArea" type="Boolean"
+		description="The current user is a global director" default="false" />
+	<aura:attribute name="isDirectorOffice" type="Boolean"
+		description="The current user is an office director" default="false" />
+	<aura:attribute name="isAdvisor" type="Boolean"
+		description="The current users is an advisor" default="false" />
+	<aura:attribute name="showMultiSelect" type="Boolean"
+		description="Show multiselect with goals" default="false" />
+	<aura:attribute name="showUsers" type="Boolean"
+		description="Show users select" default="false" />
+	<aura:attribute name="showButton" type="Boolean"
+		description="Show the button to redirect to the component in full page"
+		default="true" />
+	<aura:attribute name="showComponent" type="Boolean"
+		description="Show the component to assign goals" default="false" />
+	<aura:attribute name="officeNames" type="List"
+		description="List of available offices" default="false" />
+	<aura:attribute name="selectedUser" type="Id" default="" />
+	<aura:attribute name="fieldNames" type="String"
+		default="Name,CRAN_VAS_MAQ_L_BP__r.Name" />
+	<aura:attribute name="detailFieldNames" type="String"
+		default="Name,Account.Name,CRAN_VAS_MAQ_L_BP__r.Name,Description" />
+	<aura:attribute name="campaignName" type="String" default="" />
+	<aura:attribute name="record" type="Object" />
+	<aura:attribute name="recordId" type="Id" />
+	<aura:attribute name="goalDetailId" type="Id" />
+	<aura:attribute name="items" type="Object[]" description="" />
+	<aura:attribute name="itemsSelected" type="Object[]" description="" />
+	<aura:attribute name="numItems" type="String" description="0" />
+	<aura:attribute name="numItemsSelected" type="String" description="0" />
+    <aura:attribute name="vision" type="String" default="" description="0" />
+	<div>
+        <aura:if isTrue="{!v.showButton}">
+            <lightning:card class="responsiveCard" iconName="custom:custom101">
+                <aura:set attribute="title">
+                    <span title="{!$Label.c.CRAN_VAS_MAQ_AG_Title}">{!$Label.c.CRAN_VAS_MAQ_AG_Title}</span>
+                </aura:set>
+                <aura:set attribute="actions">
+                    <lightning:button variant="brand"
+                        label="{!$Label.c.CRAN_VAS_MAQ_AG_LinkButton}"
+                        onclick="{!c.redirectToComponent}" />
+                </aura:set>
+                <p class="slds-m-horizontal--small slds-text-body--regular">{!$Label.c.CRAN_VAS_MAQ_AG_InfoButton}</p>
+            </lightning:card>
+        </aura:if>
+        <aura:if isTrue="{!v.showComponent}">
+            <div class="slds-page-header">
+                <div class="slds-grid">
+                    <div class="slds-col slds-has-flexi-truncate">
+                        <nav class="slds-m-bottom--xx-small" role="navigation"
+                            aria-label="Breadcrumbs">
+                            <ol class="slds-breadcrumb slds-list--horizontal">
+                                <li class="slds-breadcrumb__item slds-text-title--caps"><a
+                                    href="{!'/one/one.app?#/sObject/Campaign/home'}">{!$Label.c.CRAN_VAS_MAQ_AG_Campaigns}</a>
+                                </li>
+                                <li class="slds-breadcrumb__item slds-text-title--caps"><a
+                                    href="{!'/one/one.app?#/sObject/'+v.recordId+'/view'}">{!v.campaignName}</a>
+                                </li>
+                            </ol>
+                        </nav>
+                        <h1 class="slds-page-header__title slds-truncate"
+                            title="{!$Label.c.CRAN_VAS_MAQ_AG_Title}">{!$Label.c.CRAN_VAS_MAQ_AG_Title}</h1>
+                    </div>
+                </div>
+                <div class="slds-grid">
+                    <div class="slds-col slds-align-bottom">
+                        <p class="slds-text-body--small">{!$Label.c.CRAN_VAS_MAQ_AG_InfoText}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-container--fluid slds-m-vertical--large"
+                aura:id="container">
+                <aura:if isTrue="{!v.isDirectorArea}">
+                    <div class="selection-container slds-p-around--small slds-m-bottom--small">
+                    <div class="slds-card__header slds-grid">
+                        <header
+                            class="slds-media slds-media--center slds-has-flexi-truncate">
+                            <div class="slds-media__figure">
+                                <lightning:icon iconName="action:filter" size="small"
+                                    alternativeText="Indicates approval" />
+                            </div>
+                            <div class="slds-media__body">
+                                <span class="slds-text-heading--medium">{!$Label.c.CRAN_VAS_MAQ_AG_SelectOffice}</span>							
+                            </div>
+                        </header>
+                    </div>
+                    <div class="slds-grid slds-m-horizontal--large">
+                        <div
+                            class="slds-size--3-of-5 slds-align-bottom slds-m-horizontal--large slds-inline_icon_text">
+                            <p class="slds-text-body--small">
+                                <aura:unescapedHtml value="{!$Label.c.CRAN_VAS_MAQ_AG_SelectOfficeInfo}" />
+                            </p>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="slds-grid slds-grid--align-center">
+                        <div id="selectOffice"
+                            class="slds-m-around--small slds-p-horizontal--small slds-size--3-of-4">
+                            <ui:inputSelect aura:id="offices"
+                                change="{!c.getGoalsUsersByOffice}" />
+                        </div>
+                    </div>
+                    </div>
+                </aura:if>
+                <aura:if isTrue="{!v.showUsers}">
+                    <div class="selection-container slds-p-around--small slds-m-bottom--small">                    
+                    <div class="slds-card__header slds-grid">
+                        <header
+                            class="slds-media slds-media--center slds-has-flexi-truncate">
+                            <div class="slds-media__figure">
+                                <lightning:icon iconName="action:user" size="small"
+                                    alternativeText="Indicates approval" />
+                            </div>
+                            <div class="slds-media__body">
+                                <span class="slds-text-heading--medium">{!$Label.c.CRAN_VAS_MAQ_AG_SelectAdvisor}</span>
+                            </div>					
+                        </header>
+                    </div>
+                    <div class="slds-grid slds-m-horizontal--large">
+                        <div
+                            class="slds-size--3-of-5 slds-align-bottom slds-m-horizontal--large slds-inline_icon_text">
+                            <p class="slds-text-body--small">
+                                <aura:unescapedHtml value="{!$Label.c.CRAN_VAS_MAQ_AG_SelectAdvisorInfo}" />
+                            </p>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="slds-grid slds-grid--align-center">
+                        <div id="selectUser"
+                            class="slds-m-around--small slds-p-horizontal--small slds-size--3-of-4">
+                            <ui:inputSelect aura:id="users" change="{!c.showGoals}" />
+                        </div>
+                    </div>
+                    </div>
+                </aura:if>
+    
+                <div class = "selection-container slds-p-around--small" id="multiSelectDiv" style="display: none">
+                    <div class="slds-card__header slds-grid">
+                        <header
+                            class="slds-media slds-media--center slds-has-flexi-truncate">
+                            <div class="slds-media__figure">
+                                <lightning:icon iconName="action:goal" size="small"
+                                    alternativeText="Indicates approval" />
+                            </div>
+                            <div class="slds-media__body">
+                                <span class="slds-text-heading--medium">{!$Label.c.CRAN_VAS_MAQ_AG_SelectGoals}</span>
+                            </div>
+                        </header>
+                    </div>
+                    <div class="slds-grid slds-m-horizontal--large">
+                        <div
+                            class="slds-size--3-of-5 slds-align-bottom slds-m-horizontal--large slds-inline_icon_text">
+                            <p class="slds-text-body--small">
+                                <aura:unescapedHtml value="{!$Label.c.CRAN_VAS_MAQ_AG_SelectGoalsInfo}" />
+                            </p>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="slds-grid slds-m-horizontal--large">
+                        <div
+                            class="slds-large-size--3-of-5 slds-picklist--draggable slds-media--center slds-grid slds-m-left--large"
+                            data-aljs="multi-select">
+                            <div class="slds-grid slds-media--center slds-size--1-of-1">
+                                <div
+                                    class="slds-form-element slds-shrink-none slds-m-horizontal--large">
+                                    <span class="slds-form-element__label" aria-label="select-1">{!$Label.c.CRAN_VAS_MAQ_AG_NonManagedGoals}</span>
+                                    <div class="slds-picklist slds-picklist--multi"
+                                        data-aljs-multi-select="unselected">
+                                        <ul id="ul-unselected"
+                                            class="slds-picklist__options slds-picklist__options--multi shown"></ul>
+                                    </div>
+                                    <span class="slds-form-element__label" aria-label="select-1">{!v.numItems
+                                        + ' ' + $Label.c.CRAN_VAS_MAQ_AG_AvailableRecords}</span>
+                                </div>
+                                <div class="slds-grid slds-grid--vertical slds-shrink-none">
+                                    <button class="slds-button slds-button--icon-container"
+                                        data-aljs-multi-select="unselect">
+                                        <lightning:icon iconName="utility:left" size="small"
+                                            alternativeText="Retirar" />
+                                        <span class="slds-assistive-text">Pick list</span>
+                                    </button>
+                                    <button class="slds-button slds-button--icon-container"
+                                        data-aljs-multi-select="select">
+                                        <lightning:icon iconName="utility:right" size="small"
+                                            alternativeText="Añadir" />
+                                        <span class="slds-assistive-text">Pick list</span>
+                                    </button>
+                                </div>
+                                <div
+                                    class="slds-form-element slds-shrink-none slds-m-horizontal--large">
+                                    <span class="slds-form-element__label">{!$Label.c.CRAN_VAS_MAQ_AG_SelectedGoals}</span>
+                                    <div
+                                        class="slds-picklist slds-picklist--multi slds-scrollable--y"
+                                        data-aljs-multi-select="selected">
+                                        <ul id="ul-selected"
+                                            class="slds-picklist__options slds-picklist__options--multi shown"></ul>
+                                    </div>
+                                    <span class="slds-form-element__label" aria-label="select-1">{!v.numItemsSelected
+                                        + ' ' + $Label.c.CRAN_VAS_MAQ_AG_SelectedRecords}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="detailGoalDiv"
+                            class="slds-large-size--2-of-5 slds-border--left slds-m-left--large"
+                            style="display: none">
+                            <div class="slds-m-left--large">
+                                <lightning:card iconName="standard:goals">
+                                    <aura:set attribute="title">
+                                    {!$Label.c.CRAN_VAS_MAQ_AG_GoalDetail}
+                                    </aura:set>
+                                    <div
+                                        class="slds-m-horizontal--large slds-tile__detail slds-text-body--small">
+                                        <dl class="slds-list--horizontal slds-wrap">
+                                            <aura:iteration items="{!v.record}" var="field">
+                                                <dt
+                                                    class="slds-item--label slds-text-color--weak slds-truncate"
+                                                    title="First Label">{!field.label}:</dt>
+                                                <aura:if isTrue="{!field.fieldType == 'REFERENCE' || field.apiName == 'Name'}">
+                                                    <dd class="slds-item--detail slds-truncate">
+                                                        <a
+                                                            href="{!'/one/one.app?#/sObject/'+ field.recId + '/view'}">{!field.value}</a>
+                                                    </dd>
+                                                    <aura:set attribute="else">
+                                                        <aura:if isTrue="{!field.fieldType == 'BOOLEAN'}">
+                                                            <span class="uiImage uiOutputCheckbox"
+                                                                data-aura-class="uiImage uiOutputCheckbox"> <ui:outputCheckbox value="{!field.value == 'true'}" />
+                                                            </span>
+                                                            <aura:set attribute="else">
+                                                                <dd class="slds-item--detail slds-truncate">{!field.value}</dd>
+                                                            </aura:set>
+                                                        </aura:if>
+                                                    </aura:set>
+                                                </aura:if>
+                                            </aura:iteration>
+                                        </dl>
+                                    </div>
+                                </lightning:card>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div
+                            class="slds-grid slds-grid--align-center slds-m-vertical--large">
+                            <lightning:button variant="brand"
+                                label="{!$Label.c.CRAN_VAS_MAQ_AG_ConfirmButton}"
+                                onclick="{!c.confirmAssignGoalsToAdvisor}" />
+                        </div>
+                </div>
+    
+            </div>
+            <!-- Confirm Dialog -->
+            <div role="dialog" tabindex="-1" aura:id="confirmDialog"
+                class="slds-modal ">
+                <div class="slds-modal__container">
+                    <div class="slds-modal__header">
+                        <h2 class="slds-text-heading--medium">{!$Label.c.CRAN_VAS_MAQ_AG_ConfirmAssignTitle}</h2>
+                    </div>
+                    <div class="slds-modal__content slds-p-around--medium">
+                        <center>
+                            <h2>{!$Label.c.CRAN_VAS_MAQ_AG_ConfirmAssign}</h2>
+                        </center>
+                    </div>
+                    <div class="slds-modal__footer">
+                        <lightning:button label="{!$Label.FinServ.Button_Label_Cancel}"
+                            onclick="{!c.closeModal}" />
+                        <lightning:button variant="brand"
+                            label="{!$Label.c.CRAN_VAS_MAQ_AG_ConfirmButton}"
+                            onclick="{!c.assignGoalsToAdvisor}" />
+                    </div>
+                </div>
+            </div>
+            <div class="slds-backdrop " aura:id="confirmDialog-Back"></div>
+        </aura:if>
+        <lightning:spinner variant="brand" size="large"
+            aura:id="assignGoalsSpinner"
+            alternativeText="{!$Label.c.CRAN_VAS_KER_CF_LBL_LoadingRecords}"
+            class="slds-hide goal-spinner" />
+     </div>
+</aura:component>

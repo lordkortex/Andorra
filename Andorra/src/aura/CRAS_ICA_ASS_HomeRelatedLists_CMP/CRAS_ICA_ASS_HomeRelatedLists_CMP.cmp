@@ -1,0 +1,84 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" 
+                access="global"
+                controller="CRAS_ICA_ASS_HomeRelatedLists_AUC">
+    
+    <aura:attribute name="ResultList" type="Object[]" />
+    <aura:attribute name="ColumnNames" type="CRAS_ICA_ASS_SFField_OBJ[]" />
+    <aura:attribute name="RecordsCount" type="Integer" default="-1" />
+    <aura:attribute name="title" type="String" default=""/>
+    <aura:attribute name="iconName" type="String" default="custom:custom16"/>
+    <aura:attribute name="object" type="String" default=""/>
+    <aura:attribute name="listView" type="String" default=""/>
+    <aura:attribute name="recordId" type="String" default=""/>
+    <aura:attribute name="provider" type="String" default="CRAN_ICA_KER_JoinListViewProvider_CLS"/>
+    <aura:attribute name="recordsPerPage" type="Integer" default="16"/>
+    <aura:attribute name="currentPage" type="Integer" default="1"/>
+    <aura:method name="doLoadRecordsMethod" action="{!c.doLoadRecords}" description="loadRecords controller function" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <div class="slds-page-header">
+      <div class="slds-media">
+        <div class="slds-media__figure">
+          <span class="slds-icon_container slds-icon-standard" title="">
+              <lightning:icon iconName="{!v.iconName}" size="medium" />
+          </span>
+        </div>
+        <div class="slds-media__body">
+          <h1 class="slds-page-header__title slds-truncate slds-align-middle" title="{!v.title}">{!v.title}</h1>
+          <p class="slds-text-body_small slds-line-height_reset">{!$Label.c.CRAS_ICA_ASS_TotalRecords + ' ' + v.RecordsCount}</p>
+        </div>
+      </div>
+    </div>
+    
+    <div>
+        <aura:if isTrue="{!v.RecordsCount == 0}">
+            <p class="noRecordsLabel"><i>{!$Label.c.CRAS_ICA_ASS_NoRecordsFound + ' '}.</i></p>
+            <aura:set attribute="else">
+                <div class="table-container">
+                    <lightning:spinner aura:id="spinner" variant="brand" size="small" />
+                    <table class="slds-table slds-table--bordered slds-table--cell-buffer">
+                        <thead>
+                            <tr class="slds-text-title--caps">
+                                <th scope="col"></th>
+                                <aura:iteration items="{!v.ResultList[0]}" var="i">
+                                    <aura:if isTrue="{!and(i.fieldType != 'ID', i.apiName != 'CurrencyIsoCode')}">
+                                        <th scope="col">
+                                            <div class="slds-truncate slds-truncate--wrap" title="{!i.label}">{!i.label}</div>
+                                        </th>
+                                    </aura:if>
+                                </aura:iteration>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <aura:iteration items="{!v.ResultList}" var="row" indexVar="index">
+                                <tr>
+                                    <td scope="row">{!(v.currentPage-1)*v.recordsPerPage + index + 1}</td>
+                                    <aura:iteration items="{!row}" var="i">
+                                        <aura:if isTrue="{!and(i.fieldType != 'ID', i.apiName != 'CurrencyIsoCode')}">
+                                            <td scope="row" data-label="{!i.label}">
+                                                <aura:if isTrue="{!i.apiName == 'Name'}">
+                                                    <div class="slds-truncate"><aura:unescapedHtml value="{!i.value}" /></div>
+                                                    <aura:set attribute="else">
+                                                        <aura:if isTrue="{!i.fieldType == 'CURRENCY'}">
+                                                            <div class="slds-truncate slds-text--right">{!i.value}</div>
+                                                            <aura:set attribute="else">
+                                                                <div class="slds-truncate"><aura:unescapedHtml value="{!i.value}" /></div>
+                                                            </aura:set>                                                        	
+                                                        </aura:if>
+                                                    </aura:set>
+                                                </aura:if>
+                                        	</td>  
+                                        </aura:if>
+                                    </aura:iteration>
+                                </tr>
+                            </aura:iteration>
+                        </tbody>
+                    </table>
+                </div>
+            </aura:set>
+        </aura:if>
+        <!-- Create dynamic button -->
+        <div class="nav">{!v.body}</div>
+    </div>
+	
+</aura:component>

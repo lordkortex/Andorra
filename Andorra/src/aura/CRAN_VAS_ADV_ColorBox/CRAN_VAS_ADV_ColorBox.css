@@ -1,0 +1,19 @@
+.THIS .color-box{
+    margin:0 0.15rem;
+}
+.THIS .color-box div{
+    font-weight:bold;
+}
+.THIS .hidden-refresh {
+    display: none !important;
+}
+
+.THIS .field-label {
+    background-color: rgba(255,255,255, 0.9);
+    border-radius: t(borderRadiusMedium);
+    display: inline-block; 
+}
+
+.THIS {
+	position: relative;
+}

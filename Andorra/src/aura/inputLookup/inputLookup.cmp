@@ -1,0 +1,37 @@
+<aura:component controller="InputLookupAuraController">
+    <ltng:require scripts="/resource/jQuery3,
+                /resource/typeahead"
+                  afterScriptsLoaded="{!c.initTypeahead}" />
+    
+    <aura:registerEvent name="inputLookupEvent" type="c:InputLookupEvt" />
+	<aura:handler name="inputLookupEvent" action="{!c.handleInputLookupEvt}"/>
+	<aura:attribute name="fieldRequired" type="Boolean" default="false" description="" />
+    <aura:attribute name="placeHolder" type="String" default="{!$Label.c.CRAN_VAS_MAQ_LookupText}" />
+    <aura:attribute name="recordTypes" type="String" description="Sobject List Record Types divided by ," required="false"/> 
+    <aura:attribute name="type" type="String" description="Sobject Type" required="true"/>
+    <aura:attribute name="value" type="String" description="Source / Destination value" />
+    <aura:attribute name="className" type="String" description="class name of the input object" />
+    <!-- PRIVATE ATTRS -->
+    <aura:attribute name="nameValue" type="String" description="Name of the current lookup 'name' field: loaded by controller" 
+                    access="PUBLIC"/>
+    <aura:attribute name="isLoading" type="Boolean" description="Loading component" default="true"
+                    access="PRIVATE"/> 
+   
+    <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right">
+        <input id="{!globalId+'_typeahead'}"
+               type="search" 
+               class="slds-input slds-combobox__input"
+               readonly="{!v.isLoading}"                 
+               aria-autocomplete="list" 
+               aria-controls="listbox-unique-id" 
+               autocomplete="off" 
+               role="textbox" 
+               required="{!v.fieldRequired}"
+               placeholder="{!v.placeHolder}"/>
+        <span class="slds-icon_container slds-icon-utility-search slds-input__icon slds-input__icon_right" title="Description of icon when needed">
+            <lightning:icon iconName="utility:search" size="x-small" alternativeText="Indicates approval"/>
+            <span class="slds-assistive-text">Search</span>
+        </span>
+    </div>
+	<span class=""></span>
+</aura:component>

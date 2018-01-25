@@ -1,0 +1,51 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:lightningQuickActionWithoutHeader,force:hasRecordId" access="global" controller="CRAN_VEC_ADV_ViewForm_AUC">
+    <aura:attribute name="recordId" type="String" /><!-- Account.Id -->
+    <aura:attribute name="showForms" type="Boolean" default="true"/>
+    <aura:attribute name="info" type="Boolean" default="true"/>
+    <aura:attribute name="stepDisable" type="String" default="disable"/>
+    <aura:attribute name="idFormSelect" type="Integer"/>
+    <aura:attribute name="error" type="Boolean" default="false"/>
+    <aura:attribute name="errorMessage" type="String" default=""/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <h2 class="slds-text-heading--medium slds-m-bottom--medium slds-m-top--large slds-p-left--x-large slds-align--absolute-center">{!$Label.c.CRAN_VEC_ADV_CF_VIEW}</h2>
+
+    <!-- ERROR MESSAGE-->
+    <div style="min-height:46px;">
+        <aura:if isTrue="{!v.error}">
+             <ui:message title="" severity="error" closable="false">
+                <ui:outputText aura:id="messageErrorServices"/> {!v.errorMessage}
+             </ui:message>
+        </aura:if>
+    </div>        
+    <!-- END ERROR MESSAGE-->
+
+    <!-- INFO -->
+    <aura:if isTrue="{!v.info}">
+        <div style="min-height:46px;">
+                <div role="status" class="slds-spinner slds-spinner--medium slds-spinner--brand">
+                    <span class="slds-assistive-text">Loading</span>
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+                </div>
+            <ui:message title="Info" severity="info" closable="false">
+               {!$Label.c.CRAN_VEC_ADV_IP_MSG_Processing}
+            </ui:message>
+         </div>
+    </aura:if>
+    <!-- END INFO -->
+
+    <aura:if isTrue="{!v.showForms}">
+        <ui:inputSelect label="{!$Label.c.CRAN_VEC_ADV_CF_LBL_SELECT_FORM}" class="dynamic" aura:id="InputViewSelectForm" change="{!c.onSelectChangeFormView}"/>
+        <div class="slds-grid slds-grid--vertical-align-center slds-grid--align-center" style="margin-top: 8px">
+            <aura:if isTrue="{!v.stepDisable=='disable'}">
+                <ui:button disabled="true" label="{!$Label.c.CRAN_VEC_ADV_CF_BTN_NEXT}" press="{!c.cancel}"/>
+            </aura:if>
+            <aura:if isTrue="{!v.stepDisable=='notDisable'}">
+                <ui:button label="{!$Label.c.CRAN_VEC_ADV_CF_BTN_NEXT}" press="{!c.nextView}"/>
+            </aura:if>
+            <ui:button label="{!$Label.c.CRAN_VEC_ADV_CF_BTN_CANCEL}" press="{!c.cancel}"/>
+        </div>
+    </aura:if>
+</aura:component>

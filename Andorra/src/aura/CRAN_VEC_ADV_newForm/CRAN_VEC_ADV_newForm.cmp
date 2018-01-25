@@ -1,0 +1,90 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:lightningQuickActionWithoutHeader,force:hasRecordId" access="global" controller="CRAN_VEC_ADV_newForm_AUC">
+    <aura:attribute name="recordId" type="String" /><!-- Account.Id -->
+    <aura:attribute name="selectedForm" type="String" />
+    <aura:attribute name="selectedBP" type="String" />
+    <aura:attribute name="step" type="Integer" default="1"/>
+    <aura:attribute name="showError" type="Boolean" default="false"/>
+    <aura:attribute name="showErrorBP" type="Boolean" default="false"/>
+    <aura:attribute name="showNext" type="Boolean" default="true"/>
+    <aura:attribute name="showErrorServices" type="Boolean" default="false"/>
+    <aura:attribute name="messageErrorServicesMsg" type="String" default=""/>
+    <aura:attribute name="info" type="boolean" required="false" default="false"/>
+    <aura:attribute name="myListBp" type="FinServ__FinancialAccountRole__c[]" default="[]"/>
+    <aura:attribute name="myListBpConver" type="FinServ__FinancialAccountRole__c[]" default="[]"/>
+    
+    <aura:attribute name="attContact" type="Contact" default="{'sobjectType':'Contact', 'FirstName':''}"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <div class="slds-grid slds-grid--vertical-align-center slds-grid--align-center">
+    <h2 class="slds-text-heading--medium slds-m-bottom--medium slds-m-top--large slds-p-left--x-large slds-text-align--center">
+        {!$Label.c.CRAN_VEC_ADV_CF_TITLE_NEWFORM}</h2>
+     </div>
+
+
+
+    <!--<div style="min-height:46px;">-->
+    <!-- ERROR MESSAGE-->
+    <aura:if isTrue="{!v.showErrorServices}">
+         <ui:message title="" severity="error" closable="false">
+            <ui:outputText aura:id="messageErrorServices" /> {!v.messageErrorServicesMsg}
+         </ui:message>
+    </aura:if>
+    <!-- END ERROR MESSAGE-->
+    <!--</div>-->
+
+    <!-- INFO -->
+    <aura:if isTrue="{!v.info}">
+        <div style="min-height:46px;">
+                <div role="status" class="slds-spinner slds-spinner--medium slds-spinner--brand">
+                    <span class="slds-assistive-text">Loading</span>
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+                </div>
+            <ui:message title="Info" severity="info" closable="false">
+               {!$Label.c.CRAN_VEC_ADV_IP_MSG_Processing}
+            </ui:message>
+         </div>
+    </aura:if>
+    <!-- END INFO -->
+    
+        <aura:if isTrue="{!v.showErrorBP==true}">
+            <div class="slds-grid slds-grid--vertical-align-center slds-grid--align-center" style="margin-top: 8px">
+                    <span class="slds-form-element__label">{!$Label.c.CRAN_VEC_ADV_CF_MSG_NO_BP}</span>
+            </div>
+            <div class="slds-grid slds-grid--vertical-align-center slds-grid--align-center" style="margin-top: 8px">
+                    <ui:button label="{!$Label.c.CRAN_VEC_ADV_CF_BTN_CANCEL}" press="{!c.cancel}"/>
+            </div>
+
+            <aura:set attribute="else">
+
+            <ui:inputSelect label="{!$Label.c.CRAN_VEC_ADV_CF_LBL_SELECT_FORM}" class="dynamic" aura:id="InputSelectDynamic" value="{!v.selectedForm}"/>
+
+            <!-- Radiobutton -->
+            <div class="slds-grid slds-grid--vertical-align-center slds-grid--align-center" style="margin-top: 19px;margin-left:9px;    font-size: 14px;">
+                <ui:inputRadio aura:id="r0" name="clone" label="{!$Label.c.CRAN_VEC_ADV_CF_Clone}" change="{!c.changeListToClone}" value="true"/>
+                <ui:inputRadio aura:id="r1" name="convert" label="{!$Label.c.CRAN_VEC_ADV_CF_Convert}" change="{!c.changeListToConvert}"/>
+            </div>
+            <!-- Fin Radiobutton -->
+
+            <ui:inputSelect label="{!$Label.c.CRAN_VEC_ADV_CF_LBL_SELECT_BP}" class="dynamic" aura:id="InputSelectBP" value="{!v.selectedBP}"/>
+            
+            <aura:if isTrue="{!v.showError}">
+                <div style="padding-left:220px;">
+                    <ui:outputText aura:id="messageError" value=""/>
+                </div>
+            </aura:if>
+
+            <div class="slds-grid slds-grid--vertical-align-center slds-grid--align-center" style="margin-top: 19px">
+                
+                <aura:if isTrue="{!v.showNext}">
+                    <ui:button label="{!$Label.c.CRAN_VEC_ADV_CF_BTN_NEXT}" press="{!c.callAvaloq}"/>
+                    <aura:set attribute="else">
+                        <ui:button disabled="true" label="{!$Label.c.CRAN_VEC_ADV_CF_BTN_NEXT}" press="{!c.callAvaloq}"/>
+                    </aura:set>
+                </aura:if>
+                <ui:button label="{!$Label.c.CRAN_VEC_ADV_CF_BTN_CANCEL}" press="{!c.cancel}"/>
+            </div>
+            </aura:set>
+        </aura:if>
+</aura:component>

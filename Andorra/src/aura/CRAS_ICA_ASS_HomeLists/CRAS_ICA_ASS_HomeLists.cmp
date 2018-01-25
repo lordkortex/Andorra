@@ -1,0 +1,115 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" 
+                access="global" 
+                controller="CRAS_ICA_ASS_FAController_AUC" >
+	<aura:attribute name="listFA" type="sObject[]"/>
+    <aura:attribute name="gCS" type="CRAS_ICA_ASS_InsuranceGlobal_CS__c"/>
+    <aura:attribute name="RelatedList" type="string" default="Policies with unpaid invoices" />
+    <aura:attribute name="ColumnNames" type="CRAS_ICA_ASS_SFField_OBJ[]" />
+    <aura:attribute name="RecordsCount" type="Integer" default="-1" />
+    <aura:attribute name="limitList" type="string" default="3" />
+    <aura:attribute name="IsUnpaidInvoicesList" type="Boolean" default="false"/>
+    <aura:attribute name="IsPendingList" type="Boolean" default="false"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />    
+   
+    <aura:if isTrue="{!v.IsUnpaidInvoicesList}">
+    <div class="listContainer">
+        <lightning:spinner aura:id="listSpinner" variant="brand" size="medium" />
+        <h1 class="listTitle">{!$Label.c.CRAS_ICA_ASS_HL_UnpaidPolicies_Title} ({!v.RecordsCount})</h1>
+        <aura:if isTrue="{!v.RecordsCount == 0}">
+            <p>{!$Label.c.CRAS_ICA_ASS_NoRecordsFound + ' '}<i>{!$Label.c.CRAS_ICA_ASS_HL_UnpaidPolicies_Title}</i>.</p>
+        </aura:if>
+        <br/>
+        <aura:iteration items="{!v.listFA}" var="item">
+            <table class="InfoTable">
+              <tbody>
+                    <tr>
+                      <td scope="row" data-label="Insurance Policy" colspan="2">
+                          <div class="slds-truncate"><a href="{! '#/sObject/' + item.FinServ__FinancialAccount__c + '/view'}">{!item.FinServ__FinancialAccount__r.Name}</a></div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td scope="row">
+                          <div class="slds-truncate slds-person" title="{!v.ColumnNames[1].Label}">{!v.ColumnNames[1].Label}</div>
+                      </td>
+                      <td scope="row">
+                          <div class="slds-truncate">{!item.FinServ__FinancialAccount__r.FinServ__FinancialAccountNumber__c}</div>
+                      </td>
+                    </tr> 
+                    <tr>
+                      <td scope="row">
+                          <div class="slds-truncate slds-person" title="{!v.ColumnNames[3].Label}">{!v.ColumnNames[3].Label}</div>
+                      </td>
+                      <td scope="row">
+                          <div class="slds-truncate">{!item.FinServ__FinancialAccount__r.CRAS_ICA_ASS_N_NumUnpaidInvoices__c}</div>
+                      </td>
+                    </tr> 
+                  	<tr>
+                      <td scope="row">
+                          <div class="slds-truncate slds-person" title="{!v.ColumnNames[4].Label}">{!v.ColumnNames[4].Label}</div>
+                      </td>
+                      <td scope="row">
+                          <div class="slds-truncate"><ui:outputCurrency value="{!item.FinServ__FinancialAccount__r.CRAS_ICA_ASS_C_DebtAmount__c}" currencyCode="{!item.CurrencyIsoCode}" format="0.00" /></div>
+                      </td>
+                    </tr>
+                  
+              </tbody>
+            </table>
+        </aura:iteration>
+        	<div class="footer-link">
+                <a href="{! '/one/one.app?obj=FinServ__FinancialAccount__c&amp;lv=Pólizas%20con%20recibos%20devueltos#/n/CRAS_ICA_ASS_RelatedLists_APP'}">{!$Label.c.CRAS_ICA_ASS_ViewAll_Label}</a>
+            </div>
+            <br/>
+        </div>
+    </aura:if>
+    <aura:if isTrue="{!v.IsPendingList}">
+        <div class="listContainer">
+        <lightning:spinner aura:id="listSpinner" variant="brand" size="medium" />
+        <h1 class="listTitle">{!$Label.c.CRAS_ICA_ASS_HL_PendingPolicies_Title} ({!v.RecordsCount})</h1>
+        <aura:if isTrue="{!v.RecordsCount == 0}">
+            <p>{!$Label.c.CRAS_ICA_ASS_NoRecordsFound + ' '} <i>{!$Label.c.CRAS_ICA_ASS_HL_PendingPolicies_Title}</i>.</p>
+        </aura:if>
+        <br/>
+        <aura:iteration items="{!v.listFA}" var="item">
+            <table class="InfoTable">
+              <tbody>
+                    <tr>
+                      <td scope="row" data-label="Insurance Policy" colspan="2">
+                          <div class="slds-truncate"><a href="{! '#/sObject/' + item.Id + '/view'}">{!item.Name}</a></div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td scope="row">
+                          <div class="slds-truncate slds-person" title="{!v.ColumnNames[1].Label}">{!v.ColumnNames[1].Label}</div>
+                      </td>
+                      <td scope="row">
+                          <div class="slds-truncate">{!item.FinServ__FinancialAccountNumber__c}</div>
+                      </td>
+                    </tr> 
+                    <tr>
+                      <td scope="row">
+                          <div class="slds-truncate slds-person" title="{!v.ColumnNames[3].Label}">{!v.ColumnNames[3].Label}</div>
+                      </td>
+                      <td scope="row">
+                          <div class="slds-truncate">{!item.OpenDate}</div>
+                      </td>
+                    </tr> 
+                  	<tr>
+                      <td scope="row">
+                          <div class="slds-truncate slds-person" title="{!v.ColumnNames[4].Label}">{!v.ColumnNames[4].Label}</div>
+                      </td>
+                      <td scope="row">
+                          <div class="slds-truncate">{!item.Status}</div>
+                      </td>
+                    </tr>
+                  
+              </tbody>
+            </table>
+        </aura:iteration>
+        	<div class="footer-link">
+                <a href="{! '/one/one.app?obj=FinServ__FinancialAccount__c&amp;lv=Propuestas%20pendientes#/n/CRAS_ICA_ASS_RelatedLists_APP'}">{!$Label.c.CRAS_ICA_ASS_ViewAll_Label}</a>
+            </div>
+            <br/>
+        </div>
+    </aura:if>
+</aura:component>

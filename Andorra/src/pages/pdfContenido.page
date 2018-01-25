@@ -1,0 +1,48 @@
+<apex:page controller="CRAN_VAS_KER_pdfContenido_ctr" docType="html-5.0" 
+           sidebar="false" showHeader="false" standardStylesheets="false" showChat="false" cache="false">
+    <apex:includeScript value="{!$Resource.jQuery3}"/>
+    <style>
+        body { margin: 0; }
+    </style>
+    <script type="text/javascript">
+    
+        var $jPdf 		= jQuery.noConflict(); 
+    	var pdfData 	= base64ToUint8Array("{!bytesPdf}");      
+        
+        function loadPdfDocument() {
+            
+            var pdfData = base64ToUint8Array("{!bytesPdf}");
+            var pdfjsframe = document.getElementById('pdfViewer');
+            pdfjsframe.contentWindow.PDFViewerApplication.open(pdfData);
+            
+        }    
+    
+        function base64ToUint8Array(base64) {
+            var raw = atob(base64);
+            var uint8Array = new Uint8Array(raw.length);
+            for (var i = 0; i < raw.length; i++) {
+                uint8Array[i] = raw.charCodeAt(i);
+            }
+            return uint8Array;
+        }        
+        
+        $jPdf(function() {
+            
+            var ifr = $jPdf("<iframe/>", {
+                id						: "pdfViewer",
+                src						: "{!URLFOR($Resource.PdfJs, '/web/viewer.html')}",
+                style					: "position: absolute; height: 100%; border: none; width:100%",
+                allowfullscreen			: "",
+                webkitallowfullscreen	: ""
+            }).on("load", function(event) { 
+                
+                loadPdfDocument();
+            
+            });
+            
+            $jPdf("body").append(ifr);
+            
+        });
+        
+    </script>
+</apex:page>

@@ -1,0 +1,242 @@
+<aura:component controller="CRAN_VAS_MAQ_ReassignMembers_AUC" implements="force:appHostable" access="global" >
+	<ltng:require styles="/resource/jQueryDatatable/datatables.min.css,
+                          /resource/jQueryDatatable/custom.css"
+					scripts="/resource/jQuery3,
+			                           /resource/jQueryDatatable/datatables.min.js"
+					afterScriptsLoaded="{!c.initReassignMembers}" />
+
+	<aura:attribute name="bp" 				type="Id"   	/>
+	<aura:attribute name="client" 			type="Id" 		/>
+	<aura:attribute name="user" 			type="Id"  		/>
+	<aura:attribute name="campaign" 		type="Id" 		/>
+
+	<aura:attribute name="showUsers" 		type="Boolean"	description="Show users select" default="false" 					/>
+    <aura:attribute name="showUserFilter" 	type="Boolean"	description="Show users filter" default="true" 					/>
+    
+	<aura:attribute name="strFieldApiNames" type="String" 	default="Name,ContactId,CampaignId,CRAN_VAS_MAQ_L_GestorMiembroCampana__c,CRAN_VAS_MAQ_L_GestorAnterior__c"	/>
+
+	<div>
+		<lightning:card iconName="standard:assigned_resource">
+			<aura:set attribute="title">
+				{!$Label.c.CRAN_VAS_MAQ_RM_FilterTitle} <br />
+						<div class="slds-grid">
+							<div class="slds-col slds-align-bottom">
+								<p class="slds-text-body--small">{!$Label.c.CRAN_VAS_MAQ_RM_TitleInfo}</p>
+							</div>
+						</div>
+			</aura:set>
+			<aura:set attribute="actions">
+				<lightning:button variant="neutral"
+									label="{!$Label.c.CRAN_VAS_MAQ_RG_FilterButton}"
+									onclick="{! c.filterMembersController }" />						
+			</aura:set>
+			<div class="slds-grid slds-wrap">
+				<div
+					class="slds-p-horizontal_small slds-size_1-of-1 slds-medium-size_1-of-1 slds-large-size_1-of-1 slds-p-around_xx-small">
+					<div class="slds-grid slds-wrap slds-grid_pull-padded">
+						<div
+							class="slds-p-horizontal_small slds-size_1-of-2 slds-medium-size_1-of-4 slds-large-size_1-of-4">
+							<span class="required">*</span>
+							<label class="slds-form-element__label" for="combobox-unique-id">{!$Label.c.CRAN_VAS_MAQ_RG_Campaign}</label>
+							<c:inputLookup type="Campaign"
+								recordTypes="CRAN_VAS_MAQ_SistComRecordType,CRAN_VAS_MAQ_MarquetingRecordType"
+								value="{!v.campaign}" className="form-control" 
+								fieldRequired="true"/>
+						</div>
+						<aura:if isTrue="{!v.showUserFilter}">
+							<div
+								class="slds-p-horizontal_small slds-size_1-of-2 slds-medium-size_1-of-4 slds-large-size_1-of-4">
+								<span class="required">*</span> <label
+									class="slds-form-element__label" for="combobox-unique-id">{!$Label.c.CRAN_VAS_MAQ_RG_Advisor}</label>
+								<c:inputLookup type="User" recordTypes="" value="{!v.user}"
+									className="form-control" fieldRequired="true" />
+							</div>
+						</aura:if>
+						<div
+							class="slds-p-horizontal_small slds-size_1-of-2 slds-medium-size_1-of-4 slds-large-size_1-of-4">
+							<label class="slds-form-element__label" for="combobox-unique-id">{!$Label.c.CRAN_VAS_MAQ_RG_BP}</label>
+							<c:inputLookup type="Account"
+								recordTypes="CRAN_VEC_ADV_Business_Partner" value="{!v.bp}"
+								className="form-control" />
+						</div>
+						<div
+							class="slds-p-horizontal_small slds-size_1-of-2 slds-medium-size_1-of-4 slds-large-size_1-of-4">
+							<label class="slds-form-element__label" for="combobox-unique-id">{!$Label.c.CRAN_VAS_MAQ_RG_Client}</label>
+							<c:inputLookup type="Account"
+								recordTypes="CRAN_VEC_ADV_Individual" value="{!v.client}"
+								className="form-control" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</lightning:card>
+		<div aura:id="mainContainer" class="slds-hide">
+			<div class="datatables">
+				<lightning:card iconName="standard:campaign_members" class="slds-m-top--medium">
+					<aura:set attribute="title">
+						{!$Label.c.CRAN_VAS_MAQ_RM_MembersAvailable} <br />
+						<div class="slds-grid">
+							<div class="slds-col slds-align-bottom">
+								<p class="slds-text-body--small">{!$Label.c.CRAN_VAS_MAQ_RM_MembersAvailableInfo}</p>
+							</div>
+						</div>
+					</aura:set>
+					<aura:set attribute="actions">
+							<div class="slds-m-left--medium slds-m-bottom--medium slds-grid">
+								<lightning:button label="{!$Label.c.CRAN_VAS_KER_AddSelected}"  class="slds-col slds-m-right--medium" onclick="{!c.addSelected}" />
+								<div class="slds-form-element slds-lookup slds-col" data-select="single">
+									<div class="slds-form-element__control">
+										<div class="slds-input-has-icon slds-input-has-icon--right">
+											<lightning:icon iconName="utility:search" size="xx-small"
+												class="slds-input__icon" />
+											<input type="search" data-table-sufix="_datatable"
+												class="slds-lookup__search-input slds-input datatables-search"
+												aria-expanded="false" aria-autocomplete="list"
+												placeholder="{!$Label.c.CRAN_VAS_KER_Search}" />
+										</div>
+									</div>
+								</div>
+							</div>
+					</aura:set>
+					<div class="slds-clearfix" aura:id="tableContainer">
+						<div id="table-wrapper" class="table-wrapper">
+							<table
+								class="slds-table slds-table--bordered slds-table--cell-buffer table-responsive"
+								id="{!globalId + '_datatable'}" width="100%">
+								<!-- The body of the table is rendered via JavaScript after filters change -->
+								<tbody></tbody>
+							</table>
+						</div>
+						<div class="no-records-to-display" style="display: none">
+							{!$Label.c.CRAN_VAS_KER_NoRecordsToDisplay}</div>
+					</div>
+				</lightning:card>
+				<lightning:card iconName="standard:campaign_members">
+					<aura:set attribute="title">
+						{!$Label.c.CRAN_VAS_MAQ_RM_MembersSelected} <br />
+						<div class="slds-grid">
+							<div class="slds-col slds-align-bottom">
+								<p class="slds-text-body--small">{!$Label.c.CRAN_VAS_MAQ_RM_MembersSelectedInfo}</p>
+							</div>
+						</div>
+					</aura:set>
+					<aura:set attribute="actions">
+						<div class="slds-m-left--medium slds-m-bottom--medium slds-grid">
+							<lightning:button label="{!$Label.c.CRAN_VAS_KER_RemoveSelected}"  class="slds-col slds-m-right--medium" onclick="{!c.removeSelected}" />
+							<div class="slds-form-element slds-lookup" data-select="single">
+								<div class="slds-form-element__control">
+									<div class="slds-input-has-icon slds-input-has-icon--right">
+										<lightning:icon iconName="utility:search" size="xx-small"
+											class="slds-input__icon" />
+										<input type="search"
+											data-table-sufix="_datatableSelected"
+											class="slds-lookup__search-input slds-input datatables-search"
+											aria-expanded="false" aria-autocomplete="list"
+											placeholder="{!$Label.c.CRAN_VAS_KER_Search}" />
+									</div>
+								</div>
+							</div>
+						</div>
+					</aura:set>
+					<div class="slds-clearfix" aura:id="tableContainerSelected">
+						<table
+							class="slds-table slds-table--bordered slds-table--cell-buffer table-responsive"
+							id="{!globalId + '_datatableSelected'}" width="100%">
+							<!-- The body of the table is rendered via JavaScript after filters change -->
+							<tbody></tbody>
+						</table>
+						<div class="no-records-to-display" style="display: none">
+							{!$Label.c.CRAN_VAS_KER_NoRecordsToDisplay}</div>
+					</div>
+				</lightning:card>
+			</div>
+		</div>
+		<div aura:id="userSelection" class="slds-hide slds-m-top--medium slds-m-bottom--medium office-selection-container slds-p-bottom_medium">
+			<div class="slds-card__header slds-grid">
+				<header class="slds-media slds-media--center slds-has-flexi-truncate">
+					<div class="slds-media__figure">
+						<lightning:icon iconName="action:filter" 
+										size="small"
+										alternativeText="Indicates approval" />
+					</div>
+					<div class="slds-media__body">
+						<span class="slds-text-heading--medium">{!$Label.c.CRAN_VAS_MAQ_AG_SelectOffice}</span>
+					</div>
+				</header>
+			</div>
+			<div class="slds-grid slds-m-horizontal--large">
+				<div class="slds-size--3-of-5 slds-align-bottom slds-m-horizontal--large slds-inline_icon_text">
+					<p class="slds-text-body--small">
+						<aura:unescapedHtml value="{!$Label.c.CRAN_VAS_MAQ_RM_SelectOfficeInfo}" />
+					</p>
+				</div>
+			</div>
+			<br />
+			<div class="slds-grid slds-grid--align-center">
+				<div id="selectOffice" class="slds-m-around--small slds-p-horizontal--small slds-size--3-of-4">
+					<ui:inputSelect aura:id="offices" change="{!c.getUsersByOffice}" />
+				</div>
+			</div>
+			<aura:if isTrue="{!v.showUsers}">
+				<div class="slds-card__header slds-grid">
+					<header class="slds-media slds-media--center slds-has-flexi-truncate">
+						<div class="slds-media__figure">
+							<lightning:icon iconName="action:user" 
+											size="small"
+											alternativeText="Indicates approval" />
+						</div>
+						<div class="slds-media__body">
+							<span class="slds-text-heading--medium">{!$Label.c.CRAN_VAS_MAQ_AG_SelectAdvisor}</span>
+						</div>
+					</header>
+				</div>
+				<div class="slds-grid slds-m-horizontal--large">
+					<div class="slds-size--3-of-5 slds-align-bottom slds-m-horizontal--large slds-inline_icon_text">
+						<p class="slds-text-body--small">
+							<aura:unescapedHtml value="{!$Label.c.CRAN_VAS_MAQ_RM_SelectAdvisorInfo}" />
+						</p>
+					</div>
+				</div>
+				<br />
+				<div class="slds-grid slds-grid--align-center">
+					<div id="selectUser" class="slds-m-around--small slds-p-horizontal--small slds-size--3-of-4">
+						<ui:inputSelect aura:id="users" />
+					</div>
+				</div>
+				<div class="slds-grid slds-grid--align-center slds-m-vertical--large">
+					<lightning:button variant="brand"
+										label="{!$Label.c.CRAN_VAS_MAQ_AG_ConfirmButton}"
+										onclick="{!c.confirmReassignMembersToAdvisor}" />
+				</div>
+			</aura:if>
+		</div>	
+
+		<!-- Confirm Dialog -->
+		<div role="dialog" tabindex="-1" aura:id="confirmDialog" class="slds-modal ">
+			<div class="slds-modal__container">
+				<div class="slds-modal__header">
+					<h2 class="slds-text-heading--medium">{!$Label.c.CRAN_VAS_MAQ_RM_ConfirmAssignTitle}</h2>
+				</div>
+				<div class="slds-modal__content slds-p-around--medium">
+					<center>
+						<h2>{!$Label.c.CRAN_VAS_MAQ_RM_ConfirmAssign}</h2>
+					</center>
+				</div>
+				<div class="slds-modal__footer">
+					<lightning:button label="{!$Label.FinServ.Button_Label_Cancel}"
+										onclick="{!c.closeModal}" />
+					<lightning:button variant="brand"
+										label="{!$Label.c.CRAN_VAS_MAQ_AG_ConfirmButton}"
+										onclick="{!c.reassignMembersToAdvisor}" />
+				</div>
+			</div>
+		</div>
+		<div class="slds-backdrop " aura:id="confirmDialog-Back"></div>
+
+		<lightning:spinner variant="brand" 
+							size="large"
+							aura:id="assignMembersSpinner"
+							alternativeText="{!$Label.c.CRAN_VAS_KER_CF_LBL_LoadingRecords}"
+							class="slds-hide reassign-campaign-member-spinner" />
+	</div>
+</aura:component>

@@ -1,0 +1,8 @@
+<design:component label="Color Box">
+    <design:attribute name="fieldNames" label="Field Names" description="List of names of the fields you want to show. Example: Name,Id" />
+    <design:attribute name="defaultColor" label="Default Color" description="Background default color of the box of non checkbox fields" />
+    <design:attribute name="trueColor" label="True Color" description="Background color of the box for true checkbox values" />
+    <design:attribute name="falseColor" label="False Color" description="Background color of the box for false checkbox values" />
+    <design:attribute name="negativeColor" label="Negative Color" description="Background color of the box for negative number checkbox values" />    
+    <design:attribute name="withMargin" label="Margin" datasource="true,false" default="false" description="Indicate if you want left and right margin setting this value as true" />    
+</design:component>

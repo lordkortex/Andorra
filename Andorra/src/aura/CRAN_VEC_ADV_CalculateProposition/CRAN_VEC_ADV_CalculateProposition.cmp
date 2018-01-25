@@ -1,0 +1,47 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:lightningQuickActionWithoutHeader,force:hasRecordId" access="global" controller="CRAN_VEC_ADV_Investment_Proposal_AUC">
+
+	<aura:attribute name="recordId" type="String" /><!--QuoteId -->
+	<aura:attribute name="error" type="boolean" required="false" default="false"/>
+    <aura:attribute name="info" type="boolean" required="false" default="false"/>
+	<aura:attribute name="errorMessage" type="String" required="false" default=""/>
+    <aura:attribute name="showButtons" type="boolean" required="false" default=""/>
+	
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler event="aura:systemError" action="{!c.handleError}"/>
+    
+    <!-- ERRORS -->
+    <aura:if isTrue="{!v.error}">
+        <div style="min-height:46px;">
+         <ui:message title="Error" severity="error" closable="false">                
+                {!v.errorMessage}
+         </ui:message>
+         </div>
+    </aura:if>
+    
+    <!-- END ERRORS -->   
+
+    <!-- INFO -->
+    <aura:if isTrue="{!v.info}">
+        <div style="min-height:46px;">
+            <div role="status" class="slds-spinner slds-spinner--medium slds-spinner--brand">
+                <span class="slds-assistive-text">Loading</span>
+            <div class="slds-spinner__dot-a"></div>
+            <div class="slds-spinner__dot-b"></div>
+            </div>
+         <ui:message title="Info" severity="info" closable="false">                
+               {!$Label.c.CRAN_VEC_ADV_IP_MSG_Processing}
+         </ui:message>
+         </div>
+    </aura:if>
+    <!-- END INFO -->
+
+
+    <aura:if isTrue="{!v.showButtons}">
+        <div class="slds-grid slds-grid--vertical-align-center slds-grid--align-center" style="margin-top: 8px">
+            <ui:button label="{!$Label.c.CRAN_VEC_ADV_CF_BTN_NEXT}" press="{!c.next}"/>
+            <ui:button label="{!$Label.c.CRAN_VEC_ADV_CF_BTN_CANCEL}" press="{!c.cancel}"/>
+        </div>
+    </aura:if>
+
+    
+</aura:component>

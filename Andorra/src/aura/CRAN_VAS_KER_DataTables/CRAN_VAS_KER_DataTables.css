@@ -1,0 +1,55 @@
+.THIS .slds-text-title--caps th {
+	font-weight: normal;
+}
+
+.THIS .slds-table th, .THIS .slds-table td {
+	position: static;
+}
+
+.THIS .slds-table {
+	table-layout: fixed;
+}
+
+.THIS .datatables {
+	position: relative;
+	background-color: t(colorBackground);
+	border-radius: t(borderRadiusMedium);
+	padding-bottom: .5rem;
+}
+
+.THIS .slds-page-header {
+	border-radius: 0;
+	border-top-left-radius: t(borderRadiusMedium);
+	border-top-right-radius: t(borderRadiusMedium);
+	border-bottom: 0;		
+}
+
+.THIS .dataTables_info {
+	margin-left: 1rem;
+}
+
+.THIS .dataTables_paginate {
+	margin: .5rem 1rem 0 0;
+}
+
+.THIS .slds-dropdown {
+    margin-left: -4rem;
+}
+
+.THIS .filter-container {
+    width: 40%;
+    margin-top: 25px;    
+}
+
+.THIS .owner-filter {
+    float: left;
+    margin-right: 10px;    
+}
+
+.THIS .no-records-to-display {
+    margin-left: 10px;
+}
+
+.THIS .view-all-label {
+    margin-right: 10px;
+}

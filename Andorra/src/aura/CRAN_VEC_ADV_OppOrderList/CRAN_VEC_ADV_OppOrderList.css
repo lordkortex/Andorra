@@ -1,0 +1,62 @@
+.THIS .header {
+	color: white;
+}
+
+.THIS .Icon svg {
+	fill: grey;
+}
+
+.THIS .Close svg {
+	fill: white;
+}
+
+.THIS .CheckNode svg {
+	fill: #B0BA1F;
+}
+
+.THIS .CloseNode svg {
+	fill: #F0F2CC;
+}
+
+.THIS .withoutScroller {
+    height: auto;
+    overflow-y: auto;
+}
+
+.THIS .withScroller {
+    height: 310px;
+    overflow-y: auto;
+}
+
+.THIS .mycheck {
+	background-color: #B0BA1F !important;
+}
+
+.THIS .mycustomButton {
+    color: #757414; 
+    border-color: #757414;
+}
+
+.THIS:not(.signature-modal) button:hover{
+	color: #005fb2;
+    border-color: #005fb2; 
+}
+
+.THIS .slds-button[disabled] {
+    color: #d8dde6;
+}
+
+.THIS .hasErrorStyle {
+    background-color: #fb8e65;
+}
+
+.THIS.signature-modal p { 
+    margin-bottom: 1rem; 
+}
+
+.THIS .buttonDownload{
+    border: 0px solid;
+    padding-left: 0px;
+    padding-right: 0px;
+    line-height: 0px;
+}

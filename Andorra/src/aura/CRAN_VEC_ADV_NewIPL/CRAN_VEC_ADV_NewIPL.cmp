@@ -1,0 +1,96 @@
+<aura:component implements="flexipage:availableForRecordHome,force:lightningQuickActionWithoutHeader,force:hasRecordId" access="global" controller="CRAN_VEC_ADV_NewIPL_AUC">
+
+    <aura:attribute name="recordId" type="String" default="" access="GLOBAL" />
+    <aura:attribute name="Id" type="String" default="" />
+    <aura:attribute name="objNew" type="CRAN_VEC_ADV_Investment_Proposition_Line__c" default="{'sobjectType':'CRAN_VEC_ADV_Investment_Proposition_Line__c', 'Id':null}" />
+    <aura:attribute name="extraMarket" type="Double" />
+    <aura:attribute name="extraQuantity" type="Double"/>
+    <aura:attribute name="extraPercentage" type="Double"/>
+    <aura:attribute name="error" type="boolean" required="false" default="false" />
+    <aura:attribute name="errorMessage" type="String" required="false" default="" />
+    <aura:attribute name="success" type="boolean" required="false" default="false" />
+    <aura:attribute name="successMessage" type="String" required="false" default="" />
+    <aura:attribute name="noIPLMessage" type="String" required="false" default="{!$Label.c.CRAN_VEC_ADV_IP_NoAssetSelected}" />
+    <aura:attribute name="noInput" type="String" required="false" default="{!$Label.c.CRAN_VEC_ADV_IP_3_Empty_Fields}" />
+
+    <aura:handler name="oSelectedAssetEvent" event="c:CRAN_VEC_ADV_selectedAssetEvent" action="{!c.handleComponentEvent}" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <force:outputfield aura:id="superhidden" value="{!v.objNew.CRAN_VEC_ADV_FieldChangedbyUser__c}" class="slds-hide"/>
+
+    <!-- ERRORS -->
+    <div>
+        <aura:if isTrue="{!v.error}">
+            <ui:message title="{!v.errorMessage}" severity="error" closable="false"/>
+        </aura:if>
+    </div>
+    <!-- END ERRORS -->
+    <!-- SUCCESS -->
+    <div>
+        <aura:if isTrue="{!v.success}">
+            <ui:message title="{!v.successMessage}" severity="confirm" closable="false"/>
+        </aura:if>
+    </div>
+    <!-- END SUCCESS -->
+
+    <!-- Display the new IPL form -->
+    <div class="slds" aura:id="outerdiv">
+        <legend id="legend" class="slds-text-heading--small
+                                                       slds-align--absolute-center">
+                    {!$Label.c.CRAN_VEC_ADV_IP_NewIPL}
+        </legend>
+        <div class="slds-grid slds-wrap">
+            <div class="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2">
+				<br/>
+                <c:CRAN_VEC_ADV_CustomLookup />
+                <br/>
+                <div class="slds-form-element">
+                    <label class="slds-form-element__label" for="quant"> {!$Label.c.CRAN_VEC_ADV_IP_Quantity} : </label>
+                    <div class="slds-form-element__control">
+                        <ui:inputNumber class="slds-input" aura:id="quant" value="{!v.extraQuantity}" />
+                    </div>
+                </div>
+                <br/>
+                <div class="slds-form-element">
+                    <label class="slds-form-element__label" for="fieldchangeBy">{!$Label.c.CRAN_VEC_ADV_IP_FieldChangeByUser} :  </label>
+                    <div class="slds-form-element__control">
+                        <force:inputField aura:id="fieldchangeBy" value="{!v.objNew.CRAN_VEC_ADV_FieldChangedbyUser__c}" />
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <div class="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-2">
+                <br/>
+                <div class="slds-form--stacked">
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label" for="marketValue">{!$Label.c.CRAN_VEC_ADV_IP_MarketValue} : </label>
+                        <div class="slds-form-element__control">
+                            <ui:inputNumber class="slds-input" aura:id="marketValue" value="{!v.extraMarket}" />
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label" for="percQuan">{!$Label.c.CRAN_VEC_ADV_IP_PercentageQuantity} : </label>
+                        <div class="slds-form-element__control">
+                            <ui:inputNumber class="slds-input" aura:id="percQuan" value="{!v.extraPercentage}" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-1">
+                <br/>
+                <div class="slds-form-element">
+                    <label class="slds-form-element__label" for="remark">{!$Label.c.CRAN_VEC_ADV_IP_Remark} : </label>
+                    <div class="slds-form-element__control">
+                        <ui:inputTextArea aura:id="remark" value="{!v.objNew.CRAN_VEC_ADV_T_Remark__c}" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br/>
+        <div class="slds-float--right">
+            <ui:button label="{!$Label.c.CRAN_VEC_ADV_CF_BTN_SAVE}" press="{!c.createIPL}" class="slds-button slds-button--brand" />&nbsp;&nbsp;
+            <ui:button label="{!$Label.c.CRAN_VEC_ADV_CF_BTN_CANCEL}" press="{!c.cancel}" class="slds-button slds-button--brand" />&nbsp;&nbsp;&nbsp;
+        </div>
+    </div>
+</aura:component>

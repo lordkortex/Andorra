@@ -1,0 +1,54 @@
+.THIS {
+}
+
+.THIS.listContainer{
+    background-color: rgb(244, 246, 249);
+    border-radius: 0.25rem;
+    background-clip: padding-box;
+    padding: 1.5rem 0.7rem;
+    overflow: hidden;
+    border: 1px solid rgb(216, 221, 230);
+}
+
+.THIS .table-container{
+    position:relative;
+}
+
+.THIS p.noRecordsLabel{
+    margin-left: 1.5em;
+}
+
+.THIS .listTitle{
+    font-size: 130%;
+    margin-left: 1.2em;
+}
+
+.THIS .slds-icon{
+    margin-right:10px!important;
+}
+
+.THIS .slds-person{
+    max-width:160px;
+    overflow:hidden;
+}
+
+.THIS .slds-badge{
+    display: inline-block;
+}
+.THIS .slds-bg--red {
+    background-color: #ffd3d3;
+    
+}
+
+.THIS .slds-name2x{
+    max-width:320px;
+    overflow:hidden;
+}
+.THIS .slds-table--bordered:not(.slds-no-row-hover) tbody tr:hover>td:not(.slds-is-selected), 
+.THIS .slds-table--bordered:not(.slds-no-row-hover) tbody tr:hover>th:not(.slds-is-selected){
+    box-shadow: none;
+}
+
+.THIS .slds-truncate--wrap{
+    white-space: normal;
+}

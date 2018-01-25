@@ -1,0 +1,5 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" 
+                access="global"
+                controller="CRAS_ICA_ASS_ACCController_AUC" >
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+</aura:component>

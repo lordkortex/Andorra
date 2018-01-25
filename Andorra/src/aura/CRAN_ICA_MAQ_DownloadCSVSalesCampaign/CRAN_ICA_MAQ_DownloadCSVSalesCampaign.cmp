@@ -1,0 +1,24 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" 
+                access="global"
+                controller="CRAN_ICA_MAQ_CampaignSales_AUC" >
+
+    <!--<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+	<aura:attribute name="isDistintoSistematicaComercial"  type="Boolean" default="false"  ></aura:attribute>
+    -->
+    
+    <lightning:spinner aura:id="mySpinner" class="slds-hide"  />
+	<!--<aura:if isTrue="{!v.isDistintoSistematicaComercial}">-->
+		<lightning:card class="responsiveCard" iconName="custom:custom101">
+			<aura:set attribute="title">
+          		<span title="{!$Label.c.CRAN_ICA_MAQ_TextCSVSalesCampaign}">{!$Label.c.CRAN_ICA_MAQ_TextCSVSalesCampaign}</span>
+     		</aura:set>
+			<aura:set attribute="actions">
+				<lightning:button variant="brand" aura:id="getFileButton"
+					label="{!$Label.c.CRAN_ICA_MAQ_DownloadConfirmButton}"
+					onclick="{!c.getFile}" />
+			</aura:set>
+			<p class="slds-m-horizontal--small slds-text-body--regular">{!$Label.c.CRAN_ICA_MAQ_DescriptionCSVSalesCampaign}</p>
+		 </lightning:card>
+     <!-- </aura:if>-->
+
+</aura:component>

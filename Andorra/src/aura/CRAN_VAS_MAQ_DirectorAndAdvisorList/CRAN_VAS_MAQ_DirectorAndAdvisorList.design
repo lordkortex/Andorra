@@ -1,0 +1,19 @@
+<design:component label="Director And Advisor related list">
+	<design:attribute name="cpTitle" 			label="Component title" />
+    <design:attribute name="iconName" 			label="Component icon" />
+    <design:attribute name="showActionButtons" 	label="Show Edit/Delete action buttons" />
+    <design:attribute name="vision" 			label="Vision over the records" datasource="Global,Office,User" default="User" description="The vision over the goals that must have the user. Possible values are: Global,Office,User" />
+    
+    <design:attribute name="directorProvider" 	label="Director's Provider Class" />
+    <design:attribute name="directorFieldNames" label="Fields to display in Director's List. Must be related to the provider" />
+    <design:attribute name="directorRowsLimit" 	label="Number of rows to display at once" min="1" max="20"  />
+    
+    <design:attribute name="advisorProvider" 	label="Advisor's Provider Class" />
+    <design:attribute name="advisorFieldNames" 	label="Fields to display in Advisor's List. Must be related to the provider" />
+    <design:attribute name="advisorRowsLimit" 	label="Number of rows to display at once" min="1" max="20" />
+
+	<design:attribute name="officeProvider" 	label="Office's Provider Class" />
+    <design:attribute name="officeFieldNames" 	label="Fields to display in Office's List. Must be related to the provider" />
+    <design:attribute name="officeRowsLimit" 	label="Number of rows to display at once" min="1" max="20" />    
+        
+</design:component>

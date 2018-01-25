@@ -1,0 +1,21 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" 
+                access="global" >
+    
+    <aura:attribute name="showButton" type="Boolean"
+		description="Show the button to redirect to the component in full page"
+		default="true" />
+	<aura:attribute name="showComponent" type="Boolean"
+		description="Show the component to reassign members" default="false" />
+	<lightning:card class="responsiveCard" iconName="custom:custom101">
+		<aura:set attribute="title">
+       		<span title="{!$Label.c.CRAN_ICA_MKT_RM_Title}">{!$Label.c.CRAN_ICA_MKT_RM_Title}</span>
+    	</aura:set>
+		<aura:set attribute="actions">
+			<lightning:button variant="brand"
+				label="{!$Label.c.CRAN_ICA_MAQ_RM_InfoButton}"
+				onclick="{!c.redirectToComponent}" />
+		</aura:set>
+		<p class="slds-m-horizontal--small slds-text-body--regular">{!$Label.c.CRAN_VAS_MAQ_RM_TitleInfo}</p>
+	</lightning:card>
+
+</aura:component>

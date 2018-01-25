@@ -1,0 +1,34 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,force:hasRecordId,force:hasSObjectName"  controller="CRAN_VAS_ADV_ColorBox_AUC" access="global" >
+    
+    <ltng:require scripts="{!$Resource.jQuery3}" afterScriptsLoaded="{!c.afterLoad}" /> 
+    <!-- Id of the Object the page hosting this component is showing -->
+    <aura:attribute name="recordId" type="Id" />
+    
+    <aura:attribute name="fieldNames" type="String" required="true" default="Name"/>    
+    <aura:attribute name="defaultColor" type="String" default="#ADB600" />
+    <aura:attribute name="trueColor" type="String" default="#99e6ff" />
+    <aura:attribute name="falseColor" type="String" default="#99e6ff" />
+    <aura:attribute name="negativeColor" type="String" default="#FA5858" />
+    <aura:attribute name="withMargin" type="String" default="false" />    
+    
+    <aura:attribute name="response" type="List" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+    <div>
+        <div class="{!v.withMargin == 'true' ? 'slds-grid column' : 'slds-grid'}">
+            <aura:iteration items="{!v.response}" var="res">          
+                
+                <div class="slds-col color-box">                
+                    <span class="field-label slds-p-around_xx-small slds-m-bottom_xx-small">{!res.key}</span>
+                    <div class="slds-box slds-box--small slds-theme--shade slds-text-align--center" style="{!join(';', 'background-color:' + res.boxColor )}">{!res.value}</div>
+                </div>            
+            </aura:iteration>
+        </div>
+        <ui:button label="Refresh Button" press="{!c.refreshComponent}" class="hidden-refresh" />
+        <lightning:spinner variant="brand" 
+                            size="small"
+                            aura:id="colorBoxSpinner"
+                            class="slds-hide color-box-spinner" />        
+    </div>
+</aura:component>

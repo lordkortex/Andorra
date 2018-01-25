@@ -1,0 +1,114 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:lightningQuickActionWithoutHeader,force:hasRecordId" access="global" controller="CRAN_VEC_ADV_RenovateForm_AUC">
+    <aura:attribute name="recordId" type="String" /><!-- Account.Id -->
+    <aura:attribute name="selectedBP" type="String" />
+    <aura:attribute name="descartar" type="Boolean" />
+    <aura:attribute name="step" type="Integer" default="1"/>
+    <aura:attribute name="stepDisable" type="String" default="disable"/>
+    <aura:attribute name="idBpAvaloq" type="Integer" />
+    <aura:attribute name="idFormSelect" type="Integer" />
+    <aura:attribute name="errorRecuperar" type="String" default="Generic Error"/>
+    <aura:attribute name="attContact" type="Contact" default="{'sobjectType':'Contact', 'FirstName':''}"/>
+    <aura:attribute name="idOrderHoldToDiscard" type="Integer" default="1"/>
+    <aura:attribute name="showDescartar" type="Boolean" default="true"/>
+    <aura:attribute name="disableListForms" type="Boolean" default="true"/>
+    <aura:attribute name="showErrorServices" type="Boolean" default="false"/>
+    <aura:attribute name="messageErrorServicesMsg" type="String" default=""/>
+    <aura:attribute name="showErrorBP" type="Boolean" default="false"/>
+    <aura:attribute name="info" type="boolean" required="false" default="false"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <h2 class="slds-text-heading--medium slds-m-bottom--medium slds-m-top--large slds-p-left--x-large slds-align--absolute-center">{!$Label.c.CRAN_VEC_ADV_CF_RENEW}</h2>
+
+    <!-- ERROR MESSAGE-->
+    <div style="min-height:46px;">
+    <aura:if isTrue="{!v.showErrorServices}">
+         <ui:message title="" severity="error" closable="false">
+            <ui:outputText aura:id="messageErrorServices" /> {!v.messageErrorServicesMsg}
+         </ui:message>
+    </aura:if>
+    </div>
+    <!-- END ERROR MESSAGE-->
+
+    <!-- INFO -->
+    <aura:if isTrue="{!v.info}">
+        <div style="min-height:46px;">
+                <div role="status" class="slds-spinner slds-spinner--medium slds-spinner--brand">
+                    <span class="slds-assistive-text">Loading</span>
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+                </div>
+            <ui:message title="Info" severity="info" closable="false">
+               {!$Label.c.CRAN_VEC_ADV_IP_MSG_Processing}
+            </ui:message>
+         </div>
+    </aura:if>
+    <!-- END INFO -->
+
+    <aura:if isTrue="{!v.showErrorBP==true}">
+        <div class="slds-grid slds-grid--vertical-align-center slds-grid--align-center" style="margin-top: 8px">
+            <span class="slds-form-element__label">{!$Label.c.CRAN_VEC_ADV_CF_MSG_NO_BP}</span>
+        </div>
+        <div class="slds-grid slds-grid--vertical-align-center slds-grid--align-center" style="margin-top: 8px">
+            <ui:button label="{!$Label.c.CRAN_VEC_ADV_CF_BTN_CANCEL}" press="{!c.cancel}"/>
+        </div>
+
+    <aura:set attribute="else">
+
+        <aura:if isTrue="{!v.step==4}">
+            <div class="slds-grid slds-grid--vertical-align-center slds-grid--align-center" style="margin-top: 8px">
+                <span class="slds-form-element__label">{!$Label.c.CRAN_VEC_ADV_CF_MSG_NO_BP}</span>
+            </div>
+            <div class="slds-grid slds-grid--vertical-align-center slds-grid--align-center" style="margin-top: 8px">
+                <ui:button label="{!$Label.c.CRAN_VEC_ADV_CF_BTN_CANCEL}" press="{!c.cancel}"/>
+            </div>
+
+        <aura:set attribute="else">
+                <aura:if isTrue="{!v.step==1}">
+                    <ui:inputSelect label="{!$Label.c.CRAN_VEC_ADV_CF_LBL_SELECT_BP}" class="dynamic" aura:id="InputSelectBP" value="{!v.selectedBP}" change="{!c.onSelectChange}"/>
+
+
+            	   <aura:if isTrue="{!v.disableListForms==true}">
+            	       <ui:inputSelect disabled="true" label="{!$Label.c.CRAN_VEC_ADV_CF_LBL_SELECT_FORM}" class="dynamic" aura:id="InputSelectForm1"/>
+                    <aura:set attribute="else">
+                        <ui:inputSelect label="{!$Label.c.CRAN_VEC_ADV_CF_LBL_SELECT_FORM}" class="dynamic" aura:id="InputSelectForm" change="{!c.onSelectChangeForm}"/>
+                    </aura:set>
+                    </aura:if>
+
+            	    <div class="slds-grid slds-grid--vertical-align-center slds-grid--align-center" style="margin-top: 8px">
+                    <aura:if isTrue="{!v.stepDisable=='disable'}">
+                        <ui:button disabled="true" label="{!$Label.c.CRAN_VEC_ADV_CF_BTN_NEXT}" press="{!c.cancel}"/>
+                    </aura:if>
+                    <aura:if isTrue="{!v.stepDisable=='notDisable'}">
+                        <ui:button label="{!$Label.c.CRAN_VEC_ADV_CF_BTN_NEXT}" press="{!c.next}"/>
+                    </aura:if>
+                    <ui:button label="{!$Label.c.CRAN_VEC_ADV_CF_BTN_CANCEL}" press="{!c.cancel}"/>
+                    </div>
+                <aura:set attribute="else">
+                    <aura:if isTrue="{!v.step==3}">
+                        <span class="slds-form-element__label">{!$Label.c.CRAN_VEC_ADV_CF_MGS_ONHOLD}"</span>
+                         <div class="slds-grid slds-grid--vertical-align-center slds-grid--align-center" style="margin-top: 8px">
+                            <aura:if isTrue="{!v.showDescartar}">
+                                <ui:button label="Descartar y crear uno nuevo" press="{!c.descartar}"/>
+                            <aura:set attribute="else">
+                                <ui:button disabled="true" label="Descartar y crear uno nuevo"/>
+                            </aura:set>
+                            </aura:if>
+                            <ui:button label="{!$Label.c.CRAN_VEC_ADV_CF_BTN_CANCEL}" press="{!c.cancel}"/>
+                        </div>
+                    </aura:if>
+                </aura:set>
+                </aura:if>
+                <aura:if isTrue="{!v.step==2}">
+                    <div class="slds-align--absolute-center slds-form-element__static">
+                        <ui:outputText aura:id="oName" value="{!v.errorRecuperar}"/>
+                    </div>
+                    <div class="slds-grid slds-grid--vertical-align-center slds-grid--align-center" style="margin-top: 8px">
+                        <ui:button label="{!$Label.c.CRAN_VEC_ADV_CF_BTN_CANCEL}" press="{!c.cancel}"/>
+                    </div>
+                </aura:if>
+            </aura:set>
+            </aura:if>
+        </aura:set>
+        </aura:if>
+</aura:component>

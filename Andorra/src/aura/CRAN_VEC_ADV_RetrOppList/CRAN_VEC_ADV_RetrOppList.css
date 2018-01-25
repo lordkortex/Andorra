@@ -1,0 +1,31 @@
+.THIS .header {
+	color: white;
+}
+
+.THIS.customMessage {
+	min-height:0px;
+	background-color:white;
+}
+
+.THIS .Icon svg {
+	fill: grey;
+}
+
+.THIS .Close svg {
+	fill: white;
+}
+
+.THIS .withoutScroller {
+    height: auto;
+    overflow-y: auto;       
+}
+
+.THIS .withScroller {
+	max-height: 310px;
+    overflow-y: auto;
+
+}
+
+.THIS .slds-spinner {
+	top: 60% !important;
+}

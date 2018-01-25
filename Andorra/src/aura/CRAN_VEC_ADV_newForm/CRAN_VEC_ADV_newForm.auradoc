@@ -1,0 +1,6 @@
+<aura:documentation>
+	<aura:description>Componente para la accion de nuevo desde un Account</aura:description>
+	<aura:example name="ExampleName" ref="exampleComponentName" label="Label">
+		Example
+	</aura:example>
+</aura:documentation>

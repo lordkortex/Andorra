@@ -1,0 +1,443 @@
+<!--
+ * Fecha: 12/07/2017
+ *
+ * Fecha Edicion: 12/07/2017  (Añadida distincion de casos en las lineas de las dos tablas mediante la clase hasErrorStyle para cambiar el color o no en funcion de si tiene error consultando el campo CRAN_VEC_ADV_HasError__c)
+ *
+ * Eliminados iconos de refresh
+ * @author  Miguel Aguado Minero (Vector ITC)
+ * @version 1.1
+ *
+-->
+
+<aura:component controller="CRAN_VEC_ADV_OrderList_AUC"
+                implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:lightningQuickActionWithoutHeader,force:hasRecordId" 
+                access="global" >
+     
+    <aura:attribute name="recordId"   type="String"  default="{!v.recordId}" />
+    <aura:attribute name="objectName" type="String"  default="Order"   /> 
+    <aura:attribute name="nKey"       type="String"  default="OpportunityId" />
+    
+    <aura:attribute name="record" type="Object"/>
+    <aura:attribute name="simpleRecord" type="Object"/>
+    <aura:attribute name="recordError" type="String"/>
+    
+    <force:recordData aura:id="recordLoader"
+      recordId="{!v.recordId}"
+	  layoutType="FULL"
+      targetRecord="{!v.record}"
+      targetFields="{!v.simpleRecord}"
+      targetError="{!v.recordError}"
+      />
+           
+    <aura:attribute name="nHeader" type="String" />
+
+    <aura:attribute name="aFilterStex" type="String"  default="CRAN_VEC_ADV_P_MetaType__c='STEX'"/>
+    <aura:attribute name="viewAllStex" type="Boolean" default="false"  />
+    <aura:attribute name="nHeadStex"   type="String" />
+    <aura:attribute name="scrolStex"  type="Boolean" />
+    <aura:attribute name="nColsStex"  type="Integer" />
+    <aura:attribute name="nRecsStex"  type="Integer" />    
+    <aura:attribute name="lstPosStex" type="Map"     />
+    <aura:attribute name="lstHeaStex" type="Map"     />
+
+    <aura:attribute name="aFilterFxtr" type="String"  default="CRAN_VEC_ADV_P_MetaType__c='FXTR'"/>   
+    <aura:attribute name="viewAllFxtr" type="Boolean" default="false"  />
+    <aura:attribute name="nHeadFxtr"   type="String" />
+    <aura:attribute name="scrolFxtr"  type="Boolean" />
+    <aura:attribute name="nColsFxtr"  type="Integer" />
+    <aura:attribute name="nRecsFxtr"  type="Integer" />    
+    <aura:attribute name="lstPosFxtr" type="Map"     />
+    <aura:attribute name="lstHeaFxtr" type="Map"     />
+
+    <aura:attribute name="info" type="boolean" required="false" default="false"/>    
+    <aura:attribute name="error" type="boolean" required="false" default="false"/>
+    <aura:attribute name="ok" type="boolean" required="false" default="false"/>
+    <aura:attribute name="errorMessage" type="String" required="false" default=""/>
+    <aura:attribute name="infoMessage" type="String" required="false" default=""/>
+    
+    <aura:attribute name="myselectall" type="Boolean" default="true"  />
+    <aura:attribute name="actBtSel" type="boolean" required="false" default="false"/>
+    <aura:attribute name="actBtGet" type="boolean" required="false" default="false"/>
+    <aura:attribute name="actBtPrt" type="boolean" required="false" default="false"/>    
+    <aura:attribute name="actBtSgn" type="boolean" required="false" default="false"/>
+    <aura:attribute name="actBtCnf" type="boolean" required="false" default="false"/>
+
+    <aura:attribute name="signedAndPending" type="String" default="advSigned"/>
+    <aura:attribute name="waitingSig" type="String" default="advWaitSign"/>
+	<aura:attribute name="advDone" type="String" default="advDone"/>																
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <aura:handler event="aura:systemError" action="{!c.handleError}"/>
+    
+    <!-- ERRORS -->
+    <aura:if isTrue="{!v.error}">
+        <div style="min-height:46px;">
+            <ui:message title="Error" severity="error" closable="false">   
+             <aura:unescapedHtml value="{!v.errorMessage}"/>              
+            </ui:message>
+        </div> 
+    </aura:if>        
+    <!-- END ERRORS -->   
+
+    <!-- OK -->
+    <aura:if isTrue="{!v.ok}">
+        <div style="min-height:46px;">
+            <ui:message title="Info" severity="info" closable="false">  
+                <aura:unescapedHtml value="{!v.infoMessage}"/>              
+            </ui:message>
+        </div> 
+    </aura:if>
+    <!-- END OK --> 
+    
+    <!-- INFO -->
+    <aura:if isTrue="{!v.info}">
+        <div class="slds-spinner_container">
+                <div role="status" class="slds-spinner slds-spinner--medium slds-spinner--brand">
+                    <span class="slds-assistive-text">Loading</span>
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+                </div>
+            <ui:message title="Info" severity="info" closable="false">
+               {!$Label.c.CRAN_VEC_ADV_IP_MSG_Processing}
+            </ui:message>
+         </div>
+    </aura:if>
+    <!-- END INFO -->
+            
+    <div class="{!v.viewAllStex ? 'slds-button-group slds-p-left_large' : ( v.viewAllFxtr ? 'slds-button-group slds-p-left_large' : 'slds-button-group' ) }" role="group">
+        
+        <aura:if isTrue="{!v.viewAllStex ? v.actOrders : ( v.viewAllFxtr ? v.actBtSel : true ) }">
+            <div class="slds-box slds-theme_shade slds-box_xx-small slds-text-body_small mycheck" >
+                <lightning:button aura:id="checkbox" variant="neutral" class="{!v.myselectall ? 'mycustomButton' : 'slds-button mycustomButton'}" label="{!v.myselectall ? $Label.c.CRAN_VEC_ADV_IP_Boton_SelectAll : $Label.c.CRAN_VEC_ADV_IP_Boton_DeselectAll}" onclick="{!c.onCheck}"/>
+            </div>
+            &nbsp;&nbsp;&nbsp;
+        </aura:if>
+        <aura:if isTrue="{!v.viewAllStex ? false : !v.viewAllFxtr }">
+            <div class="slds-col" style="margin-top: 6px;">
+                <lightning:button variant="neutral" class="mycustomButton " label="{!$Label.c.CRAN_VEC_ADV_IP_Boton_GetOrders}" onclick="{!c.execServiceGet}"/>
+                
+                <lightning:button variant="neutral" class="mycustomButton" label="{!$Label.c.CRAN_VEC_ADV_IP_Boton_PrintPreview}" onclick="{!c.printPreview}"/>        
+                
+                <lightning:button variant="neutral" class="mycustomButton" label="{!$Label.c.CRAN_VEC_ADV_IP_Boton_SignOrders}" onclick="{!c.checkOrdersSign}"/>
+
+                <lightning:button variant="neutral" class="mycustomButton" label="{!$Label.c.CRAN_VEC_ADV_IP_Boton_Discard}" onclick="{!c.checkOrdersDiscard}" />               
+                
+                <lightning:button variant="neutral" class="mycustomButton" label="{!$Label.c.CRAN_VEC_ADV_IP_Boton_Confirm}" onclick="{!c.confirmService}" />
+            </div>
+        </aura:if>
+    </div>    
+    <br/>                
+
+    <!-- MODAL CONFIRMACION SIGN -->
+    <div class="slds signature-modal">
+        <div aria-hidden="true" role="dialog" class="slds-modal slds-fade-in-hide" aura:id="modaldialog">
+            <div class="slds-modal__container">
+                <div class="slds-modal__header">
+                     <lightning:buttonIcon class="slds-modal__close" iconName="utility:close" size="large" variant="bare-inverse" onclick="{! c.cancelSing }" alternativeText="Close" />  
+                    <h2 class="slds-text-heading--medium">{!$Label.c.CRAN_VEC_ADV_IP_Boton_SignOrders}</h2>
+                </div>
+                <div class="slds-modal__content slds-p-around--medium">
+                    <p>
+                        {!$Label.c.CRAN_VAS_KER_SigningConfirmation}
+                    </p>                
+                    <div aura:id="phoneNumberContent" class="phone-number-content">                                 
+                    </div>
+                </div>
+                 <div class="slds-modal__footer">
+				  <lightning:button variant="neutral" label="{!$Label.c.CRAN_VEC_ADV_CF_BTN_CANCEL}" onclick="{!c.cancelSing}" />
+				  <lightning:button variant="brand" label="{!$Label.c.CRAN_VEC_ADV_IP_Boton_Continue}" onclick="{!c.execServiceFinal}" />
+                </div>
+             </div>
+        </div>
+    </div>
+    <div class="slds-backdrop slds-backdrop--hide" aura:id="backdrop"></div>
+    <!-- FIN MODAL CONFIRMACION SIGN -->
+
+    <!-- MODAL CONFIRMACION DISCARD -->
+
+    <div class="slds">
+        <div aria-hidden="true" role="dialog" class="slds-modal slds-modal--prompt slds-fade-in-hide" aura:id="modalDiscard">
+            <div class="slds-modal__container">
+                <div class="slds-modal__header">
+                    <button class="slds-button slds-button--icon-inverse slds-notify__close" >
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 class="slds-text-heading--medium">{!$Label.c.CRAN_VEC_ADV_IP_Boton_Discard}</h2>
+                </div>
+                <div class="slds-modal__content slds-p-around--medium">
+                    <div>{!$Label.c. CRAN_VEC_ADV_IP_MSG_DiscardOrder}</div>
+                    <div>
+                        <div class="slds-grid slds-grid--vertical-align-center slds-grid--align-center" style="margin-top: 15px">    
+                            <ui:button label="{!$Label.c.CRAN_VEC_ADV_IP_Boton_Continue}" press="{!c.execServiceFinalDiscard}"/>
+                            <ui:button label="{!$Label.c.CRAN_VEC_ADV_CF_BTN_CANCEL}" press="{!c.cancelDiscard}"/>
+                            
+                        </div>    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slds-backdrop slds-backdrop--hide" aura:id="backdropDiscard"></div>
+    <!-- FIN MODAL CONFIRMACION DISCARD -->    
+
+    <!-- COMIENZA EL COMPONENTE DE STEXs -->
+    <aura:if isTrue="{!(!v.viewAllFxtr)}">
+        <div class="slds-card" style="background-color: #B0BA1F;" >
+            
+            <div class="slds-card__header slds-grid">
+                <header class="slds-media slds-media--center slds-has-flexi-truncate">
+                    <div class="slds-media__body">
+                        <h2>
+                            <div class="slds-media__figure" style="margin-left: 16px !important;">
+                                <lightning:icon iconName="standard:orders" size="{!v.viewAllStex ? 'medium' : 'small' }" alternativeText="Order"/>   
+                                &nbsp;&nbsp;&nbsp;
+                                <aura:if isTrue="{!v.viewAllStex}">
+                                    &nbsp;
+                                    <a onclick="{!c.goBack}" style="color:white">
+                                        <ui:outputtext value="{!v.nHeader}" class="slds-text-heading--medium"/>                                    
+                                    </a>                                
+                                  <aura:set attribute="else">                                  
+                                    <aura:if isTrue="{!v.nRecsStex==0 || !v.scrolStex}">
+                                        <ui:outputtext value="{!v.nHeadStex}" class="header slds-text-heading--small" />
+                                        <aura:set attribute="else" >
+                                            <a onclick="{!c.gotoListStex}" style="color:white">
+                                                <ui:outputtext value="{!v.nHeadStex}" class="header slds-text-heading--small" />
+                                            </a>
+                                        </aura:set>
+                                    </aura:if>
+                                  </aura:set>
+                                </aura:if>
+                            </div>
+                        </h2>
+                    </div>
+                </header>
+            </div>
+            
+            <aura:if isTrue="{!(!(v.nRecsStex==0))}" >
+                
+                <div class="{!v.viewAllStex || !v.scrolStex ? 'withoutScroller' : 'withScroller' }">
+                    <table role="grid" class="slds-table slds-table-border--left slds-no-row-hover slds-table--cell-buffer" >
+                        
+                        <thead>
+                            <tr class="slds-line-height--reset">
+                                <aura:iteration items="{!v.lstHeaStex}" var="cellItem" indexVar="index2" end="{!v.nColsStex}">
+                                    <aura:if isTrue="{!cellItem.isVisible}">
+                                        <th class="slds-text-title--caps" scope="col" style="{!cellItem.dataType=='DOUBLE' || cellItem.dataType=='PERCENT' ? 'background-color:#E2E599; text-align:right;' : (cellItem.dataType=='BOOLEAN' ? 'background-color:#E2E599; text-align:center' : 'background-color:#E2E599;')}">
+                                            <div class="slds-truncate" title="{!heads}" style="color:black; font-size:11px; font-weight:bold;" >    
+                                                <ui:outputText value="{!cellItem.fieldValue=='CRAN_VEC_ADV_F_isEdit__c' ? '' : cellItem.fieldLabel}" />
+                                            </div>     
+                                        </th>
+                                    </aura:if>
+                                </aura:iteration>
+                            </tr>
+                        </thead>
+                        
+                        <tbody>
+                            <aura:iteration items="{!v.lstPosStex}" var="cells" indexVar="index1" start="1">                                  
+                                    <tr class="{!cells[13].fieldValue=='true' ? 'slds-hint-parent hasErrorStyle' : (cells[14].fieldLabel!=null ? 'slds-hint-parent hasErrorStyle' : 'slds-hint-parent' )}">
+                                    
+                                        <td scope="row" role="gridcell" class="slds-truncate" >
+                                            <div align="center" class="slds-form-element">
+                                                <div class="slds-form-element__control">                                                
+                                                    <label class="slds-checkbox"> 
+                                                        <ui:inputCheckbox text="{!cells[16].fieldLabel+'/'+index1}" value="{!cells[1].fieldLabel=='true'}" aura:id="botonExecStex" disabled="{!cells[0].isEdit ||  (cells[17].fieldLabel =='advSigned'  &amp;&amp; v.simpleRecord.StageName == 'advDone') ?'false':'true'}" change="{!c.checkboxExecStex}" />
+                                                        <span class="slds-checkbox--faux"></span>
+                                                        <span class="slds-form-element__label text"></span>
+                                                    </label>
+                                                </div>
+                                            </div>                                        
+                                        </td>
+
+                                        <td scope="row" role="gridcell" class="slds-truncate" >
+                                            <div align="center" class="slds-form-element">
+                                                <div class="slds-form-element__control">                                                
+                                                    <label class="slds-checkbox"> 
+                                                        <ui:inputCheckbox text="{!cells[16].fieldLabel+'/'+index1}" value="{!cells[2].fieldLabel=='true'}" aura:id="botonManualStex" disabled="{!cells[0].isEdit?(cells[17].fieldLabel =='advSimulated' ?'false':'true'):'true'}" change="{!c.checkboxManualStex}" />
+                                                        <span class="slds-checkbox--faux"></span>
+                                                        <span class="slds-form-element__label text"></span>
+                                                    </label>
+                                                </div>
+                                            </div>     
+                                        </td>
+                                        
+                                        <aura:iteration items="{!cells}" var="cellItem" indexVar="index2" start="3" end="{!v.nColsStex}">
+                                            <aura:if isTrue="{!cellItem.isVisible}">
+                                                <td scope="row" role="gridcell" class="slds-truncate" style="{!cellItem.dataType=='DOUBLE' || cellItem.dataType=='PERCENT' ? 'text-align:right;' : ''}">
+                                                    <aura:if isTrue="{!cellItem.fieldLabel=='true' || cellItem.fieldLabel=='false'}">                                         
+                                                        <div align="center" class="{!cellItem.fieldValue=='true' ? 'Icon' : ''}">                                                    
+                                                            <lightning:icon iconName="{!cellItem.fieldValue=='true' ? 'utility:check' : ''}" size="x-small" alternativeText="Check"/>
+                                                        </div>
+                                                        <aura:set attribute="else">                                                                                                                
+                                                            <div class="slds-truncate" >              
+                                                                <ui:outputText value="{!cellItem.fieldLabel}" />
+                                                            </div>
+                                                        </aura:set>
+                                                    </aura:if>
+                                                </td>                                        
+                                               <aura:set attribute="else">
+                                                    <aura:if isTrue="{!cellItem.isHyperLink}" >
+                                                        <aura:if isTrue="{!cellItem.fieldLabel=='true'}" >                                                
+                                                            <td class="slds-truncate" role="gridcell">
+                                                                <lightning:button name="{!cells[3].fieldValue + '-' + cells[16].fieldLabel}" onclick="{!c.gotoArchive}" class="buttonDownload" >
+                                                                    <lightning:icon iconName="utility:file" size="x-small" alternativeText="Orders" />
+                                                                </lightning:button>  
+                                                            </td>
+                                                        </aura:if>
+                                                    </aura:if>
+                                                </aura:set>
+                                            </aura:if>
+                                            
+                                        </aura:iteration>                                        
+                                    </tr>                                    
+                            </aura:iteration> 
+                        </tbody>                    
+                    </table>
+                </div>
+                
+                <div class="slds-card__footer">
+                    <aura:if isTrue="{!v.viewAllStex ? false : (v.nRecsStex==0 || !v.scrolStex ? false : true) }">
+                        <a onclick="{!c.gotoListStex}" style="color: white">{!$Label.c.CRAN_VEC_ADV_IP_Label_ViewAll}</a>
+                        <aura:set attribute="else">
+                            <ui:outputText value="" />
+                        </aura:set>
+                    </aura:if>
+                </div>
+                
+            </aura:if>
+            
+        </div>
+    </aura:if>
+	<!-- FIN DEL COMPONENTE DE STEXs -->
+
+    
+    <!-- COMIENZA EL COMPONENTE DE FOREXs -->
+    <aura:if isTrue="{!(!v.viewAllStex)}">        
+        <div class="slds-card" style="background-color: #B0BA1F;">
+            
+            <div class="slds-card__header slds-grid">
+                <header class="slds-media slds-media--center slds-has-flexi-truncate">
+                    <div class="slds-media__body">
+                        <h2>
+                            <div class="slds-media__figure" style="margin-left: 16px !important;">
+                                <lightning:icon iconName="standard:orders" size="{!v.viewAllFxtr ? 'medium' : 'small' }" alternativeText="Order"/>   
+                                &nbsp;&nbsp;&nbsp;
+                                <aura:if isTrue="{!v.viewAllFxtr}">
+                                    &nbsp;
+                                    <a onclick="{!c.goBack}" style="color:white">
+                                        <ui:outputtext value="{!v.nHeader}" class="slds-text-heading--medium"/>                                    
+                                    </a>                                
+                                  <aura:set attribute="else">                                  
+                                      <aura:if isTrue="{!v.nRecsFxtr==0 || !v.scrolFxtr}">
+                                          <ui:outputtext value="{!v.nHeadFxtr}" class="header slds-text-heading--small" />
+                                          <aura:set attribute="else" >
+                                              <a onclick="{!c.gotoListFxtr}" style="color:white">
+                                                  <ui:outputtext value="{!v.nHeadFxtr}" class="header slds-text-heading--small" />
+                                              </a>
+                                          </aura:set>
+                                      </aura:if>
+                                    </aura:set>
+                                </aura:if>
+                            </div>
+                        </h2>
+                    </div>
+                </header>
+            </div>
+    		            
+            <aura:if isTrue="{!(!(v.nRecsFxtr==0))}" >
+                
+                <div class="{!v.viewAllFxtr || !v.scrolFxtr ? 'withoutScroller' : 'withScroller' }">
+    
+                    <table role="grid" class="slds-table slds-table-border--left slds-no-row-hover slds-table--cell-buffer" >
+                        
+                        <thead>
+                            <tr class="slds-line-height--reset">
+                                <aura:iteration items="{!v.lstHeaFxtr}" var="cellItem" indexVar="index2" end="{!v.nColsFxtr}">
+                                    <aura:if isTrue="{!cellItem.isVisible}">
+                                        <th class="slds-text-title--caps" scope="col" style="{!cellItem.dataType=='DOUBLE' || cellItem.dataType=='PERCENT' ? 'background-color:#E2E599; text-align:right;' : (cellItem.dataType=='BOOLEAN' ? 'background-color:#E2E599; text-align:center' : 'background-color:#E2E599;')}">
+                                            <div class="slds-truncate" title="{!heads}" style="color:black; font-size:11px; font-weight:bold;" >    
+                                                <ui:outputText value="{!cellItem.fieldValue=='CRAN_VEC_ADV_F_isEdit__c' ? '' : cellItem.fieldLabel}" />                                                      
+                                            </div>                                                    
+                                        </th>
+                                    </aura:if>
+                                </aura:iteration>
+                            </tr>
+                        </thead>
+                        
+                        <tbody>
+                            <aura:iteration items="{!v.lstPosFxtr}" var="cells" indexVar="index1" start="1">   
+                                    <tr class="{!cells[14].fieldValue=='true' ? 'slds-hint-parent hasErrorStyle' : (cells[15].fieldLabel!=null ? 'slds-hint-parent hasErrorStyle' : 'slds-hint-parent' )}">                                    
+                                        <td scope="row" role="gridcell" class="slds-truncate" >
+                                                <div align="center" class="slds-form-element">
+                                                    <div class="slds-form-element__control">                                                
+                                                        <label class="slds-checkbox"> 
+                                                            <ui:inputCheckbox text="{!cells[17].fieldLabel+'/'+index1}" value="{!cells[1].fieldLabel=='true'? true : false}" aura:id="botonExecFxtr" disabled="{!cells[0].isEdit ||  (cells[18].fieldLabel =='advSigned'  &amp;&amp; v.simpleRecord.StageName == 'advDone') ?'false':'true'}" change="{!c.checkboxExecFxtr}" />
+                                                            <span class="slds-checkbox--faux"></span>
+                                                            <span class="slds-form-element__label text"></span>
+                                                        </label>
+                                                    </div>
+                                                </div>                                        
+                                        </td>
+
+                                        <td scope="row" role="gridcell" class="slds-truncate" >
+                                                <div align="center" class="slds-form-element">
+                                                    <div class="slds-form-element__control">                                                
+                                                        <label class="slds-checkbox"> 
+                                                            <ui:inputCheckbox text="{!cells[17].fieldLabel+'/'+index1}" value="{!cells[2].fieldLabel=='true'? true : false}" aura:id="botonManualFxtr" disabled="{!cells[0].isEdit?(cells[18].fieldLabel =='advSimulated' ?'false':'true'):'true'}" change="{!c.checkboxManualFxtr}" />
+                                                            <span class="slds-checkbox--faux"></span>
+                                                            <span class="slds-form-element__label text"></span>
+                                                        </label>
+                                                    </div>
+                                                </div>                                        
+                                        </td>
+                                        
+                                        <aura:iteration items="{!cells}" var="cellItem" indexVar="index2" start="3" end="{!v.nColsFxtr}">
+                                            <aura:if isTrue="{!cellItem.isVisible}">
+                                                <td scope="row" role="gridcell" class="slds-truncate" style="{!cellItem.dataType=='DOUBLE' || cellItem.dataType=='PERCENT' ? 'text-align:right;' : ''}">
+                                                    <aura:if isTrue="{!cellItem.fieldLabel=='true' || cellItem.fieldLabel=='false'}">                                         
+                                                        <div align="center" class="{!cellItem.fieldValue=='true' ? 'Icon' : ''}">                                                    
+                                                            <lightning:icon iconName="{!cellItem.fieldValue=='true' ? 'utility:check' : ''}" size="x-small" alternativeText="Check"/>
+                                                        </div>
+                                                        <aura:set attribute="else">                                                                                                                                                                    
+                                                            <div class="slds-truncate" >
+                                                                <ui:outputText value="{!cellItem.fieldLabel}" />                                           
+                                                            </div>
+                                                        </aura:set>
+                                                    </aura:if>
+                                                </td>                                        
+                                                   <aura:set attribute="else">
+                                                        <aura:if isTrue="{!cellItem.isHyperLink}" >
+                                                            <aura:if isTrue="{!cellItem.fieldLabel=='true'}" >
+                                                                <td class="slds-truncate" role="gridcell">
+                                                                    <a onclick="{!c.gotoArchive}" data-record="{!cells[17].fieldLabel}" >
+                                                                        <lightning:icon iconName="utility:file" size="x-small" alternativeText="Orders" />
+                                                                    </a>
+                                                                </td>
+                                                            </aura:if>
+                                                        </aura:if>
+                                                    </aura:set>
+                                                </aura:if>
+                                            
+                                        </aura:iteration>                                    
+                                    </tr>                            
+    
+                            </aura:iteration> 
+                        </tbody>                    
+                    </table>
+                    
+                </div>
+    
+                <div class="slds-card__footer">
+                    <aura:if isTrue="{!v.viewAllFxtr ? false : (v.nRecsFxtr==0 || !v.scrolFxtr ? false : true) }">
+                            <a onclick="{!c.gotoListFxtr}" style="color: white">{!$Label.c.CRAN_VEC_ADV_IP_Label_ViewAll}</a>
+                        <aura:set attribute="else">
+                            <ui:outputText value="" />
+                        </aura:set>
+                    </aura:if>
+                </div>
+            </aura:if>        
+        </div>        
+    </aura:if>
+    <!-- FIN DEL COMPONENTE DE FOREXs -->
+</aura:component>

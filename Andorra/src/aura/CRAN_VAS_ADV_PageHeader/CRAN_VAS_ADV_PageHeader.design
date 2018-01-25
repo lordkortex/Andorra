@@ -1,0 +1,5 @@
+<design:component >
+    <design:attribute name="fieldsByRT" label="Field Names by Record Type" 
+                      description="Icons/categoryIcons and fields to show group by RecordType.
+                                   Example: ''RT1'':[{''iconName'':''IN1'',''iconCategory'':''IC1'',''fieldName:''F1''},{''iconName'':'''',''iconCategory'':'''',''fieldName'':''F2''}],'RT2':[{''iconName'':''IN2'',''iconCategory'':''IC2'',''fieldName'':''FN3''}]}" />    
+</design:component>

@@ -1,0 +1,47 @@
+<aura:component implements="flexipage:availableForAllPageTypes,force:hasRecordId,force:hasSObjectName"  
+                controller="CRAN_VAS_ADV_RecordDetail_AUC" access="global" >    
+	
+	<aura:attribute name="recordId" type="Id" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <aura:attribute name="myAccount" type="Account"
+                                   default="{ 'sobjectType': 'Account',
+                                                'Id':'',
+                                            	'CRAN_VEC_ADV_L_Advisor__r.Name':'',
+                                                'CRAN_VEC_ADV_L_Advisor__c':'',
+                                            	'CRAN_VEC_ADV_B_ContractSigned__c':false,
+                                            	'CRAN_VEC_ADV_D_SignDate__c':''}"/>
+    
+	<div class="slds-panel slds-grid slds-grid--vertical slds-nowrap">
+        <div class="slds-form--stacked slds-grow slds-scrollable--y">
+            <div class="slds-panel__section">
+                <div class="slds-form-element slds-hint-parent slds-has-divider--bottom">
+                    <span class="slds-form-element__label">Advisor</span>
+                    <div class="slds-form-element__control">
+                        <span class="slds-form-element__static">
+                            <ui:outputURL value="{!'/'+v.myAccount.CRAN_VEC_ADV_L_Advisor__c}" label="{!v.myAccount.CRAN_VEC_ADV_L_Advisor__r.Name}"/>
+                        </span>
+                    </div>
+                </div>
+                <div class="slds-form-element slds-hint-parent slds-has-divider--bottom">
+                    <span class="slds-form-element__label">Contract signed</span>
+                    <div class="slds-form-element__control">
+                        <span class="slds-form-element__static">
+                            <ui:outputCheckbox value="{!v.myAccount.CRAN_VEC_ADV_B_ContractSigned__c}"/>
+                        </span>
+                    </div>
+                </div>
+                <div class="slds-form-element slds-hint-parent slds-has-divider--bottom">
+                    <span class="slds-form-element__label">Signature date</span>
+                    <div class="slds-form-element__control">
+                        <span class="slds-form-element__static">
+                            <ui:outputDate value="{!v.myAccount.CRAN_VEC_ADV_D_SignDate__c}"/>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</aura:component>

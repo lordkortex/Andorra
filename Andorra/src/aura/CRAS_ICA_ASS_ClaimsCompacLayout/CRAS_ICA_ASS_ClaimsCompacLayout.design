@@ -1,0 +1,5 @@
+<design:component >
+	<sfdc:objects >
+        <sfdc:object >CRAS_ICA_ASS_ClaimAmountHistory__c</sfdc:object>
+    </sfdc:objects>
+</design:component>

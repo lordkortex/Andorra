@@ -1,0 +1,17 @@
+.THIS {    
+    padding: 0rem .75rem 1.7rem 0rem;
+    border-bottom: 1px solid rgb(216, 221, 230);
+}
+.THIS .marg-lft{
+    margin-left:0.75rem;
+}
+.THIS .div-icon{
+    margin-right:0.75rem;
+}
+.THIS .div-icon-content{
+    padding-top:0.15rem;    
+    display:inline;
+}
+.THIS .txt-bold{
+    font-weight: bold;
+}

@@ -1,0 +1,148 @@
+<aura:component controller="CRAN_VAS_KER_Datatable_AUC" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+    <ltng:require styles="/resource/jQueryDatatable/datatables.min.css,
+                          /resource/jQueryDatatable/custom.css"
+              
+                  scripts="{!join(',',
+                           $Resource.jQuery3,
+                           $Resource.jQueryDatatable + '/datatables.min.js')}"
+                  
+                  afterScriptsLoaded="{!c.doInit}" />
+    
+    <aura:attribute name="provider" 		type="String" 	description="Class provider" 		/>
+    <aura:attribute name="params" 			type="Object" 	description="Provider attributes" 	/>
+    <aura:attribute name="showInfo"			type="Boolean" 	default="true"						/>
+    <aura:attribute name="showPagination" 	type="Boolean" 	default="true"						/>
+    <aura:attribute name="ordering" 		type="Boolean" 	default="true"						/>
+    <aura:attribute name="searching" 		type="Boolean" 	default="true"						/>
+    <aura:attribute name="lengthChange" 	type="Boolean" 	default="false"						/>
+    <aura:attribute name="showTitle" 		type="Boolean" 	default="true"						/>
+    <aura:attribute name="iconName"			type="String" 										/>
+    <aura:attribute name="tablePageLength"	type="Integer" 	default="10"						/>
+    <aura:attribute name="sObjectName" 		type="String" 										/>
+    <aura:attribute name="cpTitle" 			type="String" 										/>
+    <aura:attribute name="breadCrumb" 		type="Object" 	default="{ id : '', label : '', name:'', apiName: '' }"	/>
+    <aura:attribute name="breadCrumbApiName" type="String"	default=""/>
+    <aura:attribute name="breadCrumbLabel" type="String"	default=""/>
+    <aura:attribute name="breadCrumbName" type="String"	default=""/>
+    <aura:attribute name="breadCrumbId" type="String"	default=""/>
+    <aura:attribute name="user" 			type="Id"  		/>
+    <aura:attribute name="showActionButtons" 	type="Boolean" 	default="true" 	required="true" 	/>
+        
+    
+    <aura:handler event="force:refreshView" action="{!c.refresh}" />
+    <aura:handler event="force:showToast" 	action="{!c.refresh}" />  
+ 	<aura:registerEvent name="evtDatatablesInfo" type="c:CRAN_VAS_KER_DatatablesEventInfo"/>      
+ 
+    <div>
+        <aura:if isTrue="{!v.showTitle}">
+            <div class="slds-page-header" aura:id="datatablePageHeader">
+                <div class="slds-grid">
+                    <div class="slds-col slds-has-flexi-truncate">
+                        <nav class="slds-m-bottom--xx-small" role="navigation" aria-label="Breadcrumbs">
+                            <ol class="slds-breadcrumb slds-list--horizontal">
+                                <li class="slds-breadcrumb__item slds-text-title--caps">
+                                    <a href="{!'/one/one.app#/sObject/'+v.breadCrumbApiName+'/list'}" id="breadcrumbPreviousSobject">{!v.breadCrumbLabel}</a>
+                                </li>
+                                <li class="slds-breadcrumb__item slds-text-title--caps">
+                                    <a href="{!'/one/one.app#/sObject/' + v.breadCrumbId + '/view'}" id="breadcrumbCurrentSobject">{!v.breadCrumbName}</a>
+                                </li>
+                            </ol>
+                        </nav>
+                        <div class="slds-media slds-no-space slds-grow">
+                            <div class="slds-media__figure">
+                                <lightning:icon iconName="{!v.iconName}" size="medium" />
+                            </div>
+                            <div class="slds-media__body">
+                                <h1 class="slds-page-header__title slds-m-right--small slds-truncate slds-align-middle" id="sObjectName">{!v.cpTitle}</h1> 
+                                <div class="slds-grid slds-hide" aura:id="dataTableFilterExplanation">
+                                    <div class="slds-col slds-align-bottom">
+                                        <p class="slds-text-body--small">{!$Label.c.CRAN_VAS_KER_SearchByOwnerExplanation}</p>
+                                    </div>
+                                </div>
+                                <div class="filter-container slds-hide" aura:id="dataTableFilter"
+                                     onmouseover="{!c.displayTooltip}"
+                                     onmouseout="{!c.displayTooltipOut}">								 
+                                    <div class="owner-filter">
+                                        <c:inputLookup type="User" 
+                                                       recordTypes="" 
+                                                       value="{!v.user}"
+                                                       className="form-control" 
+                                                       fieldRequired="true"
+                                                       placeHolder="{!$Label.c.CRAN_VAS_KER_SearchByOwner}" />
+                                    </div>
+                                    <lightning:button variant="neutral"
+                                                      label="{!$Label.c.CRAN_VAS_MAQ_RG_FilterButton}"
+                                                      onclick="{! c.filterResults }" />	                            
+                                </div>                                
+                            </div>
+                        </div>                    
+                    </div>
+                    <div class="slds-col slds-no-flex slds-grid slds-align-bottom">
+                        <div class="slds-button-group" role="group">
+                            <aura:if isTrue="{!and(v.showPagination,v.searching)}">
+    						<div class="slds-m-right--medium" id="searchContainer">
+    							<div class="slds-form-element slds-lookup" data-select="single">
+    								<div class="slds-form-element__control">
+    									<div class="slds-input-has-icon slds-input-has-icon--right">
+    										<lightning:icon iconName="utility:search" size="xx-small" class="slds-input__icon" />
+    										<input type="search" id="dataTableSearch" class="slds-lookup__search-input slds-input" aria-expanded="false" aria-autocomplete="list" 
+    										placeholder = "{!$Label.c.CRAN_VAS_KER_Search+ ' ' +v.cpTitle}"/>
+    									</div>
+    								</div>
+    							</div>
+    						</div>					
+                            </aura:if>
+                            <lightning:buttonIcon class="slds-button--icon-border" iconName="utility:refresh" variant="bare" onclick="{! c.refreshBtn }" alternativeText="{!$Label.c.CRAN_VAS_KER_LBL_Refresh}" />
+                        </div>
+                    </div>          
+                </div>
+            </div>
+        </aura:if>
+   
+        <div class="datatables" aura:id="tableContainer">
+             <aura:if isTrue="{!!v.showTitle}">
+                <div class="slds-text-heading--small slds-m-bottom--xx-small" style="display: none;" id="subTitle">
+                </div>
+             </aura:if>
+            <div class="slds-clearfix">
+                <div id="table-wrapper" class="table-wrapper">
+                    <table class="slds-table slds-table--bordered slds-table--cell-buffer table-responsive" id="{!globalId + '_datatable'}" width="100%">             
+                        <!-- The body of the table is rendered via JavaScript after filters change -->
+                        <tbody></tbody>
+                    </table>
+                    <aura:if isTrue="{!!v.showPagination}">
+                        <div class="slds-float--right slds-m-top--x-small">
+                            <a href="#" onclick="{!c.viewAll}">
+                                <span class="view-all-label">{!$Label.FinServ.Link_View_All} </span>
+                            </a>
+                        </div> 
+                    </aura:if>
+                    <!-- Modal Delete Window -->
+                    <div role="dialog" tabindex="-1" id="deleteDialog" class="slds-modal">
+                        <div class="slds-modal__container">
+                            <div class="slds-modal__header">
+                                <h2 id="header43" class="slds-text-heading--medium">{!$Label.c.CRAN_VAS_ADV_CF_LBL_DeleteRecord}</h2>
+                            </div>
+                            <div class="slds-modal__content slds-p-around--medium">
+                                <center><h2>{!$Label.c.CRAN_VAS_ADV_CF_LBL_ConfirmDeleteRecord}</h2></center>
+                            </div>
+                            <div class="slds-modal__footer">
+                                <input type="hidden" id="recIdToDelete" />
+                                <lightning:button label="{!$Label.FinServ.Button_Label_Cancel}" name="deleteDialog" onclick="{!c.closeModal}"/>
+                                <lightning:button variant="brand" label="{!$Label.FinServ.Msg_Action_Variable_Delete}" name="confirmDelete" onclick="{!c.deleteRecordController}"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-backdrop " id="dialogBack"></div>                     
+                </div>
+                <div class="no-records-to-display" style="display : none">
+                    {!$Label.c.CRAN_VAS_KER_NoRecordsToDisplay}
+                </div>             
+            </div>
+            <lightning:spinner variant="brand" size="medium"
+			aura:id="datatablespinner"
+            alternativeText="{!$Label.c.CRAN_VAS_KER_CF_LBL_LoadingRecords}"
+            class="datatable-spinner slds-hide" />        
+        </div>
+    </div>
+</aura:component>

@@ -1,0 +1,102 @@
+<apex:page standardController="FinServ__FinancialAccount__c" extensions="CRAN_VEC_ADV_Portfolio_CTR">
+<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<style>
+	     .lightning{display:none;} 
+    </style>
+	<script type="text/javascript">
+		window.onload = function() { 
+			refreshData();
+		}
+
+		function onclickCloseMessage(id){
+  			var buttonObject = document.getElementById(id);
+  			buttonObject.style.display='none';
+		}
+
+		function showHideErrorDetail(){
+			var elementBox = document.getElementById('boxDetailError');
+			var elementLink = document.getElementById('linkShowDetail');
+			if(elementBox.style.display=='none'){
+				elementBox.style.display = 'block';
+				elementLink.innerHTML = '{!$Label.CRAN_VEC_ADV_PF_Link_HideDetail}';
+			}else{
+				elementBox.style.display = 'none';
+				elementLink.innerHTML = '{!$Label.CRAN_VEC_ADV_PF_Link_ShowDetail}';
+			}
+		}
+	</script>
+	<apex:slds />
+	<apex:form id="mainForm">
+		<apex:outputPanel id="panelall">
+		<!-- Error Message -->
+			<!--<apex:pageMessages ></apex:pageMessages>-->
+			<apex:outputPanel id="showError" rendered="{!showError}">
+				<div class="slds-notify_container">
+			  		<div class="slds-notify slds-notify--alert slds-theme--error slds-theme--alert-texture" role="alert" id="msgAlert">
+			    		<button class="slds-button slds-notify__close slds-button--icon-inverse" title="Close" type="button" onClick="javascript:onclickCloseMessage('msgAlert');">
+			    			<img src="{!URLFOR($Asset.SLDS, '/assets/icons/action/close_60.png')}" style="width: 22px"/>
+			      			<span class="slds-assistive-text">Close</span>
+			    		</button>
+			    		<span class="slds-assistive-text">Error</span>
+			    		<div style="display: block;">
+			    			<apex:messages />
+			    			<div>
+				    			<apex:commandLink value="{!$Label.CRAN_VEC_ADV_PF_Link_Retry}" action="{!refreshPortfolio}" reRender="panelall" status="pleasewait" rendered="{!showRetryLink}" onclick="javascript:onclickCloseMessage('msgAlert');refreshData();return false;"/>
+								<apex:commandLink value="{!$Label.CRAN_VEC_ADV_PF_Link_ShowDetail}" rendered="{!showDetailsLink}" onclick="javascript:showHideErrorDetail();return false;"/>
+							</div>
+							<div>
+				    			<div id="boxDetailError" class="slds-box slds-text-color--default slds-text-align--left" style="background-color: white;display:none;">
+				    				<p><apex:outputText value="{!errorDetail}" escape="false"/></p>
+				    			</div>
+				    			<apex:outputText value="<" escape="false" />!-- {!errorDetail} --<apex:outputText value=">" escape="false" />
+				    		</div>
+			    		</div>
+			  		</div>
+				</div>
+			</apex:outputPanel>
+			<!-- Buttons -->
+			<apex:actionFunction name="refreshData" status="pleasewait" action="{!refreshPortfolio}" reRender="panelall" onComplete="redirectReport()"/>
+			
+			<apex:outputPanel >
+				<h3 class="slds-text-heading--small slds-m-bottom--medium slds-m-top--small" style="padding-left:17.5px;">{!$Label.CRAN_VEC_ADV_PF_TitleAdvisory}
+					<a href="{!advUrlReport}" id="aRedirect" class="slds-button slds-button--neutral" target="{!cs.CRAN_VEC_ADV_HrefTarget__c}" onComplete="redirectReport()">{!$Label.CRAN_VEC_ADV_PF_OpenReport}</a>
+				</h3>
+				
+				<apex:commandLink action="{!refreshPortfolio}" reRender="panelall" status="pleasewait">
+					<apex:image style="margin-left: 3px;height:34px;" value="{!URLFOR($Asset.SLDS, '/assets/icons/utility/refresh_60.png')}"/>
+				</apex:commandlink>
+
+
+            	<div class="slds-form-element slds-hint-parent slds-has-divider--bottom"></div>
+    			<!-- Report Chart -->
+				<analytics:reportChart reportId="{!advChartReportId}" showRefreshButton="false" cacheResults="false" size="{!cs.CRAN_VEC_ADV_ChartSize__c}" filter="{!advFilters}">
+				</analytics:reportChart>
+			</apex:outputPanel>
+             <!-- ¡NO DEBE HABER PORTAFOLIO DE SEGUROS EN FA! -->
+
+			<!-- DIV Loading... -->
+			<apex:actionstatus id="pleasewait">
+		              <apex:facet name="start">
+		                  <div class="waitingSearchDiv" id="el_loading" style="background-color: #fbfbfb;
+		                         height: 100%;opacity:0.65;width:100%;"> 
+		                        <div class="slds-spinner_container">
+		                          <div class="slds-spinner--brand slds-spinner slds-spinner--large" role="alert">
+		                            <span class="slds-assistive-text"></span>
+		                            <div class="slds-spinner__dot-a"></div>
+		                            <div class="slds-spinner__dot-b"></div>
+		                          </div>
+		                        </div>
+		                  </div>
+		              </apex:facet>
+		        </apex:actionstatus>
+		    
+			<script type="text/javascript">
+				function redirectReport(){
+					if('true'=='{!cs.CRAN_VEC_ADV_AutoRedirect__c}')
+						document.getElementById('aRedirect').click();
+				}		
+			</script>
+		</apex:outputPanel>
+	</apex:form>
+</html>
+</apex:page>

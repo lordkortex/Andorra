@@ -1,0 +1,5 @@
+<design:component >
+	<design:attribute name="detailFieldNames" label="Field Names at Goal Detail" description="Fields you want to show at Goal Detail Card" />
+	<design:attribute name="vision" label="Vision over the goals" datasource="Global,Office,User" default="User" description="The vision over the goals that must have the user. Possible values are: Global,Office,User" />
+    <design:attribute name="fieldNames" label="Field Names at Goals List" description="Fields you want to show at Goals List" />    
+</design:component>

@@ -1,0 +1,85 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" 
+                access="global"
+                controller="CRAS_ICA_ASS_Reports_AUC">
+    <ltng:require scripts="{!join(',',
+                           $Resource.jQuery3,
+                           $Resource.highcharts_js,
+                           $Resource.grouped_categories_js,
+                           $Resource.exporting_js	
+                           )}" 
+                  afterScriptsLoaded="{!c.init}"/>
+    
+    <aura:attribute name="graphType" type="string"/>
+    <aura:attribute name="isMarketShare" type="boolean" default="false"/>
+    <aura:attribute name="isProductShare" type="boolean" default="false"/>
+    <aura:attribute name="isSVProductShare" type="boolean" default="false"/>
+    <aura:attribute name="currencyCode" type="String" default=""/>
+    <aura:attribute name="total" type="String" default="0"/>
+    <aura:attribute name="currency" type="boolean" default="false"/>
+    
+    <aura:attribute name="userId" type="string" default=""/>
+    
+    <aura:attribute name="title1" type="String" default=""/>
+    <aura:attribute name="nodata1" type="String" default=""/>
+    <aura:attribute name="nodata2" type="String" default=""/>
+    <aura:attribute name="nodata3" type="String" default=""/>
+    
+    <div class="slds-card">
+        <div class="slds-card__header slds-grid">
+            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                <div class="slds-media__body">
+	            	<h2><span class="slds-text-heading_small">{!v.title1}</span></h2>
+                    <aura:if isTrue="{!v.currency}">
+                        <!--<div class="total">Total: <b><ui:outputCurrency value="{!v.total}"/></b></div>-->
+                        <div class="total">Total: <b>{!v.total}&nbsp;{!v.currencyCode}</b></div>
+                        <aura:set attribute="else">
+                            <div class="total">Total: <b>{!v.total}</b></div>
+                        </aura:set>
+                    </aura:if>
+                </div>
+            </header>
+            <div class="slds-no-flex">
+                <div class="selectValueDiv">
+                    <lightning:select name="selectValue" aura:id="selectValue" label=" " onchange="{!c.selectChangeFunction}" aura:style="float:right;width:20%">
+                        <aura:if isTrue="{!v.isMarketShare}">
+                            <option value="1">{!$Label.c.CRAS_ICA_ASS_NumPol_Short}</option>
+                            <option value="2">{!$Label.c.CRAS_ICA_ASS_Prem_Short}</option>
+                            <option value="3">{!$Label.c.CRAS_ICA_ASS_Ins_Short}</option>
+                        </aura:if>
+                        <aura:if isTrue="{!v.isProductShare}">
+                            <option value="4">{!$Label.c.CRAS_ICA_ASS_NumPol_Short}</option>
+                            <option value="5">{!$Label.c.CRAS_ICA_ASS_Prem_Short}</option>
+                            <option value="6">{!$Label.c.CRAS_ICA_ASS_Ins_Short}</option>
+                        </aura:if>
+                        <aura:if isTrue="{!v.isSVProductShare}">
+                            <option value="7">{!$Label.c.CRAS_ICA_ASS_NumPol_Short}</option>
+                            <option value="8">{!$Label.c.CRAS_ICA_ASS_Ins_Short}</option>
+                        </aura:if>
+                    </lightning:select>
+                </div>
+            </div>
+        </div>
+        <div class="slds-card__body slds-card__body_inner">
+            <aura:if isTrue="{!v.isMarketShare}">
+                <div id="global_container_1" aura:id="global_container_1" class="spinnerContainer">
+                    <lightning:spinner aura:id="listSpinner" variant="brand" size="small" />
+                    <div class="loadGraphic">{!$Label.c.CRAS_ICA_ASS_LoadGraphic}</div>
+                </div>
+            </aura:if>
+            <aura:if isTrue="{!v.isProductShare}">
+                <div id="global_container_2" aura:id="global_container_2" class="spinnerContainer">
+                    <lightning:spinner aura:id="listSpinner" variant="brand" size="small" />
+                    <div class="loadGraphic">{!$Label.c.CRAS_ICA_ASS_LoadGraphic}</div>
+                </div>
+            </aura:if>
+            <aura:if isTrue="{!v.isSVProductShare}">
+                <div id="global_container_3" aura:id="global_container_3" class="spinnerContainer">
+                    <lightning:spinner aura:id="listSpinner" variant="brand" size="small" />
+                    <div class="loadGraphic">{!$Label.c.CRAS_ICA_ASS_LoadGraphic}</div>
+                </div>
+            </aura:if>
+        </div>
+    </div>  
+    
+
+</aura:component>

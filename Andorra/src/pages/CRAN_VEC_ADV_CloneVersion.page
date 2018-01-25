@@ -1,0 +1,43 @@
+<apex:page standardController="Quote" showHeader="false" sidebar="false" standardStylesheets="false" extensions="CRAN_VEC_ADV_CloneVersion_CTR" action="{!cloneQuote}">
+	<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<style>
+.infoAlert {background:#F0F2CC !important;}
+.headerBold{font-weight: bold; color: black !important;}
+.slds-spinner_container{top:100px !important;}
+</style>
+		<apex:slds />
+		<apex:form id="mainForm">
+			<apex:pageBlock id="MainPageBlock" >
+				<apex:outputText id="noShow" value="{!quote.CRAN_VEC_ADV_F_StageName__c}" rendered="false"/>
+				<apex:outputPanel id="showInfo" rendered="{!showInfo}">
+					<div class="slds-notify_container" >
+				  		<div class="slds-notify slds-notify--alert slds-theme--alert slds-theme--alert-texture infoAlert" role="alert" id="msgAlert">
+				    		<span class="slds-assistive-text">Info</span>
+				    		<span class="slds-form-element__label headerBold">
+				    		{!$Label["CRAN_VEC_ADV_IP_MSG_Processing"]}
+				    		</span>
+				    		<div class="waitingSearchDiv" id="el_loading" style="background-color: #fbfbfb;
+	                         height: 100%;opacity:0.65;width:100%;"> 
+		                        <div class="slds-spinner_container">
+		                          <div class="slds-spinner--brand slds-spinner slds-spinner--large" role="alert">
+		                            <span class="slds-assistive-text">Loading</span>
+		                            <div class="slds-spinner__dot-a"></div>
+		                            <div class="slds-spinner__dot-b"></div>
+		                          </div>
+		                        </div>
+	                  		</div>
+				  		</div>
+					</div>
+				</apex:outputPanel>
+				<apex:outputPanel id="showError" rendered="{!showError}">
+					<div class="slds-notify_container" >
+				  		<div class="slds-notify slds-notify--alert slds-theme--error slds-theme--alert-texture" role="alert" id="msgAlert">
+				    		<span class="slds-assistive-text">Info</span>
+				    		<h1><apex:messages /></h1>
+				  		</div>
+					</div>
+				</apex:outputPanel>
+			</apex:pageBlock>
+		</apex:form>
+	</html>
+</apex:page>

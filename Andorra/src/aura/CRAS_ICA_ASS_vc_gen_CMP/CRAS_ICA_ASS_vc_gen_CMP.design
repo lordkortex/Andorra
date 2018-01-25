@@ -1,0 +1,3 @@
+<design:component >
+		<design:attribute name="productType" label="Product Type" datasource="Risk,Savings" />
+</design:component>

@@ -1,0 +1,61 @@
+<aura:component controller="CRAN_VAS_MAQ_CampaignInfluence_AUC" implements="force:hasRecordId,force:appHostable,flexipage:availableForAllPageTypes" access="global">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler event="force:refreshView" action="{!c.doInit}" />
+    <aura:attribute name="campaign" type="CampaignInfluence[]"/>
+    <aura:attribute name="recordId" type="Id" />
+    <aura:attribute name="id" type="String" default="" access="GLOBAL"/>
+    <aura:attribute name="objNew" type="Contact" default="{'sObjectType':'Campaign','Id':null}"/>
+    <aura:attribute name="spinner" type="boolean" default="false"/> 
+    <aura:attribute name="editable" type="boolean" default="false"/> 
+    <aura:if isTrue="{!v.spinner}">
+        <div aura:id="spinnerId" class="slds-spinner_container">
+            <div class="slds-spinner--brand  slds-spinner slds-spinner--large slds-is-relative" role="alert">
+                <span class="slds-assistive-text">Loading</span>
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+            </div>
+        </div>
+    </aura:if>
+    
+    <lightning:card iconName="standard:campaign">
+        <aura:set attribute="title">                
+            	{!$Label.c.CRAN_VAS_MAQ_CampaignInfluenceTitle}
+        </aura:set>
+        
+        <aura:if isTrue="{!v.editable}">
+            <div class="slds-tile slds-box slds-box--x-small slds-m-around--x-small" style="background-color: white">                         
+                <span class="slds-m-around--medium slds-text-body--regular">{!$Label.c.CRAN_VAS_MAQ_CampaignInfluenceNew}</span>
+                
+                <div class="slds-input-has-icon slds-input-has-icon--right">
+                    <c:inputLookup type="Campaign" value="{!v.id}" className="form-control"/>
+                    <lightning:button class="slds-button--brand slds-button-space-left slds-m-around--small slds-m-top--large" label="{!$Label.c.CRAN_VAS_MAQ_CampaignInfluenceAdd}" onclick="{!c.createInfluence}"/>
+                </div>            
+            </div>
+        </aura:if>
+        
+    	<aura:iteration items="{!v.campaign}" var="campaign" indexVar="index">
+            <div  class="slds-tile slds-box slds-box--x-small slds-m-around--x-small slds-grid slds-grid--align-start">
+                <div class="">
+                	<h3 class="slds-truncate" title="Campaign Name"><a href="{!'/one/one.app?#/sObject/'+ campaign.CampaignId + '/view'}" target="_blank">{!campaign.Campaign.Name}</a></h3>
+                    <div class="slds-tile__detail slds-text-body--small">
+                        <dl class="slds-list--horizontal slds-wrap">
+                            <dt class="slds-item--label slds-text-color--weak slds-truncate" title="Contact">{!$Label.c.CRAN_VAS_MAQ_CampaignInfluenceContact}</dt>
+                            <dd class="slds-item--detail slds-truncate"><a href="{!'/one/one.app?#/sObject/'+ campaign.ContactId + '/view'}" target="_blank">{!campaign.Contact.Name}</a></dd>
+                            <dt class="slds-item--label slds-text-color--weak slds-truncate" title="Influence">{!$Label.c.CRAN_VAS_MAQ_CampaignInfluenceInfluence}</dt>
+                            <dd class="slds-item--detail slds-truncate">{!campaign.Influence} %</dd>                    
+                        </dl>
+                    </div>
+                </div>
+                <aura:if isTrue="{!v.editable}">
+                    <div>
+                        <button class="slds-button slds-button--neutral" 
+                                data-campaignid="{!campaign.CampaignId}" 
+                                id="button" buttonTitle="Click to delete influence"
+                                label="Delete Influence" onclick="{!c.deleteInfluence}" >
+                            {!$Label.c.CRAN_VAS_MAQ_CampaignInfluenceDelete}</button>
+                    </div>
+                </aura:if>
+            </div>
+    	</aura:iteration>
+	</lightning:card>
+</aura:component>

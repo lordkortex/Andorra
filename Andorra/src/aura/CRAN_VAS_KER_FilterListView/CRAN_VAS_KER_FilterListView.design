@@ -1,0 +1,12 @@
+<design:component >
+	<design:attribute name="title" 						label="Title" 			description="Component Title" />
+	<design:attribute name="listView" 					label="List View" 		description="Existing List View name" />
+	<design:attribute name="strFieldApiNames" 			label="Field Api Names" description="Field Api Names to query. To be used only when there is no List View." />	
+	<design:attribute name="sObjectApiName" 			label="Object" 			description="sObject Api Name to query" />
+	<design:attribute name="parentFieldApiName"			label="Parent field" 	description="Parent field to relate its value to the child field" />	
+	<design:attribute name="childFieldApiName" 			label="Child field" 	description="Field in the child sObject to relate with the value of the parent field" />
+    <design:attribute name="displayLimit" 				label="Number of Records to Display" datasource="2,4,6,8,10,12,14" description="Number of records you want to show" />    
+    <design:attribute name="iconName" 					label="Component icon" />
+    <design:attribute name="showNewButton" 				label="Show New" />
+    <design:attribute name="showTableActionButtons" 	label="Show table action buttons?" description="Display the table action buttons (E.g.: Delete button)" />
+</design:component>

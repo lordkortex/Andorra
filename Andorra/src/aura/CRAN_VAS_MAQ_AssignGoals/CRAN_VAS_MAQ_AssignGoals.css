@@ -1,0 +1,25 @@
+.THIS .slds-inline_icon_text{	
+	background-color: rgb(244, 246, 249);
+    color: rgb(84, 105, 141);
+    padding: .75rem 1rem
+}
+
+.THIS .responsiveCard h2 {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    margin-right: 1em
+}
+
+.THIS .selection-container {
+    background-color: t(colorBackground);
+    border-radius: t(borderRadiusMedium);    
+}
+
+.THIS .dataTables_info {
+    margin-left: 1rem;
+}
+
+.THIS .dataTables_paginate {
+    margin: .5rem 1rem 0 0;
+}

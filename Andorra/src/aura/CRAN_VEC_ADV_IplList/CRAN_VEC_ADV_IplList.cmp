@@ -1,0 +1,164 @@
+<!--
+ * Eliminados iconos de refresh
+ * @version 1.1
+ *
+-->
+<aura:component controller="CRAN_VEC_ADV_IplList_AUC"
+                access="global" >                                
+    
+    <aura:attribute name="recordId"   type="String" />
+    <aura:attribute name="nKey"       type="String" />
+    <aura:attribute name="aFilter"    type="String" default=""/>
+    <aura:attribute name="objectName" type="String" />
+    
+    <aura:attribute name="viewAll"    type="Boolean" default="false" />
+    <aura:attribute name="nHeader"    type="String" />
+    <aura:attribute name="nHeading"   type="String" />
+    
+	<aura:attribute name="scroller"   type="Boolean" />
+    <aura:attribute name="nRecs"      type="Integer" />    
+    <aura:attribute name="lstPositions" type="Map"   />
+    
+    <aura:handler event="aura:doneRendering" action="{!c.doneRendering}"/>
+    <aura:attribute name="isDoneRendering" type="Boolean" default="false"/>
+
+    <aura:attribute name="info" type="boolean" required="false" default="true"/>
+
+    <!-- INFO -->
+    <aura:if isTrue="{!v.info}">
+        <div class="customMessage">
+            <div role="status" class="slds-spinner slds-spinner--medium slds-spinner--brand">
+                <span class="slds-assistive-text">Loading...</span>
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+            </div>
+        </div>
+    </aura:if>
+    <!-- END INFO -->
+    
+    <div class="slds-card" style="background-color: #B0BA1F;">
+        
+        <div class="slds-card__header slds-grid">
+            <header class="slds-media slds-media--center slds-has-flexi-truncate">
+                <div class="slds-media__body" style="margin-left: 23px !important;">
+                    <h2>
+                        <div class="slds-media__figure">
+							<lightning:icon iconName="standard:quotes" size="{!v.viewAll ? 'medium' : 'small'}" alternativeText="Quotes"/>                                            
+                            &nbsp;&nbsp;&nbsp;                            
+                            <aura:if isTrue="{!v.viewAll}">                            
+                                &nbsp;   
+                                <a onclick="{!c.goBack}" style="color:white">
+                                    <ui:outputtext value="{!v.nHeader}" class="slds-text-heading--medium"/>                                    
+                                </a>                                
+                              <aura:set attribute="else">
+                                    <aura:if isTrue="{!v.nRecs==0 || v.scroller==false}">
+                                      <ui:outputtext value="{!v.nHeading}" class="header slds-text-heading--small" />
+                                      <aura:set attribute="else" >
+                                          <a onclick="{!c.gotoList}" style="color:white">
+                                              <ui:outputtext value="{!v.nHeading}" class="header slds-text-heading--small" />
+                                          </a>
+                                      </aura:set>
+                                    </aura:if>
+                                </aura:set>
+                            </aura:if>
+                        </div>
+                    </h2>
+                </div>
+            </header>
+        </div>
+
+        <aura:if isTrue="{!v.nRecs==0 ? false : true}" >           
+                        
+            <div class="{!v.viewAll || v.scroller==false ? 'withoutScroller' : 'withScroller' }">
+
+                <table role="grid" class="slds-table slds-table-border--left slds-no-row-hover slds-table--cell-buffer" >
+                
+                    <thead>
+                        <tr class="slds-line-height--reset">
+                            <aura:iteration items="{!v.lstPositions}" var="cells" indexVar="index1" end="1">
+                                <aura:iteration items="{!cells}" var="cellItem" indexVar="index2">
+                                    <aura:if isTrue="{!cellItem.isVisible}">
+                                        <th class="slds-text-title--caps" scope="col" style="{!cellItem.dataType=='DOUBLE' || cellItem.dataType=='PERCENT' ? 'background-color:#E2E599; text-align:right;' : (cellItem.dataType=='BOOLEAN' ? 'background-color:#E2E599; text-align:center' : 'background-color:#E2E599;')}">
+                                            <div class="slds-truncate" title="{!heads}" style="color:black; font-size:11px; font-weight:bold;" >	
+                                                <ui:outputText value="{!cellItem.fieldValue=='CRAN_VEC_ADV_F_isEdit__c' ? '' : cellItem.fieldLabel}" />                                                      
+                                            </div>                                                    
+                                        </th>
+                                    </aura:if>
+                                </aura:iteration>
+                            </aura:iteration>
+                        </tr>
+                    </thead>
+                    
+                    <tbody>
+                        <aura:iteration items="{!v.lstPositions}" var="cells" indexVar="index1" start="1">						
+                            <tr class="slds-hint-parent"> 							
+                                <aura:iteration items="{!cells}" var="cellItem" indexVar="index2">
+                                    <aura:if isTrue="{!cellItem.isVisible}"> 
+                                        
+										<td class="slds-truncate" role="gridcell" style="{!cellItem.dataType=='DOUBLE' || cellItem.dataType=='PERCENT' ? (cellItem.isNodeType ? 'background:#F0F2CC;text-align:right;' : 'text-align:right;') : (cellItem.isNodeType ? 'background:#F0F2CC;' : '')}">
+                                            <aura:if isTrue="{!cellItem.fieldLabel=='true' || cellItem.fieldLabel=='false'}">                                        
+                                                <div align="center" class="{!cellItem.fieldValue=='true' ? (cellItem.isNodeType ? 'CheckNode' : 'Icon') : ''}">
+                                                    <lightning:icon iconName="{!cellItem.fieldValue=='true' ? 'utility:check' : ''}" size="x-small" alternativeText="Check"/>
+                                                </div>
+                                              <aura:set attribute="else">
+                                                    <div class="slds-truncate" >
+                                                        <!-- Comienza Indentación -->                           
+                                                        <aura:if isTrue="{!index2 == 1 ? (cellItem.iplIndent == '0' ? false : true) : false}">                    
+                                                            <ui:outputText value="&nbsp;&nbsp;&nbsp;&nbsp;"/>
+                                                            <aura:if isTrue="{!cellItem.iplIndent == '1' ? false : true}">
+                                                                <ui:outputText value="&nbsp;&nbsp;&nbsp;&nbsp;"/>
+                                                                <aura:if isTrue="{!cellItem.iplIndent == '2' ? false : true}">
+                                                                    <ui:outputText value="&nbsp;&nbsp;&nbsp;&nbsp;"/>
+                                                                    <aura:if isTrue="{!cellItem.iplIndent == '3' ? false : true}">
+                                                                        <ui:outputText value="&nbsp;&nbsp;&nbsp;&nbsp;"/>
+                                                                        <aura:if isTrue="{!cellItem.iplIndent == '4' ? false : true}">
+                                                                            <ui:outputText value="&nbsp;&nbsp;&nbsp;&nbsp;"/>
+                                                                            <aura:if isTrue="{!cellItem.iplIndent == '5' ? false : true}">
+                                                                                <ui:outputText value="&nbsp;&nbsp;&nbsp;&nbsp;"/>
+                                                                            </aura:if>
+                                                                        </aura:if>
+                                                                    </aura:if>
+                                                                </aura:if>
+                                                            </aura:if>
+                                                        </aura:if>                                        
+                                                        <!-- Finaliza Indentación -->
+
+                                                        <aura:if isTrue="{!cellItem.isHyperLink}" >                                                                                                                
+                                                            <a onclick="{!cellItem.fieldLabel==$Label.c.CRAN_VEC_ADV_IP_Label_Edit ? c.editRecord : ''}" data-record="{!cellItem.fieldValue}" >
+                                                                <ui:outputText value="{!cellItem.fieldLabel}" />                                             
+                                                            </a>
+                                                          <aura:set attribute="else">
+                                                              <ui:outputText value="{!cellItem.fieldLabel==$Label.c.CRAN_VEC_ADV_IP_Label_Edit ? '' : cellItem.fieldLabel}" />
+                                                          </aura:set>
+                                                        </aura:if>
+                                                        
+                                                    </div>
+                                                </aura:set>
+                                            </aura:if>
+                                        </td>
+										
+                                    </aura:if>
+                                </aura:iteration>                               
+                            </tr>   
+                        </aura:iteration> 
+                    </tbody>
+                    
+                </table>
+                
+            </div>
+
+        </aura:if>
+
+        
+        <div class="slds-card__footer">
+            <aura:if isTrue="{!v.viewAll ? false : (v.nRecs==0 || v.scroller==false ? false : true) }">
+                <a onclick="{!c.gotoList}" style="color: white">{!$Label.c.CRAN_VEC_ADV_IP_Label_ViewAll}</a>
+                <aura:set attribute="else">
+                    <ui:outputText value="" />
+                </aura:set>
+            </aura:if>
+        </div>
+        
+    </div>
+    
+</aura:component>

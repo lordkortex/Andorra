@@ -1,0 +1,35 @@
+<aura:component controller="CRAN_VAS_MAQ_DirectorAndAdvisor_AUC" implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+    
+    <aura:attribute name="recordId" 	type="Id" />
+    <aura:attribute name="sObjectName" 	type="String" />
+    <aura:attribute name="cpTitle" 		type="String" />
+    <aura:attribute name="iconName" 	type="String" />
+    
+    <aura:attribute name="directorProvider" 	type="String" />
+    <aura:attribute name="directorFieldNames" 	type="String" default="Name" 	required="true"  />
+    <aura:attribute name="directorRowsLimit" 	type="Integer" default="10" 	required="true"  />
+    
+    <aura:attribute name="advisorProvider" 		type="String" />
+    <aura:attribute name="advisorFieldNames" 	type="String" 	default="Name" 	required="true"  />
+    <aura:attribute name="advisorRowsLimit" 	type="Integer" 	default="10" 	required="true" />
+    
+    <aura:attribute name="officeProvider" 		type="String" />
+    <aura:attribute name="officeFieldNames" 	type="String" 	default="Name" 	required="true"  />
+    <aura:attribute name="officeRowsLimit" 		type="Integer" 	default="10" 	required="true" />    
+    
+	<aura:attribute name="showActionButtons" 	type="Boolean" 	default="true" 	required="true" />
+	<aura:attribute name="vision" 				type="String" 	default="" 		description="0" />    
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <lightning:card iconName="{!v.iconName}">
+        <aura:set attribute="title">
+            {!v.cpTitle}
+        </aura:set>
+        <p class="slds-p-horizontal--small" id="dirAndAdvContainer"> 
+            <div aura:id="userContainer"></div>
+            <div aura:id="advisorContainer"></div>
+            <div aura:id="officeContainer"></div>
+        </p>
+    </lightning:card>     
+</aura:component>

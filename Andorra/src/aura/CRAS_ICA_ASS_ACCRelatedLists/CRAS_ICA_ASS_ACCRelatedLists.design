@@ -1,0 +1,8 @@
+<design:component >
+    <design:attribute name="RelatedList" label="Related List" datasource="FA Insurance PolicyHolder,FA Insurance Roles,Claims,FA Insurance Roles And PolicyHolder" />
+
+	<sfdc:objects >
+        <sfdc:object >Account</sfdc:object>
+        <sfdc:object >Contact</sfdc:object>
+    </sfdc:objects>
+</design:component>

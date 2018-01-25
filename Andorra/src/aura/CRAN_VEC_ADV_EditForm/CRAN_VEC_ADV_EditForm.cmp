@@ -1,0 +1,69 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickActionWithoutHeader" controller="CRAN_VEC_ADV_editForm_AUC" access="global">
+    <aura:attribute name="recordId" type="String" /><!-- Account.Id -->
+    <aura:attribute name="selectedResponse" type="CRAN_VEC_ADV_CustomForm_Response__c" default="{ 'sobjectType': 'CRAN_VEC_ADV_CustomForm_Response__c','CRAN_VEC_ADV_DT_StartDate__c':'','CRAN_VEC_ADV_MD_CustomForm__c':'','CRAN_VEC_ADV_MD_CustomForm__r.Name':'','CRAN_VEC_ADV_MD_CustomForm__r.CRAN_VEC_ADV_N_Version__c':''}"/>
+    <aura:attribute name="responses" type="CRAN_VEC_ADV_CustomForm_Response__c[]"/>
+    <aura:attribute name="attContact" type="Contact" default="{'sobjectType':'Contact', 'FirstName':''}"/>
+    <aura:attribute name="stepDisable" type="String" default="disable"/>
+    <aura:attribute name="step" type="Integer" default="1"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+        <h2 class="slds-text-heading--medium slds-m-bottom--medium slds-m-top--large slds-p-left--x-large slds-align--absolute-center">{!$Label.c.CRAN_VEC_ADV_CF_EDIT}</h2>
+
+        <aura:if isTrue="{!v.step==2}">
+        <div class="slds-grid slds-grid--vertical-align-center slds-grid--align-center" style="margin-top: 8px">
+                <span class="slds-form-element__label">{!$Label.c.CRAN_VEC_ADV_CF_MSG_NOFORMS}</span>
+        </div>
+        <div class="slds-grid slds-grid--vertical-align-center slds-grid--align-center" style="margin-top: 8px">
+                <ui:button label="{!$Label.c.CRAN_VEC_ADV_CF_BTN_CANCEL}" press="{!c.cancel}"/>
+        </div>
+
+    <aura:set attribute="else"> 
+
+	
+			<div class="slds-grid slds-wrap slds-grid--pull-padded">
+			<div class="slds-p-horizontal--small slds-size--1-of-2 slds-medium-size--1-of-2 slds-large-size--1-of-2">
+				<span class="slds-form-element__label">Fecha creación</span>
+				<div class="slds-form-element__control">
+					<ui:outputDateTime aura:id="createdDate" value="{!v.selectedResponse.CRAN_VEC_ADV_DT_StartDate__c}" format="{!$Locale.datetimeFormat}"/>
+				</div>
+			</div>
+			<div class="slds-p-horizontal--small slds-size--1-of-2 slds-medium-size--1-of-2 slds-large-size--1-of-2">
+				<span class="slds-form-element__label">Plantilla</span>
+				<div class="slds-form-element__control">
+					<span class="slds-form-element__static" id="textPlantilla">{!v.selectedResponse.CRAN_VEC_ADV_MD_CustomForm__r.Name}</span>
+				</div>
+			</div>
+			<div class="slds-p-horizontal--small slds-size--1-of-2 slds-medium-size--1-of-2 slds-large-size--1-of-2">
+				<span class="slds-form-element__label">Versión</span>
+				<div class="slds-form-element__control">
+		            <ui:outputNumber aura:id="createdDate" value="{!v.selectedResponse.CRAN_VEC_ADV_MD_CustomForm__r.CRAN_VEC_ADV_N_Version__c}" format="0.0"/>
+				</div>
+			</div>
+			<div class="slds-p-horizontal--small slds-size--1-of-2 slds-medium-size--1-of-2 slds-large-size--1-of-2">
+				<span class="slds-form-element__label">Estado de cuestionario</span>
+				<div class="slds-form-element__control">
+					<span class="slds-form-element__static" id="textState">{!v.selectedResponse.CRAN_VEC_ADV_P_Acceptance_Status__c}</span>
+				</div>
+			</div>
+		    </div>
+		    <div class="slds-p-horizontal--small slds-size--1-of-1">
+		        <div class="slds-form-element slds-hint-parent slds-has-divider--bottom"></div>
+		    </div>
+		    <ui:inputSelect label="Seleccione tipo:" class="single" aura:id="InputSelectDynamic" change="{!c.onSelectChange}"/>
+			<div class="slds-grid slds-grid--vertical-align-center slds-grid--align-center" style="margin-top: 8px">
+		    	
+				<aura:if isTrue="{!v.stepDisable=='disable'}">
+		    		<ui:button disabled="true" label="{!$Label.c.CRAN_VEC_ADV_CF_BTN_NEXT}" press="{!c.next}"/>
+		        </aura:if>
+		        <aura:if isTrue="{!v.stepDisable=='notDisable'}">
+		        	<ui:button label="{!$Label.c.CRAN_VEC_ADV_CF_BTN_NEXT}" press="{!c.next}"/>
+		        </aura:if>
+
+
+
+		        <ui:button label="{!$Label.c.CRAN_VEC_ADV_CF_BTN_CANCEL}" press="{!c.cancel}"/>
+		    </div>
+</aura:set>            
+</aura:if>
+</aura:component>

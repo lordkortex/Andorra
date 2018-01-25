@@ -1,0 +1,66 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" 
+                access="global"
+                controller="CRAS_ICA_ASS_Reports_AUC">
+    <ltng:require scripts="{!join(',',
+                           $Resource.jQuery3,
+                           $Resource.highcharts_js,
+                           $Resource.grouped_categories_js,
+                           $Resource.exporting_js	
+                           )}" 
+                  afterScriptsLoaded="{!c.init}"/>
+
+    <aura:attribute name="title1" type="String" default="{!$Label.c.CRAS_ICA_ASS_ClaimsMarket}"/>
+    <aura:attribute name="legend1" type="String" default="{!$Label.c.CRAS_ICA_ASS_ClaimsRate}"/>
+   	<aura:attribute name="legend2" type="String" default="{!$Label.c.CRAS_ICA_ASS_GreenBenchmark}"/>
+	<aura:attribute name="legend3" type="String" default="{!$Label.c.CRAS_ICA_ASS_YellowBenchmark}"/>
+    <aura:attribute name="legend4" type="String" default="{!$Label.c.CRAS_ICA_ASS_RedBenchmark}"/>
+    <aura:attribute name="greaterThan" type="String" default="{!$Label.c.CRAS_ICA_ASS_GreaterThan}"/>
+    <aura:attribute name="lowerThan" type="String" default="{!$Label.c.CRAS_ICA_ASS_LowerThan}"/>
+    <aura:attribute name="between" type="String" default="{!$Label.c.CRAS_ICA_ASS_Between}"/>
+    <aura:attribute name="nodata1" type="String" default="{!$Label.c.CRAS_ICA_ASS_NODATA_ClaimsMarket}"/>
+    <aura:attribute name="year" type="String" default=""/>
+
+    <aura:attribute name="graphType" type="string"/>
+    <aura:attribute name="isMarket" type="boolean" default="true"/>
+    <aura:attribute name="isProduct" type="boolean" default="true"/>
+    
+    <div class="slds-card">
+        <div class="slds-card__header slds-grid">
+            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                <div class="slds-media__body">
+	            	<h2><span class="slds-text-heading_small">{!v.title1}</span></h2>
+                </div>
+            </header>
+            <div class="slds-no-flex">
+                <div class="selectValueDiv">
+                    <lightning:select name="SNT_selectValue" aura:id="SNT_selectValue" label=" " onchange="{!c.select_SNT_ChangeFunction}" aura:style="float:right;width:20%">
+                        <aura:if isTrue="{!v.isMarket}">
+                            <option value="1">{!v.year}</option>
+                            <option value="2">{!$Label.c.CRAS_ICA_ASS_AllYears}</option>
+                        </aura:if>
+                        <aura:if isTrue="{!v.isProduct}">
+                            <option value="3">{!v.year}</option>
+                            <option value="4">{!$Label.c.CRAS_ICA_ASS_AllYears}</option>
+                        </aura:if>
+                    </lightning:select>
+                </div>
+            </div>
+        </div>
+        <div class="slds-card__body slds-card__body_inner">
+            <aura:if isTrue="{!v.isMarket}">
+                <div id="container_SNT_1" aura:id="container_SNT_1" class="spinnerContainer">
+                    <lightning:spinner aura:id="listSpinner" variant="brand" size="small" />
+                    <div class="loadGraphic">{!$Label.c.CRAS_ICA_ASS_LoadGraphic}</div>
+                </div>
+            </aura:if>
+            <aura:if isTrue="{!v.isProduct}">
+                <div id="container_SNT_2" aura:id="container_SNT_2" class="spinnerContainer min-size">
+                    <lightning:spinner aura:id="listSpinner" variant="brand" size="small" />
+                    <div class="loadGraphic">{!$Label.c.CRAS_ICA_ASS_LoadGraphic}</div>
+                </div>
+            </aura:if>
+        </div>
+    </div>
+	    
+
+</aura:component>

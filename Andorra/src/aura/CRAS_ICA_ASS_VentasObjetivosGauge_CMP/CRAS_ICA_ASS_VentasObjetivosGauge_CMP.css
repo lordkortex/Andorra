@@ -1,0 +1,101 @@
+.THIS.clear {
+    clear: both;
+    width: 100%;
+}
+
+.THIS .clear {
+    clear: both;
+}
+
+.THIS .selectValueDiv {
+    top: -11px;
+    position: relative;
+}
+
+.THIS .highcharts-container {
+    width: 100% !important; 
+}
+
+.THIS .spinnerContainer
+{
+    position:relative; 
+}
+
+.THIS .loadGraphic
+{
+    height: 40px;
+    text-align: center;
+}
+
+.THIS .highcharts-subtitle {
+    font-size: 2em !important;
+    color: black !important;
+    font-family: 'Salesforce Sans',Arial,sans-serif !important;
+}
+
+.THIS .titleRespon {
+    display: inline-block;
+    position: relative;
+    float: left;
+    margin-left: 13px;
+    margin-top: 21px;
+    font-size: 1.3em;
+}
+.THIS.slds-card{
+    background-color:#fff;
+}
+
+.THIS .no-data-message
+{
+    position:relative;
+    top:250px;
+}
+
+.THIS .no-data-container
+{
+    height:500px;
+    text-align:center
+}
+
+.THIS .highcharts-tooltip-box {
+    background-color: #111;
+    fill: #111;
+    fill-opacity: 0.8;
+    stroke-width: 0;
+}
+
+.THIS .highcharts-tooltip text {
+    fill: #ffffff!important;
+    color:#ffffff!important;
+    font-family: 'Salesforce Sans',Arial,sans-serif!important;
+}
+
+.THIS .highcharts-tooltip tspan {
+    z-index:9999!important;  
+}
+
+.THIS .highcharts-tooltip text .legend_Label{
+    fill: rgba(255,255,255,0.75)!important;
+    font-size: 12px!important;
+    font-weight: 500!important;
+}
+.THIS .highcharts-tooltip text .legend_Span{
+    font-weight: 700!important;
+    font-size: 14px!important;
+}
+.THIS .highcharts-tooltip .legend_Label,
+.THIS .highcharts-tooltip .legend_Span{
+    display: inline-block;
+    text-shadow: 0 0 0 transparent, 0 -1px 1px rgba(0,0,0,0.95);
+}
+
+.THIS .highcharts-legend-item text{
+    font-size: 100%!important;
+    font-weight: 500!important;
+    fill: #868686!important;
+    font-family: 'Salesforce Sans',Arial,sans-serif!important;
+}
+
+.THIS .highcharts-subtitle {
+	font-size:20px!important
+}

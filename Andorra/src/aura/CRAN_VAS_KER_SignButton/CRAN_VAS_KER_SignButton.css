@@ -1,0 +1,17 @@
+.THIS .modal-footer  {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+
+.THIS p {
+	 margin: 2.5rem 0 1rem;
+}
+
+.THIS .modal-header {
+    width: 100%;
+    left: 0;
+    top: 0;
+    position: absolute;
+}

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>39.0</apiVersion>
+    <availableInTouch>false</availableInTouch>
+    <confirmationTokenRequired>false</confirmationTokenRequired>
+    <description>Reporte de por tipo de recordtype y validación de consistencia de los datos</description>
+    <label>CRAN_ICA_ADV_ReporteDatos</label>
+</ApexPage>

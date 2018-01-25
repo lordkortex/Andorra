@@ -1,0 +1,13 @@
+<aura:component controller="CRAN_VEC_ADV_ReportResultsController_AUC"
+                implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:lightningQuickActionWithoutHeader,force:hasRecordId" 
+                access="global" >
+     
+    <aura:attribute name="recordId"   type="String" default="{!v.recordId}" />
+    <aura:attribute name="objectName" type="String" default="Quote"  />  
+    <!--<aura:attribute name="nKey"       type="String" default="CRAN_VEC_ADV_Investment_Proposition_Line__c.CRAN_VEC_ADV_L_Proposition__c" />-->
+    <aura:attribute name="nKey"       type="String" default="OpportunityId" />
+    <aura:attribute name="viewAll"    type="Boolean" default="false" />
+	
+	<c:CRAN_VEC_ADV_ReportResults recordId="{!v.recordId}" nKey="{!v.nKey}" objectName="{!v.objectName}"  viewAll="{!v.viewAll}"  />
+    
+</aura:component>

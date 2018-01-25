@@ -1,0 +1,94 @@
+.THIS.bootstrap-sf1 {
+    background: rgb(244, 246, 249) !important;
+}
+
+.THIS .title-block {
+   margin: 0; 
+}
+
+.THIS .title-block a {
+    display: block;
+    margin: 10px;
+}
+
+.THIS .title-container {
+    padding: 0;
+    border-bottom: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;      
+}
+
+.THIS #accordion1 > .slds-box {
+    border: 0;
+	padding-bottom: 0;
+    padding-top: 2px;    
+}
+
+.THIS.bootstrap-sf1 {
+    background-color: White;
+}
+
+.THIS .panel-body {
+    background-color: #f0f1f2;
+}
+
+.THIS .category-title {
+    font-weight: bolder;
+}
+
+.THIS div[class^="second-level"] > div {
+    margin-bottom: 10px;
+}
+
+.THIS .accordion-panel {
+    padding: 5px;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0 ;  
+    border: 1px solid rgb(216, 221, 230);
+    border-top: 0;
+}
+
+.THIS .accordion-panel > .slds-box {
+    border-radius: 0;
+	border-top: 0;
+    border-bottom: 0;
+    padding: 5px;
+}
+
+.THIS .utility {
+    font-family: icomoon;
+    speak: none;
+    font-style: normal;
+    font-weight: 400;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.THIS .utility-collapse {
+    margin-right: 5px;
+}
+
+.THIS .collapse-amount {
+    float: right;
+    margin-right: 5px;
+}
+
+.THIS .bootstrap-sf1 h3 {
+    margin: 0;
+}
+
+.THIS .collapsed .utility-collapse:before {
+    content: "\e019";
+}
+
+.THIS .utility-collapse:before {
+    content: "\e008";
+}
+
+.THIS .slds-tile + .slds-tile {
+    margin-top: 0;
+    margin-left: 20px;
+}

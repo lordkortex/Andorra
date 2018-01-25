@@ -1,0 +1,93 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:lightningQuickActionWithoutHeader,force:hasRecordId" access="global" controller="CRAN_VEC_ADV_New_Proposition_AUC">
+
+	<aura:attribute name="recordId" type="String" /><!--financialAccountId -->
+	<aura:attribute name="showErrorServices" type="Boolean" default="false"/>
+	<aura:attribute name="showWarningServices" type="Boolean" default="false"/>
+	<aura:attribute name="showForm" type="Boolean" default="true"/>
+	<aura:attribute name="messageErrorServicesMsg" type="String" default=""/>
+	<aura:attribute name="messageWarningServicesMsg" type="String" default=""/>
+	<aura:attribute name="selectedMethod" type="String" />
+	<aura:attribute name="selectedCurrency" type="String" />
+	<aura:attribute name="selectedName" type="String" />
+	<aura:attribute name="info" type="boolean" required="false" default="false"/>
+	
+
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <h2 class="slds-text-heading--medium slds-m-bottom--medium slds-m-top--large slds-p-left--x-large slds-align--absolute-center">{!$Label.c.CRAN_VEC_ADV_IP_TITLE_NEWPROPOSITION}</h2>
+
+    <!-- ERRORS -->
+
+    <aura:if isTrue="{!v.showErrorServices}">
+    <div style="min-height:46px;">
+    
+    	<!-- ERROR MESSAGE -->
+             <ui:message title="" severity="error" closable="false">
+                <ui:outputText aura:id="messageErrorServices" /> <div class="slds-text-heading--small slds-text-align--center">{!v.messageErrorServicesMsg}</div>
+             </ui:message>
+    </div>      	            
+    </aura:if> 
+
+    	<!-- END ERROR MESSAGE -->
+
+    	<!-- WARNING MESSAGE -->   
+    <aura:if isTrue="{!v.showWarningServices}">
+   	<div style="min-height:46px;">
+
+             <ui:message title="" severity="warning" closable="false">
+                <ui:outputText aura:id="messageWarningServices" /> <div class="slds-text-heading--small slds-text-align--center">{!v.messageWarningServicesMsg}</div>
+             </ui:message>
+    </div>
+    </aura:if> 
+    	<!-- END WARNING MESSAGE -->
+    <!-- END ERRORS --> 
+
+    <!-- INFO -->
+    <div style="min-height:46px;">
+    <aura:if isTrue="{!v.info}">
+        
+            <div role="status" class="slds-spinner slds-spinner--medium slds-spinner--brand">
+                <span class="slds-assistive-text">Loading</span>
+            <div class="slds-spinner__dot-a"></div>
+            <div class="slds-spinner__dot-b"></div>
+            </div>
+         <ui:message title="Info" severity="info" closable="false">                
+               {!$Label.c.CRAN_VEC_ADV_IP_MSG_Processing}
+         </ui:message>
+         
+    </aura:if>
+    </div>
+    <!-- END INFO -->      
+
+	 
+	<aura:if isTrue="{!v.showForm}">
+		<div class="slds-grid slds-wrap slds-grid--pull-padded" style="margin-top: 10px">
+			
+			<div class="slds-p-horizontal--small slds-size--1-of-2 slds-medium-size--1-of-2 slds-large-size--1-of-2">
+				<ui:inputText label="{!$Label.c.CRAN_VEC_ADV_IP_OPPORTUNITY}" value="{!v.selectedName}" required="true" aura:id="InputName"/>
+			</div>
+			
+			<div class="slds-p-horizontal--small slds-size--1-of-2 slds-medium-size--1-of-2 slds-large-size--1-of-2">
+				<ui:inputSelect label="{!$Label.c.CRAN_VEC_ADV_IP_INVESTMENT_METHOD}" class="dynamic" required="true" aura:id="InputMethod" value="{!v.selectedMethod}"/>
+			</div>
+			
+			<div class="slds-p-horizontal--small slds-size--1-of-2 slds-medium-size--1-of-2 slds-large-size--1-of-2" style="margin-top: 15px">
+				<ui:inputSelect label="{!$Label.c.CRAN_VEC_ADV_IP_INVESTMENT_CURRENCY}" class="dynamic" aura:id="InputCurrency" value="{!v.selectedCurrency}"/>
+			</div>
+			
+			<div class="slds-p-horizontal--small slds-size--1-of-2 slds-medium-size--1-of-2 slds-large-size--1-of-2" style="margin-top: 15px" >
+				<ui:inputNumber label="{!$Label.c.CRAN_VEC_ADV_IP_INVESTMENT_AMOUNT}" maxlength="3" size="3" required="false" aura:id="InputAmount"/>
+			</div>
+		
+		</div>
+	</aura:if>
+
+	<div class="slds-grid slds-grid--vertical-align-center slds-grid--align-center" style="margin-top: 30px">
+		<aura:if isTrue="{!v.showForm}">
+			<ui:button label="Next" press="{!c.nextView}"/>
+		</aura:if>
+		<ui:button label="Cancel" press="{!c.cancel}"/>
+	</div>
+
+
+</aura:component>

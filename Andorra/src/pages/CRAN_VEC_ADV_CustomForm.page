@@ -1,0 +1,746 @@
+<apex:page showHeader="false" sidebar="false" standardStylesheets="false" controller="CRAN_VEC_ADV_CustomForm_CTR" action="{!onload}">
+  <html xmlns:xlink="http://www.w3.org/1999/xlink">
+    <apex:stylesheet value="{!URLFOR($Resource.CRAN_VEC_ADV_slds, 'assets/styles/salesforce-lightning-design-system.min.css')}" />
+    <script src="{!URLFOR($Resource.CRAN_VEC_ADV_aljs, '/jquery-1.11.1.min.js')}"></script>
+    <script src="{!URLFOR($Resource.CRAN_VEC_ADV_aljs, '/jquery.aljs-init.min.js')}"></script>
+    <script src="{!URLFOR($Resource.CRAN_VEC_ADV_aljs, '/jquery.aljs-multi-select.min.js')}"></script>
+    <style>
+      .slds-page-header {background-color: #E2E599;font-size: larger;color:#757414;font-weight: bold;}
+      .slds-has-divider--bottom {border-bottom: 1px solid #B0BA1F;}
+      .slds-has-divider--top {border-top: 1px solid #B0BA1F;}
+      .slds-tree__item:hover {background: #F0F2CC;}
+      .slds-select:focus {#E2E599 !important;}
+      .slds-tree__item a{color:white;}
+      .headerBold{font-weight: bold;}
+      .slds-checkbox [type=checkbox]:checked+.slds-checkbox--faux:after, .slds-checkbox [type=checkbox]:checked+.slds-checkbox__label .slds-checkbox--faux:after, .slds-checkbox [type=checkbox]:checked~.slds-checkbox--faux:after{border-bottom:2px solid #757414;border-left:2px solid #757414;}
+      .button-container .slds-button:not([disabled]) {color:#757414;}
+      .slds-form-element__label{color:#000308;}
+      .slds-select{color:#000308;}
+      .sfdcBody{color:#000308 !important; position: relative;}
+      #signatureModal p { margin-bottom: 1rem; }
+    </style>
+    <!-- Cabecera-->
+    <h3 class="slds-text-heading--small slds-m-bottom--medium slds-m-top--small" style="padding-left:17.5px;">{!$Label.CRAN_VEC_ADV_CF_DETAIL}</h3>
+    <button class="slds-button slds-button--icon slds-m-right--x-small" aria-controls="tree0-node2" type="button" onclick="javascript:onclickColapseHeader();">
+    <img  id="imgCabecera" src="{!URLFOR($Resource.CRAN_VEC_ADV_slds, '/assets/icons/utility/chevrondown_60.png')}" style="height:10px!important" />
+    <span class="slds-assistive-text"></span>
+    </button>
+    <apex:outputPanel id="panelFieldHeader">
+      <div class="slds-p-horizontal--small slds-size--1-of-1">
+        <div class="slds-form-element slds-hint-parent slds-has-divider--bottom"></div>
+      </div>
+      <div class="slds-grid slds-wrap slds-grid--pull-padded slds-is-expanded" id="cabeceraCollapse"  style="padding-left:17.5px;">
+        <!--Fila 1-->
+        <div class="slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-3">
+          <span class="slds-form-element__label headerBold">{!$ObjectType.CRAN_VEC_ADV_CustomForm_Response__c.Fields.CRAN_VEC_ADV_L_Contact__c.label}</span>
+          <div class="slds-form-element__control">
+            <span class="slds-form-element__static">
+              <!--<apex:outputField value="{!pSuitableTestRespond.CRAN_VEC_ADV_L_Contact__r.Name}"/>-->
+              <apex:outputField value="{!pSuitableTestRespond.CRAN_VEC_ADV_L_Contact__c}"/>
+            </span>
+          </div>
+        </div>
+        <div class="slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--2-of-3">
+          <p class="slds-text-body--small page-header__info" style=" margin-top: 22px;">
+            <span class="slds-badge slds-theme--success">{!perfilPage}</span>
+          </p>
+        </div>
+        <!--Fin Fila 1-->
+        <div class="slds-p-horizontal--small slds-size--1-of-1">
+          <div class="slds-form-element slds-hint-parent slds-has-divider--bottom"></div>
+        </div>
+        <!--Fila 2-->
+        <div class="slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-3">
+          <span class="slds-form-element__label headerBold">{!$ObjectType.CRAN_VEC_ADV_CustomForm_Response__c.Fields.CreatedDate.label}</span>
+          <div class="slds-form-element__control">
+            <span class="slds-form-element__static">
+              <apex:outputField value="{!pSuitableTestRespond.CreatedDate}"/>
+            </span>
+          </div>
+        </div>
+        <div class="slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-3">
+          <span class="slds-form-element__label headerBold">{!$ObjectType.CRAN_VEC_ADV_CustomForm_Response__c.Fields.CRAN_VEC_ADV_DT_Sent_Date__c.label}</span>
+          <div class="slds-form-element__control">
+            <span class="slds-form-element__static">
+              <apex:outputField value="{!pSuitableTestRespond.CRAN_VEC_ADV_DT_Sent_Date__c}"/>
+            </span>
+          </div>
+        </div>
+        <div class="slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-3">
+          <span class="slds-form-element__label headerBold">{!$ObjectType.CRAN_VEC_ADV_CustomForm_Response__c.Fields.CRAN_VEC_ADV_L_Business_Partner__c.label}</span>
+          <div class="slds-form-element__control">
+            <span class="slds-form-element__static">
+              <!--<apex:outputField value="{!pSuitableTestRespond.CRAN_VEC_ADV_L_Business_Partner__r.Name}"/>-->
+              <apex:outputText value="{!nameBP}"/>
+            </span>
+          </div>
+        </div>
+        <!--Fin Fila 2-->
+        <!--Fila 3-->
+        <div class="slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-3">
+          <span class="slds-form-element__label headerBold">{!$ObjectType.CRAN_VEC_ADV_CustomForm_Response__c.Fields.Name.label}</span>
+          <div class="slds-form-element__control">
+            <span class="slds-form-element__static">
+              <apex:outputField value="{!pSuitableTestRespond.Name}"/>
+            </span>
+          </div>
+        </div>
+        <div class="slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-3">
+          <span class="slds-form-element__label headerBold">{!$ObjectType.CRAN_VEC_ADV_CustomForm__c.Fields.CRAN_VEC_ADV_N_Version__c.label}</span>
+          <div class="slds-form-element__control">
+            <span class="slds-form-element__static">
+              <apex:outputField value="{!pSuitableTestRespond.CRAN_VEC_ADV_MD_CustomForm__r.CRAN_VEC_ADV_N_Version__c}"/>
+            </span>
+          </div>
+        </div>
+        <div class="slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-3">
+          <span class="slds-form-element__label headerBold">{!$ObjectType.CRAN_VEC_ADV_CustomForm_Response__c.Fields.CRAN_VEC_ADV_P_Acceptance_Status__c.label}</span>
+          <div class="slds-form-element__control">
+            <apex:outputPanel id="estadoFormulario">
+              <span class="slds-form-element__static">
+                <apex:outputField value="{!pSuitableTestRespond.CRAN_VEC_ADV_P_Acceptance_Status__c}"/>
+              </span>
+            </apex:outputPanel>
+          </div>
+        </div>
+        <!--Fin Fila 3-->
+        <div class="slds-p-horizontal--small slds-size--1-of-1">
+          <div class="slds-form-element slds-hint-parent slds-has-divider--bottom"></div>
+        </div>
+      </div>
+    </apex:outputPanel>
+    <!-- Mensajes de alerta error y correcto-->
+    <apex:outputPanel id="ErrorSuccessMessage">
+      <apex:outputPanel rendered="{!displayAlert}">
+        <div class="slds-notify_container">
+          <div class="slds-notify slds-notify--toast slds-theme--warning" id="msgAlert" role="alert">
+            <span class="slds-assistive-text">Warning</span>
+            <button class="slds-button slds-notify__close slds-button--icon-inverse" type="button" onClick="javascript:onclickCloseMessage('msgAlert');">
+            <img  src="{!URLFOR($Resource.CRAN_VEC_ADV_slds, '/assets/icons/action/close_60.png')}" style="width:22px;"/>
+            <span class="slds-assistive-text">Close</span>
+            </button>
+            <div class="slds-notify__content">
+              <h2 class="slds-text-heading--small">{!$Label["CRAN_VEC_ADV_CF_MSG_ALERT"]}</h2>  
+              <br></br>
+              <h2 class="slds-text-heading--small">{!$label[warningMessages]}</h2>
+            </div>
+          </div>
+        </div>
+      </apex:outputPanel>
+      <apex:outputPanel rendered="{!displayError}">
+        <div class="slds-notify_container">
+          <div class="slds-notify slds-notify--alert slds-theme--error slds-theme--alert-texture" id="msgError" role="alert">
+            <button class="slds-button slds-notify__close slds-button--icon-inverse" type="button" onClick="javascript:onclickCloseMessage('msgError');">
+            <img  src="{!URLFOR($Resource.CRAN_VEC_ADV_slds, '/assets/icons/action/close_60.png')}" style="width:17px;"/>
+            <span class="slds-assistive-text">Close</span>
+            </button>
+            <span class="slds-assistive-text">Error</span>
+            <h2>
+              <svg aria-hidden="true" class="slds-icon slds-icon--small slds-m-right--x-small">
+                <use xlink:href="{!URLFOR($Resource.CRAN_VEC_ADV_slds, '/assets/icons/utility-sprite/svg/symbols.svg#ban')}"></use>
+              </svg>
+              {!errorMessages}
+            </h2>
+          </div>
+        </div>
+      </apex:outputPanel>
+      <apex:outputPanel rendered="{!(AND(displayOk,signOk==false,verificateOk==false))}">
+        <div class="slds-notify_container">
+          <div class="slds-notify slds-notify--alert slds-theme--success slds-theme--alert-texture" id="msgSuccess" role="alert">
+            <button class="slds-button slds-notify__close slds-button--icon-inverse" type="button"  onClick="javascript:onclickCloseMessage('msgSuccess');">
+            <img  src="{!URLFOR($Resource.CRAN_VEC_ADV_slds, '/assets/icons/action/close_60.png')}" style="width:22px;"/>
+            <span class="slds-assistive-text">Close</span>
+            </button>
+            <span class="slds-assistive-text">Success</span>
+            <div class="slds-text-heading--medium">
+              <img  src="{!URLFOR($Resource.CRAN_VEC_ADV_slds, '/assets/icons/action/check_60.png')}" style="width:25px;margin-right:7px;"/>{!$Label["CRAN_VEC_ADV_CF_MSG_OK"]}
+            </div>
+          </div>
+        </div>
+      </apex:outputPanel>
+      <apex:outputPanel rendered="{!VerificateOk}">
+        <div class="slds-notify_container">
+          <div class="slds-notify slds-notify--alert slds-theme--success slds-theme--alert-texture" id="msgVerification" role="alert">
+            <button class="slds-button slds-notify__close slds-button--icon-inverse" type="button"  onClick="javascript:onclickCloseMessage('msgVerification');">
+            <img  src="{!URLFOR($Resource.CRAN_VEC_ADV_slds, '/assets/icons/action/close_60.png')}" style="width:22px;"/>
+            <span class="slds-assistive-text">Close</span>
+            </button>
+            <span class="slds-assistive-text">Verification</span>
+            <div class="slds-text-heading--medium">
+              <img  src="{!URLFOR($Resource.CRAN_VEC_ADV_slds, '/assets/icons/action/check_60.png')}" style="width:25px;margin-right:7px;"/>{!$Label.CRAN_VEC_ADV_CF_VERIFIED}
+            </div>
+          </div>
+        </div>
+      </apex:outputPanel>
+    </apex:outputPanel>
+    <!-- Fin Mensajes de alerta error y correcto-->
+    <!-- Fin Cabecera-->
+    <apex:form id="formularioIdoneidad">
+                <apex:actionstatus id="pleasewait">
+                  <apex:facet name="start">
+                    <div id="el_loading" style="height: 100%; width:100%;">
+                      <div class="slds-spinner_container">
+                        <div class="slds-spinner--brand slds-spinner slds-spinner--large" role="alert">
+                          <span class="slds-assistive-text">Loading</span>
+                          <div class="slds-spinner__dot-a"></div>
+                          <div class="slds-spinner__dot-b"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </apex:facet>
+                </apex:actionstatus>        
+      <div class="slds-panel slds-grid slds-grid--vertical">
+        <div class="slds-form--stacked slds-grow slds-scrollable--y">
+          <!-- Section 1 PAnel superior -->
+          <!-- FIN Section 1 PAnel superior -->
+          <div class="slds-grid">
+            <div class="slds-col slds-size--1-of-2 slds-medium-size--3-of-6 slds-large-size--6-of-12 expandido" style="display:block; border-right: 0.8px solid #d8dde6;" id="colapsarMatriz">
+              <ul class="slds-tree" role="tree" aria-labelledby="treeheading">
+                <!-- Generar Sections -->
+                <apex:variable value="0" var="indexSection"/>
+                <apex:repeat value="{!lstSectionW}" var="wSection" id="repeatSections">
+                  <li id="tree0-node0-button{!indexSection}" role="treeitem" aria-level="1" aria-expanded="false">
+                    <div class="slds-tree__item" style="background-color: #BCBA1F;font-weight: bold;font-size: larger;">
+                      <button class="slds-button slds-button--icon slds-m-right--x-small" aria-controls="tree0-node2" type="button" onclick="javascript:onclickColapse('{!indexSection}');">
+                      <img id="flecha{!indexSection}" src="{!URLFOR($Resource.CRAN_VEC_ADV_slds, '/assets/icons/utility/chevronright_60.png')}" style="height:10px!important" />
+                      <span class="slds-assistive-text"></span>
+                      </button>
+                      <a id="tree0-node2__label" href="javascript:onclickColapse('{!indexSection}');" tabindex="-1" role="presentation">
+                      {!$Label[wSection.nameSection]}</a>
+                    </div>
+                    <ul id="ul{!indexSection}" class="slds-is-collapsed" role="group" aria-labelledby="tree0-node0__label">
+                      <!-- Generar Question and Answers -->
+                      <apex:variable value="0" var="indexQuestion"/>
+                      <apex:repeat value="{!wSection.questions}" var="wQuestion" id="repeatQuestions">
+                        <li id="tree0-node2-0" role="treeitem" aria-level="2">
+                          <div class="slds-tree__item">
+                            <div class="slds-form-element" style="width:100%;">
+                              <div class="slds-form-element__control">
+                                <apex:commandLink action="{!selectActualQuestion}" value="" id="theButton" status="pleasewait" reRender="formularioIdoneidad" onComplete="hiddeSpecialMatrix('{!viewMode}')">
+                                  <span class="slds-checkbox" id="indexSection-{!indexSection}-numQuestion-{!indexQuestion}">
+                                    <apex:inputCheckbox value="{!wQuestion.answer.CRAN_VEC_ADV_B_Answered__c}"/>
+                                    <apex:param name="indexSection" assignTo="{!iSection}" value="{!indexSection}"/>
+                                    <apex:param name="indexQuestion" assignTo="{!iQuestion}" value="{!indexQuestion}"/>
+                                    <label class="slds-checkbox__label" for="checkbox-{!indexSection}-{!indexQuestion}" style="width:100%;">
+                                    <span class="slds-checkbox--faux"></span>
+                                    <span class="slds-form-element__label" id="{!wQuestion.question.Name}">{!$Label[wQuestion.question.Name]}</span>
+                                    </label>
+                                  </span>
+                                </apex:commandLink>
+                              </div>
+                            </div>
+                          </div>
+                        </li>
+                        <apex:variable var="indexQuestion" value="{!VALUE(indexQuestion) + 1}"/>
+                      </apex:repeat>
+                      <!-- FIN Generar Answers -->
+                    </ul>
+                  </li>
+                  <apex:variable var="indexSection" value="{!VALUE(indexSection) + 1}"/>
+                </apex:repeat>
+                <!-- FIN Generar Sections -->
+              </ul>
+            </div>
+            <div class="slds-col slds-size--1-of-2 slds-medium-size--3-of-6 slds-large-size--6-of-12" style='margin-left: 10px !important;
+              margin-top: 10px !important;' id="colapsar2">
+              <apex:outputPanel id="panelAnswer">
+                <div class="slds-form-element " style="height:60%;padding-left:7.5px;" id="myMatrix">
+                  <apex:outputPanel rendered="{!actualQuestion.answer.CRAN_VEC_ADV_MD_Question__r.CRAN_VEC_ADV_P_AnswerType__c=='Picklist'}">
+                    <div class="slds-page-header" id="headerAnswer-{!actualQuestion.question.Name}" value="{!actualQuestion.question.Name}">{!$Label[actualQuestion.question.Name]}</div>
+                    <div class="slds-form-element__control">
+                      <div class="slds-select_container">
+                        <apex:selectList value="{!actualQuestion.answer.CRAN_VEC_ADV_T_Answer__c}" styleClass="slds-select" >
+                          <apex:selectOptions value="{!lstSelectOption}" />
+                        </apex:selectList>
+                      </div>
+                    </div>
+                  </apex:outputPanel>
+                  <apex:outputPanel rendered="{!actualQuestion.answer.CRAN_VEC_ADV_MD_Question__r.CRAN_VEC_ADV_P_AnswerType__c=='Number'}">
+                    <div class="slds-page-header" id="headerAnswer-{!actualQuestion.question.Name}" value="{!actualQuestion.question.Name}">{!$Label[actualQuestion.question.Name]}</div>
+                    <div class="slds-form-element" style="margin-top:10px;margin-left: 21%;width:50% !important">
+                      <div class="slds-form-element__control slds-input-has-fixed-addon">
+                        <div id="errorFormateoNumber" class="errorFormateoNumber" style="display:none;color:red;" >{!$Label["CRAN_VEC_ADV_CF_MSG_NUMBER_INVALID"]}</div>
+                        <apex:inputText onchange="onchangeNumber(this,event);" value="{!actualQuestion.answer.CRAN_VEC_ADV_T_Answer__c}" id="text-input-01" styleClass="slds-input"/>
+                        <span class="slds-form-element__addon">€</span>
+                      </div>
+                    </div>
+                  </apex:outputPanel>
+                  <apex:outputPanel rendered="{!actualQuestion.answer.CRAN_VEC_ADV_MD_Question__r.CRAN_VEC_ADV_P_AnswerType__c=='Text'}">
+                    <div class="slds-page-header" id="headerAnswer-{!actualQuestion.question.Name}" value="{!actualQuestion.question.Name}">{!$Label[actualQuestion.question.Name]}</div>
+                    <div class="slds-form-element" style="margin-top:10px;margin-left: 21%;width:50% !important">
+                      <div class="slds-form-element__control slds-input-has-fixed-addon">
+                        <apex:inputText value="{!actualQuestion.answer.CRAN_VEC_ADV_T_Answer__c}" id="text-input-02" styleClass="slds-input"/>
+                      </div>
+                    </div>
+                  </apex:outputPanel>
+                  <apex:outputPanel rendered="{!actualQuestion.answer.CRAN_VEC_ADV_MD_Question__r.CRAN_VEC_ADV_P_AnswerType__c=='Multipicklist'}">
+                    <div class="slds-page-header" id="headerAnswer-{!actualQuestion.question.Name}" value="{!actualQuestion.question.Name}">{!$Label[actualQuestion.question.Name]}</div>
+                    <div class="slds-form-element__control">
+                      <div class="slds-select_container">
+                        <apex:selectList value="{!multiPickValue}" multiselect="true" styleClass="slds-select" >
+                          <apex:selectOptions value="{!lstSelectOption}"/>
+                        </apex:selectList>
+                      </div>
+                    </div>
+                  </apex:outputPanel>
+                  <apex:outputPanel rendered="{!actualQuestion.answer.CRAN_VEC_ADV_MD_Question__r.CRAN_VEC_ADV_P_AnswerType__c=='Matrix'}">
+                    <div class="slds-page-header" id="headerAnswer-{!actualQuestion.question.Name}" value="{!actualQuestion.question.Name}">{!$Label[actualQuestion.question.Name]}</div>
+                    <table class="slds-table slds-table--bordered slds-table--cell-buffer slds-table--col-bordered slds-table--fixed-layout" style='border: 0.8px solid #d8dde6;'>
+                      <thead>
+                        <tr class="">
+                          <th scope="col" style="background: #F0F2CC">
+                            <div class="slds-truncate" id="flechaMatrixParent" title="{!$Label.CRAN_VEC_ADV_CF_EXPAND}">
+                              <img id="flechaMatrix" src="{!URLFOR($Resource.CRAN_VEC_ADV_slds, '/assets/icons/utility/expand_alt_60.png')}" onClick="javascript:onclickColapseMatrix();" style="height:20px!important;margin-left:39%;" />
+                            </div>
+                          </th>
+                          <apex:repeat value="{!matrixAnswers[0]}" var="columnas">
+                            <apex:repeat value="{!columnas.columnList}" var="cabeceras">
+                              <th scope="col" style="background: #F0F2CC;font-size:small;">
+                                <div class="slds-truncate" style="white-space: pre-wrap;" title="{!$label[cabeceras.headerName]}">{!$label[cabeceras.headerName]}</div>
+                              </th>
+                            </apex:repeat>
+                          </apex:repeat>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <apex:variable var="numCol" value="1"/>
+                        <apex:repeat value="{!matrixAnswers}" var="row">
+                          <tr>
+                            <th scope="row" style="background: #F0F2CC;font-size:small;" data-label="Opportunity Name">
+                              <div class="slds-truncate d" style="white-space: pre-wrap;" title="{!$label[row.questionText]}">{!$label[row.questionText]}</div>
+                            </th>
+                            <apex:repeat value="{!row.columnList}" var="col">
+                              <th scope="col">
+                                <div class="slds-truncate" title="Cloudhub">
+                                  <apex:variable value="{!numCol}" var="miNumCol"/>
+                                  <apex:outputPanel rendered="{!col.question.CRAN_VEC_ADV_P_Child_Type__c=='Picklist'&& actualQuestion.question.Name=='CRAN_VEC_ADV_CF_SUIV2PF_g2_q1'}">
+                                    <apex:selectList size="1"  onchange="javascript:onclickChange(this,{!miNumCol});" value="{!col.answer.CRAN_VEC_ADV_T_Answer__c}" styleClass="slds-select" >
+                                      <apex:selectOptions value="{!col.lstSelectOption}"/>
+                                    </apex:selectList>
+                                  </apex:outputPanel>
+                                  <apex:outputPanel rendered="{!col.question.CRAN_VEC_ADV_P_Child_Type__c=='Picklist'&& actualQuestion.question.Name!='CRAN_VEC_ADV_CF_SUIV2PF_g2_q1'}">
+                                    <apex:selectList size="1"   value="{!col.answer.CRAN_VEC_ADV_T_Answer__c}" styleClass="slds-select" >
+                                      <apex:selectOptions value="{!col.lstSelectOption}"/>
+                                    </apex:selectList>
+                                  </apex:outputPanel>
+                                  <apex:outputPanel rendered="{!col.question.CRAN_VEC_ADV_P_Child_Type__c=='Number'}">
+                                    <div class="slds-form-element">
+                                      <div class="slds-form-element__control slds-input-has-fixed-addon">
+                                        <apex:inputText value="{!col.answer.CRAN_VEC_ADV_T_Answer__c}" styleClass="slds-input"/>
+                                        <span class="slds-form-element__addon">€</span>
+                                      </div>
+                                    </div>
+                                  </apex:outputPanel>
+                                  <apex:outputPanel rendered="{!col.question.CRAN_VEC_ADV_P_Child_Type__c=='Text'}">
+                                    <div class="slds-form-element specialMatrixHidden">
+                                      <apex:inputText value="{!col.answer.CRAN_VEC_ADV_T_Answer__c}" styleClass="slds-input"/>
+                                    </div>
+                                  </apex:outputPanel>
+                                </div>
+                              </th>
+                            </apex:repeat>
+                          </tr>
+                          <apex:variable var="numCol" value="{!VALUE(numCol) + 1}"/>
+                        </apex:repeat>
+                      </tbody>
+                    </table>
+                  </apex:outputPanel>
+                </div>
+                <script type="text/javascript">
+                  /*
+                  En la matriz escpial g2_q1 oculta todos los campos tipo text salvo la ultima 
+                  */
+                  function hiddeSpecialMatrix(viewMode){
+                  
+                    //se repintan todas las secciones colapsadas y expando la pregunta seleccionada
+                    var idObjeto = {!iSection}; //para realizar prueba
+                    var buttonObject = document.getElementById('tree0-node0-button'+idObjeto);
+                    var sectionObject = document.getElementById('ul'+idObjeto);
+                    if(sectionObject) {
+                      if(sectionObject.className.includes('slds-is-collapsed')){
+                          $('#flecha'+idObjeto).attr("src","{!URLFOR($Resource.CRAN_VEC_ADV_slds, '/assets/icons/utility/chevrondown_60.png')}");
+                          sectionObject.className = sectionObject.className.replace('slds-is-collapsed', 'slds-is-expanded');
+                          buttonObject.setAttribute('aria-expanded','true');
+                      }
+                    }
+                                    
+                    if(viewMode == 'true'){
+                      //oculto los selects
+                  
+                      var hiddeSelect = document.getElementsByTagName("select");
+                      var numSelects = hiddeSelect.length;
+                  
+                      for(var i = 0; i<numSelects;i++){
+                        hiddeSelect[i].setAttribute("disabled", "true");
+                      }
+                  
+                      //oculto los input
+                      var hiddeInput = document.getElementsByTagName("input");
+                      var numInputs = hiddeInput.length;
+                  
+                      for(var i = 0; i<numInputs;i++){
+                        if(hiddeInput[i].className.includes('slds-input'))
+                           hiddeInput[i].setAttribute("disabled", "true");
+                      }      
+                  
+                    }else{
+                      var hiddeSelect = document.getElementsByTagName("select");
+                      var numSelects = hiddeSelect.length;
+                  
+                      for(var i = 0; i<numSelects;i++){
+                        hiddeSelect[i].removeAttribute("disabled");
+                      }
+                  
+                      //muesto los inputs los input
+                      var hiddeInput = document.getElementsByTagName("input");
+                      var numInputs = hiddeInput.length;
+                  
+                      for(var i = 0; i<numInputs;i++){
+                        if(hiddeInput[i].className.includes('slds-input'))
+                           hiddeInput[i].removeAttribute("disabled");
+                      }   
+                    }
+                  
+                    //En la matriz escpial g2_q1 oculta todos los campos tipo text salvo la ultima 
+                    var sectionObjectTemp = document.getElementById("headerAnswer-CRAN_VEC_ADV_CF_SUIV2PF_g2_q1");
+                    if(sectionObjectTemp){
+                      var elementsText= $('.specialMatrixHidden');
+                      
+                      elementsText[0].style.display='none';
+                      elementsText[1].style.display='none';
+                      elementsText[2].style.display='none';
+                  
+                      //modificar deshabilitar segun valor de desplegable
+                      if(elementsText[3].childNodes[0].value=="")
+                        elementsText[3].childNodes[0].setAttribute("disabled", "true"); 
+                  
+                      }
+                  
+                    var auxxx = document.getElementsByTagName("option");
+                    var numauxxxx = auxxx.length;
+                    for(var i = 0; i<numauxxxx;i++){
+                        auxxx[i].style.whiteSpace = 'pre-wrap';
+                      }
+                    }
+                </script>
+              </apex:outputPanel>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Fin Body -->
+      <!-- <apex:form id="button" style="padding-left:17.5px;">-->
+      <apex:outputPanel id="buttonCalculate" styleClass="button-container">
+        <div class="slds-page-header" id="footer">
+          <h4 class="slds-page-header__title slds-truncate" title="My Accounts">{!$Label.CRAN_VEC_ADV_CF_PROFILE_RESULT}</h4>
+          <div class="slds-grid">
+          </div>
+          <div class="slds-grid slds-has-divider--top">        
+            <apex:outputPanel rendered="{!(AND(viewMode == false,sendToDocuSign==false))}">
+              <div class="slds-col" style="margin-top: 4px;">
+                <apex:commandButton styleClass="slds-button slds-button--neutral" id="buttonCalcular" status="pleasewait" action="{!isFormCompleted}"  value="{!$Label.CRAN_VEC_ADV_CF_CALCULATE_PROFILE}" oncomplete="javascript:onCompleteForm();" reRender="formularioIdoneidad"/>
+                <!-- reRender="respuestaPerfilado,respuestaFechaFin,estadoFormulario,ErrorSuccessMessage,buttonCalculate,formularioIdoneidad"-->
+              </div>
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!(OR(viewMode,sendToDocuSign))}">
+              <div class="slds-col" style="margin-top: 4px;">
+                <apex:commandButton styleClass="slds-button slds-button--neutral" disabled="true" id="buttonCalculaDisabled" status="pleasewait" action="{!isFormCompleted}" value="{!$Label.CRAN_VEC_ADV_CF_CALCULATE_PROFILE}"/>
+                <!-- reRender="respuestaPerfilado,respuestaFechaFin,estadoFormulario,ErrorSuccessMessage,buttonCalculate" -->
+              </div>
+            </apex:outputPanel>
+            <!-- Boton verificar-->
+            <apex:outputPanel rendered="{!(OR(displayOk==false,signOk==false,viewMode))}">
+              <div class="slds-col" style="margin-left: 5px;margin-top: 4px;">
+                <apex:commandButton styleClass="slds-button slds-button--neutral" disabled="true" id="buttonVerificateDisabled" status="pleasewait" value="{!$Label.CRAN_VEC_ADV_CF_VERIFY_PROFILE}"/>
+              </div>
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!(AND(displayOk,signOk,viewMode==false))}">
+              <div class="slds-col" style="margin-left: 5px;margin-top: 4px;">
+                <apex:commandButton styleClass="slds-button slds-button--neutral" id="buttonVerificate" status="pleasewait" action="{!verificateFormComplete}" value="{!$Label.CRAN_VEC_ADV_CF_VERIFY_PROFILE}" oncomplete="javascript:onValidateForm();" reRender="formularioIdoneidad"/>
+                <!-- reRender="respuestaPerfilado,respuestaFechaFin,estadoFormulario,ErrorSuccessMessage,buttonCalculate" -->
+              </div>
+            </apex:outputPanel>
+            <!-- Fin boton verificar -->
+            <!-- Boton firmar-->
+            <apex:outputPanel rendered="{!(OR(AND(OR(AND(displayOk==false,signOk==false),AND(displayOk,signOk)),viewMode==false),AND(displayOk,signOk,viewMode,signNext)))}">
+              <div class="slds-col" style="margin-left: 5px;margin-top: 4px;">
+                <apex:commandButton styleClass="slds-button slds-button--neutral" disabled="true" id="buttonSignDisabled" status="pleasewait" value="{!$Label.CRAN_VEC_ADV_CF_SIGN_PROFILE}"/>
+              </div>
+            </apex:outputPanel>
+              <!-- se encarga de redireccionar al documento de la firma -->
+			<script type="text/javascript">
+              function openSignatureUrl() {
+                  if ("{!signingUrl}" != "")                    
+                      document.getElementById('aRedirect').click();
+
+              }
+              </script>      
+              <a href="{!signingUrl}"  style="display: none" id="aRedirect" target="_blank"></a>
+             <apex:outputPanel id="button" rendered="{!(AND(signOk,viewMode,signNext==false))}">
+                  <div class="slds-col" style="margin-left: 5px;margin-top: 4px;">
+                      <apex:commandButton styleClass="slds-button slds-button--neutral" id="buttonSign" status="pleasewait" value="{!$Label.CRAN_VEC_ADV_CF_SIGN_PROFILE}" onComplete="getMobilePhoneInfo(); return false;" />  
+                  </div>
+              </apex:outputPanel>  
+             <!-- Fin boton firmar-->
+            <div class="slds-col">
+              <apex:outputPanel id="respuestaPerfilado" rendered="{!perfilPage != null}">
+                <p class="slds-text-body--small page-header__info" style=" margin-top: 16px;">
+                  <span class="slds-badge slds-theme--success" style="margin-left:35%;">            
+                  {!perfilPage}
+                  </span>
+                </p>
+              </apex:outputPanel>
+            </div>
+          </div>
+        </div>
+        <apex:actionFunction name="callOnCompleteForm" status="pleasewait" action="{!calculateProfile}" reRender="panelFieldHeader,respuestaPerfilado,ErrorSuccessMessage,panelAnswer,buttonCalculate" onComplete="hiddeSpecialMatrix('{!viewMode}')"/>
+        <apex:actionFunction name="callOnValidateForm" status="pleasewait" reRender="panelFieldHeader,respuestaPerfilado,ErrorSuccessMessage,buttonCalculate,panelAnswer" onComplete="hiddeSpecialMatrix('{!viewMode}')"/>
+      </apex:outputPanel>
+      <script type="text/javascript">
+        function onCompleteForm(){
+          callOnCompleteForm() ;
+        }
+        
+        function onValidateForm(){
+          
+          callOnValidateForm() ;
+        }
+      </script>
+    <!-- Modal to confirm Signature Data -->
+    <div role="dialog" tabindex="-1" id="signatureModal" class="slds-modal">
+        <div class="slds-modal__container">
+            <div class="slds-modal__header">
+              <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick="closeSignatureModal(); return false;">
+              <img  src="{!URLFOR($Resource.CRAN_VEC_ADV_slds, '/assets/icons/action/close_60.png')}" style="width: 24px; height: 24px;"/>
+              <span class="slds-assistive-text">Close</span>
+              </button>
+              <h2 class="slds-text-heading--medium">{!$Label.CRAN_VAS_KER_SignatureInformation}</h2>
+            </div>
+            <div class="slds-modal__content slds-p-around--medium">
+                <p>
+                  {!$Label.CRAN_VAS_KER_SigningConfirmation}
+                </p>            
+                <div id="phoneNumberContent" class="phone-number-content">
+                </div> 	
+            </div>
+            <div class="slds-modal__footer">
+                <button class="slds-button slds-button--neutral" onclick="closeSignatureModal(); return false;">Cancel</button>
+                <apex:commandButton styleClass="slds-button slds-button--brand" id="confirmSign" status="pleasewait" action="{!signProfile}" value="Ok" onComplete="closeSignatureModal();openSignatureUrl();" reRender="buttonCalculate, ErrorSuccessMessage" />  
+            </div>
+        </div>
+    </div>
+    <div class="slds-backdrop " id="dialogBack"></div>  
+    </apex:form>
+    <script type="text/javascript">
+      function onclickPicklist(idObjeto){
+        var el = document.getElementById(idObjeto);
+        if(el) {
+          if(el.className.includes('slds-is-open')){
+            el.className = el.className.replace('slds-is-open', 'slds-is-close');
+          }else{
+            if(el.className.includes('slds-is-close')){
+              el.className = el.className.replace('slds-is-close', 'slds-is-open');
+            }else{
+              el.className += el.className ? ' slds-is-open' : 'slds-is-open';
+            }
+          }
+        }
+        return false;
+      }
+      
+      function onclickColapse(idObjeto){
+        var buttonObject = document.getElementById('tree0-node0-button'+idObjeto);
+        var sectionObject = document.getElementById('ul'+idObjeto);
+        if(sectionObject) {
+          if(sectionObject.className.includes('slds-is-expanded')){
+                $('#flecha'+idObjeto).attr("src","{!URLFOR($Resource.CRAN_VEC_ADV_slds, '/assets/icons/utility/chevronright_60.png')}");
+            sectionObject.className = sectionObject.className.replace('slds-is-expanded', 'slds-is-collapsed');
+                buttonObject.setAttribute('aria-expanded','false');
+                //lisExpanded[idObjeto]=false;
+          }else{
+            if(sectionObject.className.includes('slds-is-collapsed')){
+                $('#flecha'+idObjeto).attr("src","{!URLFOR($Resource.CRAN_VEC_ADV_slds, '/assets/icons/utility/chevrondown_60.png')}");
+              sectionObject.className = sectionObject.className.replace('slds-is-collapsed', 'slds-is-expanded');
+                buttonObject.setAttribute('aria-expanded','true');
+                //lisExpanded[idObjeto]=true;
+            }else{
+                $('#flecha'+idObjeto).attr("src","{!URLFOR($Resource.CRAN_VEC_ADV_slds, '/assets/icons/utility/chevrondown_60.png')}");
+              sectionObject.className += sectionObject.className ? ' slds-is-expanded' : 'slds-is-expanded';
+                buttonObject.setAttribute('aria-expanded','true');
+                //lisExpanded[idObjeto]=true;
+            }
+          }
+        }
+      
+        return false;
+      }
+      
+      
+      function onclickColapseHeader(){
+        
+        var sectionObject = document.getElementById('cabeceraCollapse');
+        //var buttonObject = document.getElementById('tree0-node0-button'+idObjeto);
+      
+        if(sectionObject) {
+           if(sectionObject.className.includes('slds-is-expanded')){
+                $('#imgCabecera').attr("src","{!URLFOR($Resource.CRAN_VEC_ADV_slds, '/assets/icons/utility/chevronright_60.png')}");
+                sectionObject.className = sectionObject.className.replace('slds-is-expanded', 'slds-is-collapsed');
+                //buttonObject.setAttribute('aria-expanded','false');
+            } else{
+              if(sectionObject.className.includes('slds-is-collapsed')){
+                $('#imgCabecera').attr("src","{!URLFOR($Resource.CRAN_VEC_ADV_slds, '/assets/icons/utility/chevrondown_60.png')}");
+                sectionObject.className = sectionObject.className.replace('slds-is-collapsed', 'slds-is-expanded');
+      
+            }
+          }
+        }    
+      
+      }
+      
+      
+      /*
+      Colapsa la seccion
+      */
+      function onclickColapseMatrix(){
+        var buttonObject = document.getElementById('colapsarMatriz');
+        var footer =document.getElementById('footer');
+        if(buttonObject.className.includes('expandido')){
+          buttonObject.style.display='none';
+          footer.style.display='none';
+          buttonObject.className = buttonObject.className.replace('expandido', 'colapsado');
+          $('#flechaMatrix').attr("src","{!URLFOR($Resource.CRAN_VEC_ADV_slds, '/assets/icons/utility/contract_alt_60.png')}");
+          $('#flechaMatrixParent').attr("title","{!$Label.CRAN_VEC_ADV_CF_Collapse}");
+      
+        }else{
+          buttonObject.className = buttonObject.className.replace('colapsado', 'expandido');
+          footer.style.display='block';
+          buttonObject.style.display='block';
+          $('#flechaMatrix').attr("src","{!URLFOR($Resource.CRAN_VEC_ADV_slds, '/assets/icons/utility/expand_alt_60.png')}");
+          $('#flechaMatrixParent').attr("title","{!$Label.CRAN_VEC_ADV_CF_EXPAND}");
+        }
+        return false;
+      }
+      
+      
+      
+      window.onload=function(){
+        /*if({!viewMode==false}){    
+          $('.slds-button--neutral').attr("disabled","true");
+        }*/
+        document.getElementById('ul0').className ='slds-is-expanded';
+        $('#flecha0').attr("src","{!URLFOR($Resource.CRAN_VEC_ADV_slds, '/assets/icons/utility/chevrondown_60.png')}");
+      };
+      
+      function onclickChange(myObject, myNumCol){
+       var temp = myObject;
+       var elementsText= $('.specialMatrixHidden');
+       if(myNumCol=='4' && (temp.selectedIndex=="0" || temp.selectedIndex=="2")){
+          elementsText[3].childNodes[0].value = ""; 
+          elementsText[3].childNodes[0].setAttribute("disabled", "true"); 
+        } else{
+          if(myNumCol=='4')
+            elementsText[3].childNodes[0].removeAttribute("disabled"); 
+        }
+      }
+      
+      
+      // filtra en el campo de euros para no meter otros caracteres y formatea con puntos
+      function onchangeNumber(object,e){
+      var num = object.value;
+      //num = num.replace('.','');
+      num= num.split('.').join('');
+      
+      
+      var myElement = $('.errorFormateoNumber');
+      if(!isNaN(num)){
+        num = num.toString().split('').reverse().join('').replace(/(?=\d*\.?)(\d{3})/g,'$1.');
+        num = num.split('').reverse().join('').replace(/^[\.]/,'');
+        object.value = num;
+        if(myElement.css("display") == 'block'){
+            myElement.css("display","none");
+            myElement.parent().parent().removeClass("slds-has-error");
+        }
+      }else{
+          object.value=""; 
+          myElement.css("display", "block")
+          myElement.parent().parent().addClass("slds-has-error");
+      }
+      
+      
+      
+      }
+      
+      
+      function onclickCloseMessage(id){
+      var buttonObject = document.getElementById(id);
+      buttonObject.style.display='none';
+      }
+      
+	function closeSignatureModal() {
+        $("#signatureModal").removeClass("slds-fade-in-open");
+        $("#dialogBack").removeClass("slds-fade-in-open");
+    }
+    
+    function getMobilePhoneInfo() {
+      var recId = "{!formId}";
+
+      // This remoting call will use the page's timeout value
+      Visualforce.remoting.Manager.invokeAction(
+          '{!$RemoteAction.CRAN_VEC_ADV_CustomForm_CTR.getMobilePhoneInfo}',
+          recId, 
+          handleResult
+      );
+    }
+
+    function handleResult(result, event) { 
+
+      var $toastMessage = $("#signatureToast");
+
+      if ($toastMessage.length == 0) {
+        $toastMessage =  $("<div>" +
+                "<div class=\"slds-notify_container\" id=\"signatureToast\">" +
+                " <div class=\"slds-notify slds-notify--alert slds-theme--error slds-theme--alert-texture\" id=\"msgError\" style=\"display:none;\" role=\"alert\">" +
+                "   <button class=\"slds-button slds-notify__close slds-button--icon-inverse\" type=\"button\" onClick=\"javascript:onclickCloseMessage('msgError');\">" +
+                "     <img  src=\"{!URLFOR($Resource.CRAN_VEC_ADV_slds, '/assets/icons/action/close_60.png')}\" style=\"width:17px;\" />" +
+                "     <span class=\"slds-assistive-text\">Close</span>" +
+                "   </button>" +
+                "   <span class=\"slds-assistive-text\">Error</span>" +
+                "     <h2>" +
+                "       <svg aria-hidden=\"true\" class=\"slds-icon slds-icon--small slds-m-right--x-small\">" +
+                "       <use xlink:href=\"{!URLFOR($Resource.CRAN_VEC_ADV_slds, '/assets/icons/utility-sprite/svg/symbols.svg#ban')}\"></use>" +
+                "       </svg>" +
+                "       <span class=\"error-message\"></span>" +
+                "     </h2>" +
+                " </div>" +
+                "</div>" +
+                "</div>");
+        $("[id$=ErrorSuccessMessage]").append($toastMessage);
+      }
+
+
+      if (event.status) {
+
+        var phones = result;
+        var htmlContent = '';
+        
+        for (var key in phones) {
+            htmlContent += '<h2 class="slds-text-heading--small">' + key + '</h2><div class="slds-text-body--regular slds-text-color--weak slds-m-bottom--small"> Mobile: ' + phones[key] + '</div>';
+        }
+        
+        $("#phoneNumberContent").html(htmlContent);
+    
+        $("#signatureModal").addClass("slds-fade-in-open");
+        $("#dialogBack").addClass("slds-fade-in-open");
+
+      } else {
+        var errors = event.message;
+        $("[id$=ErrorSuccessMessage] .slds-notify").hide();
+        $toastMessage.find(".error-message").text(errors);
+        $toastMessage.find("#msgError").show();
+      }
+    }
+
+      
+    </script>
+  </html>
+</apex:page>

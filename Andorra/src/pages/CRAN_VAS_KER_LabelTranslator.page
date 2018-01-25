@@ -1,0 +1,6 @@
+<apex:page controller="CRAN_VAS_KER_LabelTranslator_CTR"
+    contentType="application/json" showHeader="false" sidebar="false"
+    language="{!label_lang}"      
+    standardStylesheets="false">
+{!$Label[label]}
+</apex:page>

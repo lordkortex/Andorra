@@ -1,0 +1,55 @@
+<aura:component controller="CRAN_VAS_KER_FilterRelatedList_AUC" implements="flexipage:availableForAllPageTypes,force:hasRecordId,force:hasSObjectName" access="global" >
+    
+    <aura:attribute name="listView" 				type="String"									/> 
+    <aura:attribute name="displayLimit" 			type="String" 	default="6"						/>
+    <aura:attribute name="parentFieldApiName"		type="String" 			 						/>    
+    <aura:attribute name="strFieldApiNames"			type="String" 		 							/>      
+    <aura:attribute name="childFieldApiName"		type="String" 	required="true"					/>
+    <aura:attribute name="recordId" 				type="Id" 										/>
+    <aura:attribute name="recordTypesAvailable" 	type="List"										/>
+    <aura:attribute name="title" 					type="String" 									/>
+    <aura:attribute name="iconName" 				type="String" 									/>
+	<aura:attribute name="sObjectApiName"			type="String" 									/>
+	<aura:attribute name="showTableActionButtons" 	type="Boolean" />
+    <aura:attribute name="showNewButton"		 	type="Boolean" default="false"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler event="force:refreshView" action="{!c.doInit}" />
+    <aura:handler event="force:showToast" action="{!c.doInit}" />
+    <aura:handler name="evtDatatablesInfo" event="c:CRAN_VAS_KER_DatatablesEventInfo"  action="{!c.updateDatatablesInfo}" />   
+    
+    <lightning:card iconName="{!v.iconName}">
+        <aura:set attribute="title">
+            {!v.title} (<span aura:id="resultSize">0</span>)
+        </aura:set>
+        <aura:set attribute="actions">
+        	<div aura:id="newButtonContainer">
+      		</div>
+        </aura:set>
+        <p class="slds-p-horizontal--small"> 
+            <div aura:id="filterListViewContainer"></div>
+        </p>
+    </lightning:card>        
+    
+    <!-- Modal New Dialog -->
+    <div role="dialog" tabindex="-1" aura:id="newDialog" aria-labelledby="header43" class="slds-modal ">
+        <div class="slds-modal__container">
+            <div class="slds-modal__header">
+                <h2 id="header43" class="slds-text-heading--medium">{!$Label.FinServ.Button_Label_New}</h2>
+            </div>
+            <div class="slds-modal__content slds-p-around--medium">
+                <ui:inputSelect class="slds-select_container myselector" label="{!$Label.c.CRAN_VAS_ADV_CF_LBL_SelectRT}" aura:id="selectedRT">                                        
+                    <aura:iteration var="rt" items="{!v.recordTypesAvailable}" indexVar="index">
+                        <ui:inputSelectOption class="slds-select" text="{!rt.value}" label="{!rt.key}" />                                           
+                    </aura:iteration>
+                </ui:inputSelect>
+            </div>
+            <div class="slds-modal__footer">
+                <lightning:button label="{!$Label.FinServ.Button_Label_Cancel}" onclick="{!c.closeNewModal}"/>
+                <lightning:button variant="brand" label="{!$Label.FinServ.Button_Label_New}" onclick="{!c.createRecord}"/>
+            </div>
+        </div>
+    </div>
+    <div class="slds-backdrop " aura:id="newDialog-Back"></div>
+    
+</aura:component>

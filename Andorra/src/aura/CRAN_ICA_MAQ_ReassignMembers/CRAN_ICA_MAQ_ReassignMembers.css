@@ -1,0 +1,9 @@
+.THIS {
+}
+
+.THIS.responsiveCard h2 {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    margin-right: 1em
+}

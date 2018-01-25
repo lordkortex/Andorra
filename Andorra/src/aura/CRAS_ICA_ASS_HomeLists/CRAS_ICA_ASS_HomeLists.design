@@ -1,0 +1,4 @@
+<design:component >
+	<design:attribute name="limitList" label="Number of Records" />
+    <design:attribute name="RelatedList" label="Related List" datasource="Policies with unpaid invoices,Policies with pending authorization" />
+</design:component>

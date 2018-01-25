@@ -1,0 +1,16 @@
+<aura:component implements="flexipage:availableForAllPageTypes,force:hasRecordId" controller="CRAN_VAS_ADV_BPDrillDown_AUC" access="global">
+    <!-- Id of the first level object -->
+    <aura:attribute name="recordId" type="String" />
+    <ui:spinner aura:id="spinner" />
+    <aura:handler event="aura:locationChange" action="{!c.forceReload}"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <ltng:require styles="{!$Resource.BootstrapSF1_0_1_0 + '/dist/css/bootstrap-namespaced.min.css'}"
+                  scripts="{!join(',', $Resource.jQuery3,
+                           $Resource.Bootstrap_3_3_7 + '/js/bootstrap.min.js')}"
+                  afterScriptsLoaded="{!c.loadBPs}" />
+    <div aura:id="bpContainer" class="bootstrap-sf1 slds-box slds-hidden">
+        <div id="accordion1" role="tablist" aria-multiselectable="true">
+            <div class="slds-text-heading--medium slds-m-left--medium">{!$Label.c.CRAN_VAS_ADV_CF_LBL_PortifolioSummary}</div>
+        </div>
+    </div>
+</aura:component>

@@ -1,0 +1,36 @@
+<aura:component implements="flexipage:availableForAllPageTypes,force:hasRecordId" 
+                access="global"
+                controller="CRAS_ICA_ASS_CAHController_AUC">
+    
+    <aura:attribute name="Claim_Data" type="CRAS_ICA_ASS_ClaimAmountHistory__c"/>
+    <aura:attribute name="Claim_Labels" type="CRAS_ICA_ASS_SFField_OBJ[]"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <div class="slds-page-header-custom">
+        <div class="slds-page-header-fixed" aura:id="changeIt">
+            <!--<lightning:spinner aura:id="loadCLSpinner" variant="brand" size="medium" />-->
+            <ul class="slds-grid slds-page-header__detail-row">        
+                <li class="slds-page-header__detail-block">
+                    <p class="slds-text-title slds-truncate slds-m-bottom--xx-small" title="{!v.Claim_Labels.Label}">{!v.Claim_Labels[0].Label}</p>
+                    <p class="slds-text-body--regular slds-truncate">{!v.Claim_Data.CRAS_ICA_ASS_N_Year__c}</p>
+                </li>
+                
+                <li class="slds-page-header__detail-block">
+                    <p class="slds-text-title slds-truncate slds-m-bottom--xx-small" title="{!v.Claim_Labels[1].Label}">{!v.Claim_Labels[1].Label}</p>
+                    <p class="slds-text-body--regular slds-truncate"><ui:outputCurrency value="{!v.Claim_Data.CRAS_ICA_ASS_C_TotalNaturalYear__c}" currencyCode="{!v.Claim_Data.CurrencyIsoCode}" /></p>
+                </li>
+                
+                <li class="slds-page-header__detail-block">
+                    <p class="slds-text-title slds-truncate slds-m-bottom--xx-small" title="{!v.Claim_Labels[2].Label}">{!v.Claim_Labels[2].Label}</p>
+                    <p class="slds-text-body--regular slds-truncate" title="{!v.Claim_Data.CRAS_ICA_ASS_L_Role__r.FinServ__RelatedContact__r.FirstName + ' ' + v.Claim_Data.CRAS_ICA_ASS_L_Role__r.FinServ__RelatedContact__r.LastName}"><a href="{! '#/sObject/' + v.Claim_Data.CRAS_ICA_ASS_L_Role__r.FinServ__RelatedContact__r.Id + '/view'}">{!v.Claim_Data.CRAS_ICA_ASS_L_Role__r.FinServ__RelatedContact__r.FirstName + ' ' + v.Claim_Data.CRAS_ICA_ASS_L_Role__r.FinServ__RelatedContact__r.LastName}</a></p>
+                </li>
+                
+                <li class="slds-page-header__detail-block">
+                    <p class="slds-text-title slds-truncate slds-m-bottom--xx-small" title="{!v.Claim_Labels[3].Label}">{!v.Claim_Labels[3].Label}</p>
+                    <p class="slds-text-body--regular slds-truncate" title="{!v.Claim_Data.CRAS_ICA_ASS_L_Role__r.FinServ__FinancialAccount__r.Name}"><a href="{! '#/sObject/' + v.Claim_Data.CRAS_ICA_ASS_L_Role__r.FinServ__FinancialAccount__r.Id + '/view'}">{!v.Claim_Data.CRAS_ICA_ASS_L_Role__r.FinServ__FinancialAccount__r.Name}</a></p>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+</aura:component>

@@ -1,0 +1,47 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,force:hasRecordId,force:hasSObjectName"  
+                controller="CRAN_VAS_ADV_PageHeader_AUC" access="global" >    
+	<!-- input -->
+	<aura:attribute name="recordId" type="Id" />
+    <!-- output -->
+    <aura:attribute name="myRecordType" type="String" />       
+    <aura:attribute name="response" type="List" />
+    
+    <!-- OBJECT Fields, Icon and Icon Category By Record Type -->
+    <aura:attribute name="fieldsByRT" type="String" default="" />
+                             
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+    <div>        
+        <div class="slds-m-left--medium">  
+            <div class="slds-col slds-has-flexi-truncate">
+                <ul class="slds-grid slds-page-header__detail-row">
+                    <aura:iteration items="{!v.response}" var="res">                                               
+                        <li class="slds-page-header__detail-block marg-lft">
+                            <p class="slds-text-title slds-truncate slds-m-bottom--xx-small txt-bold" title="{!res.label}">            
+                                <ui:outputText value="{!res.label}"/>          
+                            </p>
+                            <p class="slds-text-body--regular slds-truncate" title="">
+                                <aura:if isTrue="{!res.iconName != ''}">
+                                    <div class="div-icon slds-float--left">
+                                        <lightning:icon iconName="{!res.iconCategory+'.'+res.iconName}" size="small" alternativeText=""/>                                        
+                                    </div>               
+                                </aura:if>
+                                <div class="div-icon-content slds-float--left"> 
+                                    <aura:if isTrue="{!res.fieldType=='BOOLEAN'}" >                                       
+                                        <span class="uiImage uiOutputCheckbox" data-aura-class="uiImage uiOutputCheckbox">
+                                            <img src="/auraFW/resources/aura/s.gif" class="{!res.value=='true'?'checked':'unchecked'}" />
+                                        </span>  
+                                        <aura:set attribute="else">	
+                                            <ui:outputText value="{!res.value}"/>
+                                        </aura:set>
+                                    </aura:if>
+                                </div>
+                            </p>
+                        </li>
+                    </aura:iteration>
+                </ul>
+            </div>
+        </div>        
+    </div>
+
+</aura:component>

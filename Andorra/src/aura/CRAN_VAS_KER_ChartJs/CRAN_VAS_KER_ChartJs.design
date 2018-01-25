@@ -1,0 +1,3 @@
+<design:component >
+    <design:attribute name="apexDataProvider" label="Apex Data Provider" description="Name of the Apex Class which provides JSON data to draw chart. As for JSON data format refer to http://www.chartjs.org" />
+</design:component>

@@ -1,0 +1,109 @@
+<aura:component implements="flexipage:availableForAllPageTypes,force:hasRecordId" 
+                access="global"
+                controller="CRAS_ICA_ASS_FAController_AUC">
+    
+    <aura:attribute name="Fin_Account_Data" type="FinServ__FinancialAccount__c"/>
+    <aura:attribute name="Fin_Account_Fields" type="CRAS_ICA_ASS_SFField_OBJ[]"/>
+    <aura:attribute name="PH" type="SObject"/>
+    <aura:attribute name="IsValid" type="Boolean" default="false"/>
+    <aura:attribute name="IsCanceled" type="Boolean" default="false"/>
+    <aura:attribute name="IsReduced" type="Boolean" default="false"/>
+    <aura:attribute name="IsHeld" type="Boolean" default="false"/>
+    <aura:attribute name="IsNew" type="Boolean" default="false"/>
+    <aura:attribute name="IsInvoiceValid" type="Boolean" default="true"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <div class="slds-page-header-custom">
+        <div class="slds-page-header-fixed" aura:id="changeIt">
+            <!--<lightning:spinner aura:id="loadCLSpinner" variant="brand" size="medium" />-->
+            <ul class="slds-grid slds-page-header__detail-row">        
+                <li class="slds-page-header__detail-block">
+                    <p class="slds-text-title slds-truncate slds-m-bottom--xx-small" title="{!v.Fin_Account_Fields[0].Label}">{!v.Fin_Account_Fields[0].Label}</p>
+                    <p class="slds-text-body--regular slds-truncate">{!v.Fin_Account_Data.FinServ__FinancialAccount__r.FinServ__FinancialAccountNumber__c}</p>
+                </li>
+                <aura:if isTrue="{! !v.IsNew}">
+                    <li class="slds-page-header__detail-block">
+                        <p class="slds-text-title slds-truncate slds-m-bottom--xx-small" title="{!v.Fin_Account_Fields[1].Label}">{!v.Fin_Account_Fields[1].Label}</p>
+                        <p class="slds-text-body--regular slds-truncate">{!v.Fin_Account_Data.FinServ__FinancialAccount__r.CRAN_VEC_ADV_P_PFMMkt__c}</p>
+                    </li>
+                </aura:if>
+                
+                <li class="slds-page-header__detail-block">
+                    <p class="slds-text-title slds-truncate slds-m-bottom--xx-small" title="{!v.Fin_Account_Fields[7].Label}">{!v.Fin_Account_Fields[7].Label}</p>
+                    <p class="slds-text-body--regular slds-truncate" title="{!v.PH.Name}"><a href="{! '#/sObject/' + v.PH.Id + '/view'}">{!v.PH.Name}</a></p>
+                </li>
+                
+                <aura:if isTrue="{!v.Fin_Account_Data.FinServ__Securities__r.CRAN_VEC_ADV_P_PFMMkt__c == '804131ASS'}">
+                    <li class="slds-page-header__detail-block">
+                        <p class="slds-text-title slds-truncate slds-m-bottom--xx-small" title="{!v.Fin_Account_Fields[2].Label}">{!v.Fin_Account_Fields[2].Label}</p>
+                        <p class="slds-text-body--regular slds-truncate"><ui:outputCurrency value="{!v.Fin_Account_Data.FinServ__FinancialAccount__r.CRAS_ICA_ASS_C_SumaAport__c}" currencyCode="{!v.Fin_Account_Data.FinServ__FinancialAccount__r.CurrencyIsoCode}" /></p>
+                    </li>
+                </aura:if>
+                <li class="slds-page-header__detail-block">
+                    <p class="slds-text-title slds-truncate slds-m-bottom--xx-small" title="{!v.Fin_Account_Fields[3].Label}">{!v.Fin_Account_Fields[3].Label}</p>
+                    <p class="slds-text-body--regular slds-truncate"><ui:outputCurrency value="{!v.Fin_Account_Data.FinServ__FinancialAccount__r.CRAS_ICA_ASS_C_PrimaAnual__c}" currencyCode="{!v.Fin_Account_Data.FinServ__FinancialAccount__r.CurrencyIsoCode}" /></p>
+                </li>
+                <li class="slds-page-header__detail-block">
+                    <p class="slds-text-title slds-truncate slds-m-bottom--xx-small" title="{!v.Fin_Account_Fields[4].Label}">{!v.Fin_Account_Fields[4].Label}</p>
+                    <p class="slds-text-body--regular slds-truncate slds-badge--h">
+                        <aura:if isTrue="{!v.IsValid}">
+                            <span class="slds-badge slds-bg--green">{!v.Fin_Account_Data.FinServ__FinancialAccount__r.FinServ__Status__c}</span>
+                            <aura:set attribute="else">
+                                <aura:if isTrue="{!v.IsCanceled}">
+                                    <span class="slds-badge slds-bg--red">{!v.Fin_Account_Data.FinServ__FinancialAccount__r.FinServ__Status__c}</span>
+                                    <aura:set attribute="else">
+                                        <aura:if isTrue="{!v.IsReduced}">
+                                            <span class="slds-badge slds-bg--orange">{!v.Fin_Account_Data.FinServ__FinancialAccount__r.FinServ__Status__c}</span>
+                                            <aura:set attribute="else">
+                                                <aura:if isTrue="{!v.IsHeld}">
+                                                    <span class="slds-badge slds-bg--yellow">{!v.Fin_Account_Data.FinServ__FinancialAccount__r.FinServ__Status__c}</span>
+                                                    <aura:set attribute="else">
+                                                        <aura:if isTrue="{!v.IsNew}">
+                                                            <span class="slds-badge slds-bg--blue">{!v.Fin_Account_Data.FinServ__FinancialAccount__r.FinServ__Status__c}</span>
+                                                        </aura:if>
+                                                    </aura:set>
+                                                </aura:if>
+                                            </aura:set>
+                                        </aura:if>
+                                    </aura:set>
+                                </aura:if>
+                            </aura:set>
+                            
+                        </aura:if>
+                    </p>
+                </li>
+                <li class="slds-page-header__detail-block">
+                    <p class="slds-text-title slds-truncate slds-m-bottom--xx-small" title="{!v.Fin_Account_Fields[5].Label}">{!v.Fin_Account_Fields[5].Label}</p>
+                    <p class="slds-text-body--regular slds-truncate slds-badge--h">
+                        <aura:if isTrue="{!v.IsInvoiceValid}">
+                            <span class="slds-badge slds-bg--green">{!v.Fin_Account_Data.FinServ__FinancialAccount__r.CRAS_ICA_ASS_Invoices_Status__c}</span>
+                            <aura:set attribute="else">
+                                <span class="slds-badge slds-bg--red">{!v.Fin_Account_Data.FinServ__FinancialAccount__r.CRAS_ICA_ASS_Invoices_Status__c}</span>
+                            </aura:set>
+                            
+                        </aura:if>
+                    </p>
+                </li>
+                <aura:if isTrue="{!v.Fin_Account_Data.FinServ__Securities__r.CRAN_VEC_ADV_P_PFMMkt__c != '804131ASS'}">
+                    <li>
+                        <p class="slds-text-title slds-truncate slds-m-bottom--xx-small" title="{!v.Fin_Account_Fields[6].Label}">{!v.Fin_Account_Fields[6].Label}</p>
+                        <p class="slds-text-body--regular slds-truncate slds-badge--h">
+                            <aura:if isTrue="{!v.Fin_Account_Data.FinServ__Securities__r.CRAS_ICA_ASS_P_BenchmarkGreen__c >= v.Fin_Account_Data.FinServ__FinancialAccount__r.CRAS_ICA_ASS_PE_PctSiniestralidad__c}">
+                                <span class="slds-badge slds-bg--benchgreen"><ui:outputNumber value="{!v.Fin_Account_Data.FinServ__FinancialAccount__r.CRAS_ICA_ASS_PE_PctSiniestralidad__c}" format="0.00"/> %</span>
+                                <aura:set attribute="else">
+                                    <aura:if isTrue="{!v.Fin_Account_Data.FinServ__Securities__r.CRAS_ICA_ASS_P_BenchmarkYellow__c >= v.Fin_Account_Data.FinServ__FinancialAccount__r.CRAS_ICA_ASS_PE_PctSiniestralidad__c}">
+                                        <span class="slds-badge slds-bg--benchyellow"><ui:outputNumber value="{!v.Fin_Account_Data.FinServ__FinancialAccount__r.CRAS_ICA_ASS_PE_PctSiniestralidad__c}" format="0.00"/> %</span>
+                                        <aura:set attribute="else">
+                                            <span class="slds-badge slds-bg--benchred"><ui:outputNumber value="{!v.Fin_Account_Data.FinServ__FinancialAccount__r.CRAS_ICA_ASS_PE_PctSiniestralidad__c}" format="0.00"/> %</span>
+                                        </aura:set>
+                                    </aura:if>
+                                </aura:set>
+                            </aura:if>
+                        </p>
+                    </li>
+                </aura:if>
+            </ul>
+        </div>
+    </div>
+    
+</aura:component>

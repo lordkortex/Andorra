@@ -1,0 +1,34 @@
+<aura:component controller="CRAN_VAS_MAQ_ListSales_AUC" implements="flexipage:availableForAllPageTypes">
+	<aura:handler name="init" action="{!c.listSales}" value="{!this}"></aura:handler>
+    <aura:attribute name="oppts" type="Opportunity[]"></aura:attribute>
+  	<aura:attribute name="viewAllId" type="String"></aura:attribute>
+   
+   <lightning:card iconName="standard:opportunity">
+        <aura:set attribute="title">{!$Label.c.CRAN_VAS_MAQ_ListSalesTitle}</aura:set>
+		<div class="slds-card__body">
+			<div class="slds-card__body--inner">
+      			<aura:iteration items="{!v.oppts}" var="item">  
+				<div class="slds-tile">
+                    <h3 class="slds-truncate" title="Related Record Title 1"><a href="{!'/one/one.app?#/sObject/'+ item.Id + '/view'}">{!item.Name}</a></h3>
+                    <div class="slds-tile__detail slds-text-body--small">
+                      <dl class="slds-list--horizontal slds-wrap">
+                        <dt class="slds-item--label slds-text-color--weak slds-truncate" title="BP">BP:</dt>
+                        <dd class="slds-item--detail slds-truncate">{!item.CRAN_VAS_MAQ_L_BP__r.Name}</dd>
+                        <dt class="slds-item--label slds-text-color--weak slds-truncate" title="Person">{!$Label.c.CRAN_VAS_MAQ_ListSalesPerson}:</dt>
+                        <dd class="slds-item--detail slds-truncate">{!item.Account.Name}</dd>
+                        <dt class="slds-item--label slds-text-color--weak slds-truncate" title="Amount">{!$Label.c.CRAN_VAS_MAQ_ListSalesAmount}:</dt>
+                        <dd class="slds-item--detail slds-truncate">{!item.Amount}</dd>
+                        <dt class="slds-item--label slds-text-color--weak slds-truncate" title="Close Date">{!$Label.c.CRAN_VAS_MAQ_ListSalesCloseDate}:</dt>
+                        <dd class="slds-item--detail slds-truncate">{!item.CloseDate}</dd>
+                      </dl>
+                    </div>
+                  </div>
+              </aura:iteration>         
+    		</div>
+  		</div>
+  		<aura:set attribute="footer">
+			<a href="{!'/one/one.app?#/sObject/Opportunity/list?filterName='+v.viewAllId}">View All <span class="slds-assistive-text">entity type</span></a>
+		</aura:set>
+	</lightning:card>
+       
+</aura:component>

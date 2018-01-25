@@ -1,0 +1,44 @@
+<aura:component implements="flexipage:availableForRecordHome,force:lightningQuickActionWithoutHeader,force:hasRecordId" 
+				access="global" controller="CRAN_VEC_ADV_SignContract_AUC">
+	<aura:attribute name="recordId" type="String" required="false" default=""/><!-- Account.Id -->
+	<aura:attribute name="account" type="Account" required="false" default="{'sobjectType':'Account'}"/>
+	<aura:attribute name="loading" type="boolean" required="false" default="true"/>
+	<aura:attribute name="error" type="boolean" required="false" default="false"/>
+	<aura:attribute name="errorMessage" type="String" required="false" default=""/>
+
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+	<aura:handler event="aura:systemError" action="{!c.showSystemError}"/>
+
+	<lightning:card >
+        <aura:set attribute="title">
+            <lightning:icon iconName="action:approval" size="x-small" alternativeText="" />&emsp;{!$Label.c.CRAN_VEC_ADV_SC_title}
+        </aura:set>
+        <aura:set attribute="actions">
+        	<aura:if isTrue="{!v.account.CRAN_VEC_ADV_B_ContractSigned__c==false}">
+            	<ui:button label="{!$Label.c.CRAN_VEC_ADV_SC_btn_sign}" press="{!c.btnSignContract}"/>
+            </aura:if>
+        </aura:set>
+        <p class="slds-p-horizontal--small">
+            <div style="position:relative">
+		    	<aura:if isTrue="{!v.error}">
+		    		<div>
+			    		<ui:message title="Error" severity="error" closable="true">
+			    			{!v.errorMessage}
+		  				</ui:message>
+	  				</div>
+		    	</aura:if>
+		    	<aura:if isTrue="{!v.account.CRAN_VEC_ADV_B_ContractSigned__c}">
+		    		<div>
+						<label>{!$Label.c.CRAN_VEC_ADV_SC_MessageSigned} {!v.account.CRAN_VEC_ADV_D_SignDate__c}</label>
+					</div>
+				<aura:set attribute="else">
+					<div>
+						<ui:inputDate aura:id="dateField" label="{!$Label.c.CRAN_VEC_ADV_SC_labelDate}" value="{!v.account.CRAN_VEC_ADV_D_SignDate__c}" displayDatePicker="true"/>
+					</div>
+				</aura:set>
+				</aura:if>
+			</div>
+        </p>
+    </lightning:card>
+</aura:component>

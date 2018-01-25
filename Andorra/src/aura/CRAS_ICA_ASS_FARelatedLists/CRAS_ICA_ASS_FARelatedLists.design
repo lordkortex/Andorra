@@ -1,0 +1,7 @@
+<design:component >
+    <design:attribute name="RelatedList" label="Related List" datasource="Insurance Invoices,Insurance Guarantees,Insurance Products,Insurance Roles, Insurance PolicyHolder, Claims, Insurance And PolicyHolder" />
+    <design:attribute name="recordsPerPage" label="Records per Page" />
+	<sfdc:objects >
+        <sfdc:object >FinServ__FinancialAccount__c</sfdc:object>
+    </sfdc:objects>
+</design:component>

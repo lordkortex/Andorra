@@ -1,0 +1,56 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" 
+                access="global"
+                controller="CRAS_ICA_ASS_Reports_AUC">
+    <ltng:require scripts="{!join(',',
+                           $Resource.jQuery3,
+                           $Resource.highcharts_js,
+                           $Resource.grouped_categories_js,
+                           $Resource.exporting_js	
+                           )}" 
+                  afterScriptsLoaded="{!c.init}"/>
+    <aura:attribute name="userId" type="string" default=""/>
+    <aura:attribute name="title1" type="String" default="{!$Label.c.CRAS_ICA_ASS_ProductNumPol}"/>
+    <aura:attribute name="title2" type="String" default="{!$Label.c.CRAS_ICA_ASS_ProductPrem}"/>
+    <aura:attribute name="title3" type="String" default="{!$Label.c.CRAS_ICA_ASS_ProductNumIns}"/>
+    <aura:attribute name="legend1" type="String" default="{!$Label.c.CRAS_ICA_ASS_Policies}"/>
+    <aura:attribute name="legend3" type="String" default="{!$Label.c.CRAS_ICA_ASS_Insureds}"/>
+    <aura:attribute name="nodata1" type="String" default="{!$Label.c.CRAS_ICA_ASS_NODATA_ProductNumPol}"/>
+    <aura:attribute name="nodata2" type="String" default="{!$Label.c.CRAS_ICA_ASS_NODATA_ProductPrem}"/>
+    <aura:attribute name="nodata3" type="String" default="{!$Label.c.CRAS_ICA_ASS_NODATA_ProductNumIns}"/>
+    <aura:attribute name="title" type="String" default=""/>
+    <aura:attribute name="total" type="String" default="0"/>
+    <aura:attribute name="currencyCode" type="String" default=""/>
+    <aura:attribute name="currency" type="boolean" default="false"/>
+    
+    <div class="slds-card">
+        <div class="slds-card__header slds-grid">
+            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                <div class="slds-media__body">
+                    <h2><span class="slds-text-heading_small">{!v.title1}</span></h2>
+                    <aura:if isTrue="{!v.currency}">
+                        <div class="total">Total: <b><ui:outputCurrency value="{!v.total}"/></b></div>
+                        <aura:set attribute="else">
+                            <div class="total">Total: <b>{!v.total}</b></div>
+                        </aura:set>
+                    </aura:if>
+                </div>
+            </header>
+            <div class="slds-no-flex">
+                <div class="selectValueDiv">
+                    <lightning:select name="selectValueP" aura:id="selectValueP" label=" " onchange="{!c.selectPChangeFunction}" aura:style="float:right;width:20%">
+                        <option value="1">{!$Label.c.CRAS_ICA_ASS_NumPol_Short}</option>
+                        <option value="2">{!$Label.c.CRAS_ICA_ASS_Prem_Short}</option>
+                        <option value="3">{!$Label.c.CRAS_ICA_ASS_Ins_Short}</option>
+                    </lightning:select>
+                </div>
+            </div>
+        </div>
+        <div class="slds-card__body slds-card__body_inner">
+            <div id="containerP" aura:id="containerP" class="spinnerContainer">
+                <lightning:spinner aura:id="listSpinner" variant="brand" size="small" />
+                <div class="loadGraphic">{!$Label.c.CRAS_ICA_ASS_LoadGraphic}</div>
+            </div>
+        </div>
+    </div>
+    
+</aura:component>

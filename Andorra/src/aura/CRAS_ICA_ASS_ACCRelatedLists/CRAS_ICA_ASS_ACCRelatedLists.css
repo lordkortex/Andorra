@@ -1,0 +1,144 @@
+.THIS {
+}
+
+.THIS.listContainer{
+    background-color: rgb(244, 246, 249);
+    border-radius: 0.25rem;
+    background-clip: padding-box;
+    padding: 1.5rem 0.7rem;
+    overflow: hidden;
+    border: 1px solid rgb(216, 221, 230);
+}
+
+.THIS .table-container{
+    position:relative;
+}
+
+.THIS p.noRecordsLabel{
+    margin-left: 1.5em;
+}
+
+.THIS .listTitle{
+    font-size: 130%;
+    margin-left: 1.2em;
+}
+
+.THIS .slds-icon{
+    margin-right:10px!important;
+}
+
+.THIS .slds-person{
+    max-width:160px;
+    overflow:hidden;
+}
+
+.THIS .slds-badge{
+    display: inline-block;
+}
+.THIS .slds-bg--red {
+    background-color: #ffd3d3;
+    
+}
+
+.THIS .slds-name2x{
+    max-width:320px;
+    overflow:hidden;
+}
+.THIS .slds-table--bordered:not(.slds-no-row-hover) tbody tr:hover>td:not(.slds-is-selected), 
+.THIS .slds-table--bordered:not(.slds-no-row-hover) tbody tr:hover>th:not(.slds-is-selected){
+    box-shadow: none;
+}
+
+.THIS .slds-truncate--wrap{
+    white-space: normal;
+}
+
+.THIS .circle{
+      width: 24px;
+      height: 24px;
+      -webkit-border-radius: 12px;
+      -moz-border-radius: 12px;
+      border-radius: 12px;
+
+}
+
+.THIS .circle-red{
+      background: #e03535;
+}
+
+.THIS .circle-yellow{
+      background: #ffe368;
+}
+
+.THIS .circle-green{
+      background: #0fe088;
+}
+
+
+
+/* Acordeon styles */
+.THIS .acordeon .tab {
+  position: relative;
+  margin-bottom: 1px;
+  width: 100%;
+  overflow: hidden;
+ 
+}
+.THIS .acordeon input {
+  position: absolute;
+  opacity: 0;
+  z-index: -1;
+}
+.THIS .acordeon label {
+  position: relative;
+  display: block;
+  padding: 0 0 0 1em;
+  font-weight: bold;
+  line-height: 3;
+  cursor: pointer;
+  background-color:#fff;
+}
+.THIS .acordeon .tab-content {
+  max-height: 0;
+  color:#000;
+  overflow: hidden;
+  -webkit-transition: max-height .35s;
+  -o-transition: max-height .35s;
+  transition: max-height .35s;
+}
+.THIS .acordeon .tab-content p {
+  margin: 1em;
+}
+/* :checked */
+.THIS .acordeon input:checked ~ .tab-content {
+  max-height: 100%;
+}
+/* Icon */
+.THIS .acordeon label::after {
+  position: absolute;
+  right: 0;
+  top: 0;
+  display: block;
+    width: 3em;
+    height: 3em;
+    font-size: 1.6em;
+    top: -12px;
+    right: -11px;
+  line-height: 3;
+  text-align: center;
+  -webkit-transition: all .35s;
+  -o-transition: all .35s;
+  transition: all .35s;
+}
+.THIS .acordeon input[type=checkbox] + label::after {
+  content: "+";
+}
+.THIS .acordeon input[type=radio] + label::after {
+  content: "\25BC";
+}
+.THIS .acordeon input[type=checkbox]:checked + label::after {
+  transform: rotate(315deg);
+}
+.THIS .acordeon input[type=radio]:checked + label::after {
+  transform: rotateX(180deg);
+}

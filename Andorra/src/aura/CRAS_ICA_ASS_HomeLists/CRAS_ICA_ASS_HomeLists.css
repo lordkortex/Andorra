@@ -1,0 +1,53 @@
+.THIS {
+}
+.THIS.listContainer{
+    background-color: rgb(244, 246, 249);
+    border-radius: 0.25rem;
+    background-clip: padding-box;
+    padding: 1.5rem 1rem;
+    overflow: hidden;
+    border: 1px solid rgb(216, 221, 230);
+}
+
+.THIS .listTitle{
+    font-size: 120%;
+}
+
+.THIS .slds-icon{
+    margin-right:10px!important;
+}
+
+.THIS .slds-person{
+    max-width:120px;
+    overflow:hidden;
+}
+
+.THIS .slds-name2x{
+    max-width:320px;
+    overflow:hidden;
+}
+
+.THIS table + table {
+    margin-top: 1em;
+}
+.THIS .footer-link{
+    width:100%;
+    position: relative;
+    margin-top: 1em;
+}
+.THIS .footer-link:before{
+    content : " ";
+    clear:both;
+}
+
+.THIS .footer-link a{
+    float: right;
+}
+
+.THIS table.InfoTable .slds-person{
+    color: #777;    
+    font-size: 0.9em;
+}
+.THIS table.InfoTable tr > td:nth-child(2){
+    width:160px;
+}

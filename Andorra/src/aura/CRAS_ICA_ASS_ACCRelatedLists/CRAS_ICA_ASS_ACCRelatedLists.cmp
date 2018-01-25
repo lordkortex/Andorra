@@ -1,0 +1,292 @@
+<aura:component implements="flexipage:availableForAllPageTypes,force:hasRecordId" 
+                access="global"
+                controller="CRAS_ICA_ASS_ACCController_AUC">
+    <aura:attribute name="ResultList" type="sObject[]"/>
+    <aura:attribute name="ColumnNames" type="CRAS_ICA_ASS_SFField_OBJ[]" />
+    <aura:attribute name="RelatedList" type="string"/>
+    <aura:attribute name="YearMax" type="Integer" default="1" />
+    <aura:attribute name="RecordsCount" type="Integer" default="-1" />
+    <aura:attribute name="IsFARolesList" type="Boolean" default="false"/>
+    <aura:attribute name="IsFAPHRolList" type="Boolean" default="false"/>
+    <aura:attribute name="IsClaimsList" type="Boolean" default="false"/>
+    <aura:attribute name="IsFAPHIRolList" type="Boolean" default="false"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <aura:if isTrue="{!v.IsFARolesList}">
+        <div class="listContainer">
+            <h1 class="listTitle">{!$Label.c.CRAS_ICA_ASS_RL_FAInsuranceRoles_Title}</h1>
+            <br/>
+            <aura:if isTrue="{!v.RecordsCount == 0}">
+                <p class="noRecordsLabel">{!$Label.c.CRAS_ICA_ASS_NoRecordsRoles + ' '}<i>{!$Label.c.CRAS_ICA_ASS_RL_FAInsuranceRoles_Title}</i>.</p>
+                <aura:set attribute="else">
+                    <div class="table-container">
+                        <lightning:spinner aura:id="listSpinner" variant="brand" size="small" />
+                        <table class="slds-table slds-table--bordered slds-table--cell-buffer">
+                            <thead>
+                                <tr class="slds-text-title--caps">
+                                    <th scope="col">
+                                        <div class="slds-truncate" title="{!v.ColumnNames[0].Label}">{!v.ColumnNames[0].Label}</div>
+                                    </th>
+                                    <th scope="col">
+                                        <div class="slds-truncate slds-person" title="{!v.ColumnNames[1].Label}">{!v.ColumnNames[1].Label}</div>
+                                    </th>
+                                    <th scope="col">
+                                        <div class="slds-truncate" title="{!v.ColumnNames[2].Label}">{!v.ColumnNames[2].Label}</div>
+                                    </th>
+                                    <th scope="col">
+                                        <div class="slds-truncate" title="{!v.ColumnNames[3].Label}">{!v.ColumnNames[3].Label}</div>
+                                    </th>
+                                    <th scope="col">
+                                        <div class="slds-truncate" title="{!v.ColumnNames[4].Label}">{!v.ColumnNames[4].Label}</div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <aura:iteration items="{!v.ResultList}" var="iRol">
+                                    <tr>
+                                        <td scope="row" data-label="{!v.ColumnNames[0].Label}">
+                                            <div class="slds-truncate">{!iRol.Role}</div>
+                                        </td>
+                                        <td scope="row" data-label="{!v.ColumnNames[1].Label}">
+                                            <div class="slds-truncate slds-person" title="{!iRol.FinServ__FinancialAccount__r.Name}"><a href="{! '#/sObject/' + iRol.FinServ__FinancialAccount__r.Id + '/view'}">{!iRol.FinServ__FinancialAccount__r.Name}</a></div>
+                                        </td>
+                                        <td scope="row" data-label="{!v.ColumnNames[2].Label}">
+                                            <div class="slds-truncate">{!iRol.FinServ__FinancialAccount__r.FinServ__FinancialAccountNumber__c}</div>
+                                        </td>
+                                        <td scope="row" data-label="{!v.ColumnNames[3].Label}">
+                                            <div class="slds-truncate">{!iRol.StartDate}</div>
+                                        </td>
+                                        <td scope="row" data-label="{!v.ColumnNames[4].Label}">
+                                            <div class="slds-truncate">{!iRol.FinServ__FinancialAccount__r.FinServ__Status__c}</div>
+                                        </td>
+                                    </tr>
+                                </aura:iteration>
+                            </tbody>
+                        </table>
+                    </div>
+                </aura:set>
+            </aura:if>
+            <br/>
+        </div>
+    </aura:if>
+    <aura:if isTrue="{!v.IsFAPHRolList}">
+        <div class="listContainer">
+            <h1 class="listTitle">{!$Label.c.CRAS_ICA_ASS_FAInsurancePHRol_Title}</h1>
+            <br/>
+            <aura:if isTrue="{!v.RecordsCount == 0}">
+                <p class="noRecordsLabel">{!$Label.c.CRAS_ICA_ASS_NoRecordsRoles + ' '}<i>{!$Label.c.CRAS_ICA_ASS_FAInsurancePHRol_Title}</i>.</p>
+                <aura:set attribute="else">
+                    <div class="table-container">
+                        <lightning:spinner aura:id="listSpinner" variant="brand" size="small" />
+                        <table class="slds-table slds-table--bordered slds-table--cell-buffer">
+                            <thead>
+                                <tr class="slds-text-title--caps">
+                                    <th scope="col">
+                                        <div class="slds-truncate" title="{!v.ColumnNames[0].Label}">{!v.ColumnNames[0].Label}</div>
+                                    </th>
+                                    <th scope="col">
+                                        <div class="slds-truncate slds-person" title="{!v.ColumnNames[1].Label}">{!v.ColumnNames[1].Label}</div>
+                                    </th>
+                                    <th scope="col">
+                                        <div class="slds-truncate" title="{!v.ColumnNames[2].Label}">{!v.ColumnNames[2].Label}</div>
+                                    </th>
+                                    <th scope="col">
+                                        <div class="slds-truncate" title="{!v.ColumnNames[3].Label}">{!v.ColumnNames[3].Label}</div>
+                                    </th>
+                                    <th scope="col">
+                                        <div class="slds-truncate" title="{!v.ColumnNames[4].Label}">{!v.ColumnNames[4].Label}</div>
+                                    </th>
+                                    <th scope="col">
+                                        <div class="slds-truncate" title="{!v.ColumnNames[5].Label}">{!v.ColumnNames[5].Label}</div>
+                                    </th>
+                                    <th scope="col">
+                                        <div class="slds-truncate" title=""></div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <aura:iteration items="{!v.ResultList}" var="iRol">
+                                    <tr>
+                                        <td scope="row" data-label="{!v.ColumnNames[0].Label}">
+                                            <div class="slds-truncate">{!iRol.Role}</div>
+                                        </td>
+                                        <td scope="row" data-label="{!v.ColumnNames[1].Label}">
+                                            <div class="slds-truncate slds-person" title="{!iRol.FinServ__FinancialAccount__r.Name}"><a href="{! '#/sObject/' + iRol.FinServ__FinancialAccount__r.Id + '/view'}">{!iRol.FinServ__FinancialAccount__r.Name}</a></div>
+                                        </td>
+                                        <td scope="row" data-label="{!v.ColumnNames[2].Label}">
+                                            <div class="slds-truncate">{!iRol.FinServ__FinancialAccount__r.FinServ__FinancialAccountNumber__c}</div>
+                                        </td>
+                                        <td scope="row" data-label="{!v.ColumnNames[3].Label}">
+                                            <div class="slds-truncate">{!iRol.StartDate}</div>
+                                        </td>
+                                        <td scope="row" data-label="{!v.ColumnNames[4].Label}">
+                                            <div class="slds-truncate">{!iRol.FinServ__FinancialAccount__r.FinServ__Status__c}</div>
+                                        </td>
+                                        <td scope="row" data-label="{!$Label.c.CRAS_ICA_ASS_NoRecordsRoles + ' '}">
+                                            <div class="slds-truncate slds-text-align--right">{!iRol.CRAS_ICA_ASS_PctSiniestralidad__c} %</div>
+                                        </td>
+                                        <td scope="row" data-label="Benchmark">
+                                            <aura:if isTrue="{!iRol.CRAS_ICA_ASS_P_BenchmarkStatus__c == 'Green'}">
+                                                <div class="circle circle-green"></div>
+                                            </aura:if>
+                                            <aura:if isTrue="{!iRol.CRAS_ICA_ASS_P_BenchmarkStatus__c == 'Yellow'}">
+                                                <div class="circle circle-yellow"></div>
+                                            </aura:if>
+                                            <aura:if isTrue="{!iRol.CRAS_ICA_ASS_P_BenchmarkStatus__c == 'Red'}">
+                                                <div class="circle circle-red"></div>
+                                            </aura:if>
+                                        </td>
+                                    </tr>
+                                </aura:iteration>
+                            </tbody>
+                        </table>
+                    </div>
+                </aura:set>
+            </aura:if>
+            <br/>
+        </div>
+    </aura:if>
+    
+    <aura:if isTrue="{!v.IsClaimsList}">
+        <div class="listContainer">
+            <h1 class="listTitle">{!$Label.c.CRAS_ICA_ASS_RL_Claims_Title}</h1>
+            <br/>
+            <aura:if isTrue="{!v.RecordsCount == 0}">
+                <p class="noRecordsLabel">{!$Label.c.CRAS_ICA_ASS_NoRecordsRoles + ' '}<i>{!$Label.c.CRAS_ICA_ASS_RL_Claims_Title}</i>.</p>
+                <aura:set attribute="else">
+                    <div class="table-container acordeon">
+                        <lightning:spinner aura:id="listSpinner" variant="brand" size="small" />
+                        <aura:iteration items="{!v.ResultList}" var="outside">
+                            <div class="tab">
+                                <input id="{!'tab-' + outside.Index + '-' + v.recordId}" type="checkbox" name="tabs" />
+                                <label for="{!'tab-' + outside.Index + '-' + v.recordId}">{!outside.Label}</label>
+                                <div class="tab-content">
+                                    <table class="slds-table slds-table--bordered slds-table--cell-buffer">
+                                        <thead>
+                                            <tr class="slds-text-title--caps">
+                                                <th scope="col">
+                                                    <div class="slds-truncate" title="{!v.ColumnNames[3].Label}">{!v.ColumnNames[2].Label}</div>
+                                                </th>
+                                                <th scope="col">
+                                                    <div class="slds-truncate" title="{!v.ColumnNames[0].Label}">{!v.ColumnNames[0].Label}</div>
+                                                </th>
+                                                <th scope="col">
+                                                    <div class="slds-truncate" title="{!v.ColumnNames[1].Label}">{!v.ColumnNames[1].Label}</div>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <aura:iteration items="{!outside.RelList}" var="iRol">
+                                                <tr>
+                                                    <td scope="row" data-label="{!v.ColumnNames[2].Label}">
+                                                        <div class="slds-truncate">{!iRol.CRAS_ICA_ASS_L_Role__r.FinServ__FinancialAccount__r.FinServ__FinancialAccountNumber__c}</div>
+                                                    </td>
+                                                    <td scope="row" data-label="{!v.ColumnNames[0].Label}">
+                                                        <div class="slds-truncate" title="{!iRol.CRAS_ICA_ASS_N_Year__c}"><a href="{! '#/sObject/' + iRol.Id + '/view'}">{!iRol.CRAS_ICA_ASS_N_Year__c}</a></div>
+                                                    </td>
+                                                    <td scope="row" data-label="{!v.ColumnNames[1].Label}">
+                                                        <div class="slds-truncate">{!iRol.Total}</div>
+                                                    </td>
+                                                </tr>
+                                            </aura:iteration>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </aura:iteration>
+                    </div>
+                </aura:set>
+            </aura:if>
+            <br/>
+        </div>
+    </aura:if>
+    
+    <aura:if isTrue="{!v.IsFAPHIRolList}">
+        <div class="listContainer">
+            <h1 class="listTitle">{!$Label.c.CRAS_ICA_ASS_RL_FAInsuranceRoles_Title}</h1>
+            <br/>
+            <aura:if isTrue="{!v.RecordsCount == 0}">
+                <p class="noRecordsLabel">{!$Label.c.CRAS_ICA_ASS_NoRecordsRoles + ' '}<i>{!$Label.c.CRAS_ICA_ASS_FAInsurancePHRol_Title}</i>.</p>
+                <aura:set attribute="else">
+                    <div class="table-container">
+                        <lightning:spinner aura:id="listSpinner" variant="brand" size="small" />
+                        <table class="slds-table slds-table--bordered slds-table--cell-buffer">
+                            <thead>
+                                <tr class="slds-text-title--caps">
+                                    <th scope="col">
+                                        <div class="slds-truncate" title="{!v.ColumnNames[0].Label}">{!v.ColumnNames[0].Label}</div>
+                                    </th>
+                                    <th scope="col">
+                                        <div class="slds-truncate slds-person" title="{!v.ColumnNames[1].Label}">{!v.ColumnNames[1].Label}</div>
+                                    </th>
+                                    <th scope="col">
+                                        <div class="slds-truncate" title="{!v.ColumnNames[2].Label}">{!v.ColumnNames[2].Label}</div>
+                                    </th>
+                                    <th scope="col">
+                                        <div class="slds-truncate" title="{!v.ColumnNames[3].Label}">{!v.ColumnNames[3].Label}</div>
+                                    </th>
+                                    <th scope="col">
+                                        <div class="slds-truncate slds-truncate--wrap" title="{!v.ColumnNames[4].Label}">{!v.ColumnNames[4].Label}</div>
+                                    </th>
+                                    <th scope="col">
+                                        <div class="slds-truncate" title="{!v.ColumnNames[5].Label}">{!v.ColumnNames[5].Label}</div>
+                                    </th>
+                                    <th scope="col">
+                                        <div class="slds-truncate" title=""></div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <aura:iteration items="{!v.ResultList}" var="iRol">
+                                    <tr>
+                                        <td scope="row" data-label="{!v.ColumnNames[0].Label}">
+                                            <div class="slds-truncate slds-truncate--wrap">{!iRol.Role}</div>
+                                        </td>
+                                        <td scope="row" data-label="{!v.ColumnNames[1].Label}">
+                                            <div class="slds-truncate slds-person" title="{!iRol.FinServ__FinancialAccount__r.Name}"><a href="{! '#/sObject/' + iRol.FinServ__FinancialAccount__r.Id + '/view'}">{!iRol.FinServ__FinancialAccount__r.Name}</a></div>
+                                        </td>
+                                        <td scope="row" data-label="{!v.ColumnNames[2].Label}">
+                                            <div class="slds-truncate">{!iRol.FinServ__FinancialAccount__r.FinServ__FinancialAccountNumber__c}</div>
+                                        </td>
+                                        <td scope="row" data-label="{!v.ColumnNames[3].Label}">
+                                            <div class="slds-truncate">{!iRol.StartDate}</div>
+                                        </td>
+                                        <td scope="row" data-label="{!v.ColumnNames[4].Label}">
+                                            <div class="slds-truncate slds-truncate--wrap">{!iRol.FinServ__FinancialAccount__r.FinServ__Status__c}</div>
+                                        </td>
+                                        <aura:if isTrue="{!iRol.FinServ__FinancialAccount__r.CRAS_ICA_ASS_PE_PctSiniestralidad__c != null}">
+                                            
+                                            <td scope="row" data-label="{!$Label.c.CRAS_ICA_ASS_NoRecordsRoles + ' '}">
+                                                <div class="slds-truncate slds-text-align--center">{!iRol.FinServ__FinancialAccount__r.CRAS_ICA_ASS_PE_PctSiniestralidad__c} %</div>
+                                            </td>
+                                            <aura:set attribute="else">
+                                                <td scope="row" data-label="{!$Label.c.CRAS_ICA_ASS_NoRecordsRoles + ' '}">
+                                                    <div class="slds-truncate slds-text-align--center">0 %</div>
+                                                </td>
+                                            </aura:set>
+                                            
+                                        </aura:if>
+                                        <td scope="row" data-label="Benchmark">
+                                            <aura:if isTrue="{!iRol.CRAS_ICA_ASS_P_BenchmarkStatus__c == 'Green'}">
+                                                <div class="circle circle-green"></div>
+                                            </aura:if>
+                                            <aura:if isTrue="{!iRol.CRAS_ICA_ASS_P_BenchmarkStatus__c == 'Yellow'}">
+                                                <div class="circle circle-yellow"></div>
+                                            </aura:if>
+                                            <aura:if isTrue="{!iRol.CRAS_ICA_ASS_P_BenchmarkStatus__c == 'Red'}">
+                                                <div class="circle circle-red"></div>
+                                            </aura:if>
+                                        </td>
+                                    </tr>
+                                </aura:iteration>
+                            </tbody>
+                        </table>
+                    </div>
+                </aura:set>
+            </aura:if>
+            <br/>
+        </div>
+    </aura:if>
+    
+</aura:component>

@@ -1,0 +1,1 @@
+public class CRAN_VAS_KER_SignatureException extends Exception {}

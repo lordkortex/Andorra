@@ -1,0 +1,29 @@
+<aura:component access="global" controller="CRAN_VAS_KER_ChartJs_AUC" implements="flexipage:availableForAllPageTypes" description="The component to draw various charts using Chart.js Library. Refer to http://www.chartjs.org/ for the library detail.">
+
+    <aura:attribute name="apexDataProvider" type="String" default="chartjsSampleLineChartDataProvider" required="true" description="Apex Class Name which provides JSON data to draw chart. As for JSON data format, two sample providers are available as chartjsSampleLineChartDataProvider and chartjsSamplePieChartDataProvider. Refer to http://www.chartjs.org/ for more details." />
+    <aura:attribute name="showLegend" type="Boolean" default="true" description="If set to false, legend does not show up. Defaut is true."/>
+    <aura:attribute name="showChartTypeSwitch" type="Boolean" default="true" description="If set to false, chart type switch does not show up. Default is true." />
+    <aura:attribute name="componentName" type="String" description="Unique name of the component. Ex.This value will be used by ChartjsChartDataUpdate Event to specify which component should be affected. So this value should be unique amoung the application or component which this component belongs to." />
+    
+	<ltng:require scripts="{!join(',',
+									'/resource/CRAN_VAS_KER_ChartJs',
+                           			'/resource/CRAN_VAS_KER_ChartJsDoughnutExt')}" afterScriptsLoaded="{!c.createChart}" />
+
+
+    <div style="background-color: #fff; text-align:center; padding: 20px">
+        <div class="slds-clearfix">
+            <aura:if isTrue="{!!v.isChartDataEmpty }">
+                    {!v.body}
+            </aura:if>
+            
+            <!-- Data Empty Message -->
+            <aura:if isTrue="{! v.isChartDataEmpty }">
+                    Data is empty.
+            </aura:if>
+            <!-- Data Empty Message -->
+            
+        </div>
+        
+    </div>
+
+</aura:component>

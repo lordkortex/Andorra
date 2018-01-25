@@ -1,0 +1,61 @@
+<apex:page controller="CRAN_VEC_ADV_TemplateLoader_CTR" title="Template Loader">
+    <style>
+        .controlPanel td{
+            width:200px;
+        }
+        .controlPanel{
+            margin-top:20px;
+        }
+    </style>    
+    <apex:form >
+    	<apex:pageBlock id="SelectCustomObject">
+    		<tr>
+               <td colspan="2"><b>Select Custom Object</b></td>
+             </tr>
+             <apex:pageBlockSection title="Custom Object" columns="2">
+  				<apex:selectList value="{!customObject}" size="1" required="true">
+    				<apex:selectOptions value="{!items}"/>
+  				</apex:selectList>
+			</apex:pageBlockSection>
+    	</apex:pageBlock>
+
+        <apex:pageBlock id="controlPanel">                        
+            <table class="controlPanel fromFile">
+                <tr>
+                    <td colspan="2"><b>Upload a CSV file to save its contents as records</b></td>
+                </tr>
+                <tr>
+                    <td>Upload CSV file</td><td><apex:inputFile value="{!csvFileBody}" accept="csv" contentType="text/csv" /></td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td><td><apex:commandButton value="Upload CSV" action="{!readFromFile}"/></td>
+                </tr>
+            </table>                         
+        </apex:pageBlock>
+        <apex:pageBlock id="dataPanel">
+            <apex:pagemessages />
+            <apex:outputPanel id="CustomForm" rendered="{!customObject=='CRAN_VEC_ADV_CustomForm__c'}">
+            <apex:pageblocktable value="{!lstCustomForm}" var="customform">
+                <apex:repeat value="{!lstFieldNames}" var="fieldName">
+                    <apex:column value="{!customform[fieldName]}" />
+                </apex:repeat>
+            </apex:pageblocktable>
+            </apex:outputPanel>
+            <apex:outputPanel id="Section" rendered="{!customObject=='CRAN_VEC_ADV_CustomForm_Section__c'}">
+            <apex:pageblocktable value="{!lstSection}" var="section">
+                <apex:repeat value="{!lstFieldNames}" var="fieldName">
+                    <apex:column value="{!section[fieldName]}" />
+                </apex:repeat>
+            </apex:pageblocktable>
+             </apex:outputPanel>
+            <apex:outputPanel id="Question" rendered="{!customObject=='CRAN_VEC_ADV_CustomForm_Question__c'}">
+            <apex:pageblocktable value="{!lstQuestion}" var="question">
+                <apex:repeat value="{!lstFieldNames}" var="fieldName">
+                    <apex:column value="{!question[fieldName]}" />
+                </apex:repeat>
+            </apex:pageblocktable>
+             </apex:outputPanel>
+            <apex:commandButton value="Insert Data" action="{!saveData}" rendered="{!readSuccess}" />
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

@@ -1,0 +1,3 @@
+<aura:event type="COMPONENT">
+    <aura:attribute name="assetByEvent" type="FinServ__Securities__c"/>
+</aura:event>

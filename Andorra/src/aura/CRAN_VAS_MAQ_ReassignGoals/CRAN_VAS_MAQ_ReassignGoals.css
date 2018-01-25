@@ -1,0 +1,61 @@
+.THIS .slds-text-title--caps th {
+    font-weight: normal;
+}
+
+.THIS .slds-table {
+    table-layout: fixed;
+}
+
+.THIS .datatables table .select-checkbox:before {
+    content: "";
+    border: 1px solid #d8dde6;
+    width: 1rem;
+    height: 1rem;
+    display: inline-block;
+    vertical-align: middle;
+    border-radius: 0.125rem;
+    background: white;
+    transition: border 0.1s linear, background-color 0.1s linear;
+}
+
+.THIS .datatables table .selected .select-checkbox:after {
+    display: block;
+    content: "";
+    height: 0.25rem;
+    width: 0.5rem;
+    position: absolute;
+    top: 80%;
+    left: 60.5%;
+    transform: translate3d(-50%, -50%, 0) rotate(-45deg);
+    border-bottom: 2px solid #1589ee;
+    border-left: 2px solid #1589ee;
+}
+
+.THIS table.dataTable tbody > tr.selected {
+    background-color: #f0f8fc;
+}
+
+.THIS.goal-spinner {
+	height: 100vw;
+}
+
+.THIS, .THIS :focus {
+    outline: 0 !important;
+}
+
+.THIS .slds-button {
+    white-space: nowrap;
+}
+
+.THIS .office-selection-container {
+    background-color: t(colorBackground);
+    border-radius: t(borderRadiusMedium);    
+}
+
+.THIS .dataTables_info {
+    margin-left: 1rem;
+}
+
+.THIS .dataTables_paginate {
+    margin: .5rem 1rem 0 0;
+}

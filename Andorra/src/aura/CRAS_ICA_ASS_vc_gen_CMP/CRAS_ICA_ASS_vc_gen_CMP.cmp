@@ -1,0 +1,71 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" 
+                access="global"
+                controller="CRAS_ICA_ASS_Reports_AUC">
+    
+    <ltng:require scripts="{!join(',',
+                           $Resource.jQuery3,
+                           $Resource.highcharts_js,
+                           $Resource.grouped_categories_js,
+                           $Resource.exporting_js	
+                           )}" 
+                  afterScriptsLoaded="{!c.init}"/>
+
+    <aura:attribute name="productType" type="string"/>
+    <aura:attribute name="isRisk" type="boolean" default="false"/>
+    <aura:attribute name="isSavings" type="boolean" default="false"/>
+    <aura:attribute name="currency" type="boolean" default=""/>
+    <aura:attribute name="currencyCode" type="String" default=""/>
+    
+    <aura:attribute name="userId" type="string" default=""/>
+    <aura:attribute name="title1" type="String" default="{!$Label.c.CRAS_ICA_ASS_RiskSalesNumPol}"/>
+    <aura:attribute name="legend1" type="String" default="{!$Label.c.CRAS_ICA_ASS_New}"/>
+    <aura:attribute name="legend2" type="String" default="{!$Label.c.CRAS_ICA_ASS_Cancellation}"/>
+    <aura:attribute name="legend3" type="String" default="{!$Label.c.CRAS_ICA_ASS_Difference}"/>
+    <aura:attribute name="legend4" type="String" default="{!$Label.c.CRAS_ICA_ASS_NumPol_Short}"/>
+    <aura:attribute name="legend5" type="String" default="{!$Label.c.CRAS_ICA_ASS_Ins_Short}"/>
+    <aura:attribute name="category1" type="String" default="{!$Label.c.CRAS_ICA_ASS_Month}"/>
+    <aura:attribute name="category2" type="String" default="{!$Label.c.CRAS_ICA_ASS_Year}"/>
+    <aura:attribute name="nodata1" type="String" default="{!$Label.c.CRAS_ICA_ASS_NODATA_RiskSalesNumPol}"/>
+    <aura:attribute name="nodata2" type="String" default="{!$Label.c.CRAS_ICA_ASS_NODATA_RiskSalesPrem}"/>
+    <aura:attribute name="title" type="String" default=""/> 
+    
+    <div class="slds-card">
+        <div class="slds-card__header slds-grid">
+            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                <div class="slds-media__body">
+	            	<h2><span class="slds-text-heading_small">{!v.title1}</span></h2>
+                </div>
+            </header>
+            <div class="slds-no-flex">
+                <div class="selectValueDiv">
+                    <lightning:select name="selectValueCH" aura:id="selectValueCH" label=" " onchange="{!c.selectChangeCHFunction}" aura:style="float:right;width:20%;margin-ri">
+                        <aura:if isTrue="{!v.isRisk}">
+                            <option value="1">{!$Label.c.CRAS_ICA_ASS_NumPol_Short}</option>
+                            <option value="2">{!$Label.c.CRAS_ICA_ASS_Prem_Short}</option>
+                            <option value="3">{!$Label.c.CRAS_ICA_ASS_Ins_Short}</option>
+                        </aura:if>
+                        <aura:if isTrue="{!v.isSavings}">
+                            <option value="4">{!$Label.c.CRAS_ICA_ASS_NumPol_Short}</option>
+                            <option value="5">{!$Label.c.CRAS_ICA_ASS_App_Short}</option>
+                        </aura:if>
+                    </lightning:select>
+                </div>
+            </div>
+        </div>
+        <div class="slds-card__body slds-card__body_inner">
+            <aura:if isTrue="{!v.isRisk}">
+                <div id="containerCH_1" aura:id="containerCH_1" class="spinnerContainer">
+                    <!--<lightning:spinner aura:id="listSpinner" variant="brand" size="small" />-->
+                    <div class="loadGraphic">{!$Label.c.CRAS_ICA_ASS_LoadGraphic}</div>
+                </div>
+            </aura:if>
+            <aura:if isTrue="{!v.isSavings}">
+                <div id="containerCH_2" aura:id="containerCH_2" class="spinnerContainer">
+                    <!--<lightning:spinner aura:id="listSpinner" variant="brand" size="small" />-->
+                    <div class="loadGraphic">{!$Label.c.CRAS_ICA_ASS_LoadGraphic}</div>
+                </div>
+            </aura:if>
+        </div>
+    </div>    
+    
+</aura:component>

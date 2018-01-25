@@ -1,0 +1,5 @@
+<design:component >
+	<design:attribute name="object" label="Object API Name" description="API name of the object" default=""/>
+    <design:attribute name="listView" label="ListView Name" description="ListView of the related object" default=""/>
+    <design:attribute name="recordsPerPage" label="Records per Page" default="10" />
+</design:component>

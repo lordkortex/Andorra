@@ -1,0 +1,68 @@
+<aura:component implements="flexipage:availableForAllPageTypes,force:hasRecordId" 
+                access="global"
+                controller="CRAS_ICA_ASS_CallAxis_AUC">
+    <aura:attribute name="Claims" type="CRAS_ICA_ASS_ClaimDetails_OBJ[]"/>
+    <aura:attribute name="RecordsCount" type="Integer" default="-1" />
+    <aura:attribute name="TotalUnbound" type="Integer" default="0" />
+    <aura:method name="loadRecordsMethod" action="{!c.loadRecords}" description="loadRecords controller function" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <div class="listContainer">
+        <h1 class="listTitle">{!$Label.c.CRAS_ICA_ASS_RL_ClaimsDetails_Title}</h1>
+        <br/>
+        <aura:if isTrue="{!v.RecordsCount == 0}">
+            <p class="noRecordsLabel"><i>{!$Label.c.CRAS_ICA_ASS_NoRecordsClaimsDetails + ' '}.</i></p>
+            <aura:set attribute="else">
+                <div class="table-container">
+                    <lightning:spinner aura:id="listSpinner" variant="brand" size="small" />
+                    <table class="slds-table slds-table--bordered slds-table--cell-buffer">
+                        <thead>
+                            <tr class="slds-text-title--caps">
+                                <th scope="col">
+                                    <div class="slds-truncate" title="{!$Label.c.CRAS_ICA_ASS_ClaimDetailNumber}">{!$Label.c.CRAS_ICA_ASS_ClaimDetailNumber}</div>
+                                </th>
+                                <th scope="col">
+                                    <div class="slds-truncate" title="{!$Label.c.CRAS_ICA_ASS_ClaimDetailStartDate}">{!$Label.c.CRAS_ICA_ASS_ClaimDetailStartDate}</div>
+                                </th>
+                                <th scope="col">
+                                    <div class="slds-truncate" title="{!$Label.c.CRAS_ICA_ASS_ClaimDetailPayDay}">{!$Label.c.CRAS_ICA_ASS_ClaimDetailPayDay}</div>
+                                </th>
+                                <th scope="col">
+                                    <div class="slds-truncate" title="{!$Label.c.CRAS_ICA_ASS_ClaimDetailTotal}">{!$Label.c.CRAS_ICA_ASS_ClaimDetailTotal}</div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <aura:iteration items="{!v.Claims}" var="claim">
+                                <tr>
+                                    <td scope="row" data-label="{!$Label.c.CRAS_ICA_ASS_ClaimDetailNumber}">
+                                        <div class="slds-truncate">{!claim.ClaimNumber}</div>
+                                    </td>
+                                    <td scope="row" data-label="{!$Label.c.CRAS_ICA_ASS_ClaimDetailStartDate}">
+                                        <div class="slds-truncate slds-person"><ui:outputDate value="{!claim.StartDate}"/></div>
+                                    </td>
+                                    <td scope="row" data-label="{!$Label.c.CRAS_ICA_ASS_ClaimDetailPayDay}">
+                                        <div class="slds-truncate"><ui:outputDate value="{!claim.PayDay}"/></div>
+                                    </td>
+                                    <td scope="row" data-label="{!$Label.c.CRAS_ICA_ASS_ClaimDetailTotal}">
+                                        <div class="slds-truncate"><ui:outputCurrency value="{!claim.Total}"/></div>
+                                    </td>
+                                </tr>
+                            </aura:iteration>
+                            <tr class="slds-text-title--caps">
+                                <th colspan="3" scope="col">
+                                    <div class="slds-truncate" title="{!$Label.c.CRAS_ICA_ASS_ClaimDetailTotalNotConsolidate}">{!$Label.c.CRAS_ICA_ASS_ClaimDetailTotalNotConsolidate}:</div>
+                                </th>
+                                <th scope="col">
+                                    <div class="slds-truncate"><ui:outputCurrency value="{!v.TotalUnbound}"/></div>
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </aura:set>
+        </aura:if>
+        <br/>
+    </div>
+    
+</aura:component>

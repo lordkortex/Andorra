@@ -1,0 +1,11 @@
+.THIS .slds-text-title--caps th {
+    font-weight: normal;
+}
+
+.THIS .slds-table th, .THIS .slds-table td {
+    position: static;
+}
+
+.THIS .slds-table {
+    table-layout: fixed;
+}

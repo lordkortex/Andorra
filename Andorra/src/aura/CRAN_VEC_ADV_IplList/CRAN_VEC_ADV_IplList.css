@@ -1,0 +1,33 @@
+.THIS .header {
+	color: white;
+}
+
+.THIS .Icon svg {
+	fill: grey;
+}
+
+.THIS .CheckNode svg {
+	fill: #B0BA1F;
+}
+
+.THIS .CloseNode svg {
+	fill: #F0F2CC;
+}
+
+.THIS .Close svg {
+	fill: white;
+}
+
+.THIS .withoutScroller {
+    height: auto;
+    overflow-y: auto;       
+}
+
+.THIS .withScroller {
+    height: 310px;
+    overflow-y: auto;    
+}
+
+.THIS .slds-spinner {
+    top: 60% !important;
+}

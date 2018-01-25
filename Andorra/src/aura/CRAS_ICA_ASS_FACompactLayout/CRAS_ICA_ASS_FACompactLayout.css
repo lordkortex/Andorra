@@ -1,0 +1,88 @@
+.THIS {
+}
+
+.THIS .slds-truncate{
+    max-width: 160px;
+}
+
+.THIS.slds-page-header-custom{
+    height: 45px;
+    position: relative;
+    padding-bottom: 0px;
+    border-bottom: 1px solid rgb(216, 221, 230);
+    border-radius: 0px 0px 4px 4px;
+	-moz-border-radius: 0px 0px 4px 4px;
+	-webkit-border-radius: 0px 0px 4px 4px;
+}
+
+.THIS .slds-page-header-fixed {
+    width:100%;
+    padding: .98rem 1.5rem;
+    padding-top: 0;
+    top: -41px;
+    position: absolute;
+    background-color: #fff;
+    min-height: 64px;
+    z-index: 7000;
+    border-radius: 0px 0px 4px 4px;
+	-moz-border-radius: 0px 0px 4px 4px;
+	-webkit-border-radius: 0px 0px 4px 4px;
+    box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.10);
+    -webkit-box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.10);
+	-moz-box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.10);
+}
+.THIS .slds-badge{
+    vertical-align: baseline;
+}
+.THIS .slds-badge--h{
+    display: inline-block;
+    min-height: 25px;
+}
+
+.THIS .slds-page-header-fixed.fixPosIndex{
+    z-index: 6000;
+}
+
+.THIS .slds-bg--green{
+    background-color:#0fe088;
+   	color:#fff;
+}
+
+.THIS .slds-bg--red{
+    background-color:#e03535;
+    color:#fff;
+}
+
+.THIS .slds-bg--blue{
+    background-color:#42aee5;
+    color:#fff;
+}
+
+.THIS .slds-bg--yellow{
+    background-color:#ffe368;
+}
+.THIS .slds-bg--lightblue{
+    background-color:#adfffa;
+    color:#fff;
+}
+.THIS .slds-bg--orange{
+    background-color:#ff753f;
+}
+.THIS .slds-bg--benchgreen
+{
+    background-color: #0fe088;
+    color:#fff;
+}
+.THIS .slds-bg--benchyellow
+{
+    background-color: #ffe368;
+}
+.THIS .slds-bg--benchred
+{
+    background-color: #e03535;
+    color:#fff;
+}
+
+.THIS.slds-page-header__detail-row{
+    background-color: #fff;
+}
